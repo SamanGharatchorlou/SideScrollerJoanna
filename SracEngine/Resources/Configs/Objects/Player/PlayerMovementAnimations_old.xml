@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Player>
+	<Animator>
+		<ID>Girl</ID>
+		<FrameTime>0.1</FrameTime>
+		<FrameSize x = "98" y ="66"></FrameSize>
+		<SpriteSheet>PlayerMovementSheet</SpriteSheet>
+		<Animations>
+			<Idle row = "1" column = "1" speedfactor = "0.6">6</Idle>
+			<Walk row = "3" column = "2" speedfactor = "2">18</Walk>
+			<Run row = "3" column = "3" speedfactor = "2.5">8</Run>
+		</Animations>
+		<Transitions>
+			<Idle row = "1" column = "2" to = "Walk" minLoops = "1">3</Idle>
+			<Walk row = "20" column = "2" to = "Idle" minLoops = "1">3</Walk>
+
+			<Walk row = "1" column = "3" to = "Run" minLoops = "1" speedfactor = "1.5">3</Walk>
+			<Idle row = "1" column = "3" to = "Run" minLoops = "1" speedfactor = "1.5">3</Idle>
+			<Run row = "31" column = "3" to = "Idle" minLoops = "1" speedfactor = "2.5">7</Run>
+
+			<!-- <Run row = "11" column = "3" to = "Run" minLoops = "1" speedfactor = "2.5">7</Run> -->
+		</Transitions>
+	</Animator>
+</Player>

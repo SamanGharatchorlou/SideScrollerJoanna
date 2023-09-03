@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Player>
+	<Animator>
+		<ID>Girl</ID>
+		<FrameTime>0.4</FrameTime>
+		<FrameSize x = "96" y ="64"></FrameSize>
+		<SpriteSheet>LightAttacks</SpriteSheet>
+		<Animations>
+			<AirAttack index = "0" minLoops = "1">16</AirAttack>
+			<LightAttack index = "17" minLoops = "1">12</LightAttack>
+			<UpLightAttack index = "29" minLoops = "1">11</UpLightAttack>
+		</Animations>
+		<Transitions>
+		</Transitions>
+	</Animator>
+</Player>

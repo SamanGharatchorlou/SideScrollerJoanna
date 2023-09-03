@@ -1,0 +1,34 @@
+#include "GameStates/State.h"
+#include "GameStates/StateMachine.h"
+
+enum class SystemStates
+{
+	None,
+	StartupState,
+	PreGameState,
+	GameState,
+	PauseState,
+};
+
+struct SystemStateManager
+{
+	friend class GameController;
+
+	SystemStateManager();
+
+	// System game states
+	void addState(SystemStates state);
+	void replaceState(SystemStates state);
+	void popState();
+
+	static State* getNewGameState(SystemStates state);
+
+	void restart() { mRestart = true; }
+	void quit() { mQuit = true; }
+
+private:
+	StateMachine<State> mStates;
+
+	bool mQuit = false;;
+	bool mRestart = false;;
+};

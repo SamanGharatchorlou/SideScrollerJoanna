@@ -1,0 +1,26 @@
+#include "pch.h"
+#include "MainMenuScreen.h"
+#include "Game/SystemStateManager.h"
+#include "UI/UIManager.h"
+
+
+void MainMenuScreen::init()
+{
+	//GameData::Get().uiManager->controller()->openPopup("IntroductionPopup");
+};
+
+void MainMenuScreen::slowUpdate()
+{
+	if (released("PlayButton"))
+	{
+		u32 flags = 0;
+		setFlag<u32>(flags, Screen::RenderBelow);
+
+		GameData::Get().uiManager->controller()->addScreen(UIScreen::Type::Settings, flags);
+		//GameData::Get().systemStateManager->addState(SystemStates::GameState);
+	}
+	else if (released("ExitButton"))
+	{
+		GameData::Get().systemStateManager->quit();
+	}
+}

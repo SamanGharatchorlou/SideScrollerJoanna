@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+	<Title>DUNGEON DASH</Title>
+	<Width>1024</Width>
+	<Height>768</Height>
+	<MusicVolume>25</MusicVolume>
+	<SoundVolume>50</SoundVolume>
+	<Tutorial>OFF</Tutorial>
+	<Popups>true</Popups>
+</Settings>
+
