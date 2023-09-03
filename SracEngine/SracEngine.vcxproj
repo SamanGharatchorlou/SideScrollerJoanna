@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{fb7afd24-e1f8-490b-accf-903c3b4c1068}</ProjectGuid>
+    <RootNamespace>SracEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)SDL2\SDL2_image-2.0.4\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\include;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\include;$(SolutionDir)SDL2\SDL2_main\include;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui_sdl-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(SolutionDir)SDL2\SDL2_main\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)SDL2\SDL2_image-2.0.4\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\include;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\include;$(SolutionDir)SDL2\SDL2_main\include;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui_sdl-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(SolutionDir)SDL2\SDL2_main\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)SRAC;$(SolutionDir)SDL2\rapidxml\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)SRAC;$(SolutionDir)SDL2\rapidxml\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="GameSource\Configs.cpp" />
+    <ClCompile Include="GameSource\EntSystems\AnimationSystem.cpp" />
+    <ClCompile Include="GameSource\EntSystems\MovementSystem.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="SRAC\Animations\Animation.cpp" />
+    <ClCompile Include="SRAC\Animations\AnimationReader.cpp" />
+    <ClCompile Include="SRAC\Animations\Animator.cpp" />
+    <ClCompile Include="SRAC\Audio\Audio.cpp" />
+    <ClCompile Include="SRAC\Audio\AudioManager.cpp" />
+    <ClCompile Include="SRAC\Audio\Channel.cpp" />
+    <ClCompile Include="SRAC\Audio\SoundController.cpp" />
+    <ClCompile Include="SRAC\Colliders\Collider.cpp" />
+    <ClCompile Include="SRAC\Colliders\QuadCollider.cpp" />
+    <ClCompile Include="SRAC\Core\Maths.cpp" />
+    <ClCompile Include="SRAC\Debug\DebugDraw.cpp" />
+    <ClCompile Include="SRAC\Debug\FrameRateController.cpp" />
+    <ClCompile Include="SRAC\Debug\Logging.cpp" />
+    <ClCompile Include="SRAC\Debug\MapDebugging.cpp" />
+    <ClCompile Include="SRAC\Debug\MemTrack.cpp" />
+    <ClCompile Include="SRAC\Debug\PerformanceProfiler.cpp" />
+    <ClCompile Include="SRAC\Debug\UIEditor.cpp" />
+    <ClCompile Include="SRAC\ECS\EntityManager.cpp" />
+    <ClCompile Include="GameSource\EntSystems\PlayerInputSystem.cpp" />
+    <ClCompile Include="GameSource\EntSystems\RenderSystem.cpp" />
+    <ClCompile Include="SRAC\Events\Dispatcher.cpp" />
+    <ClCompile Include="SRAC\Game\Camera\Camera.cpp" />
+    <ClCompile Include="SRAC\Game\Camera\CameraShake.cpp" />
+    <ClCompile Include="SRAC\Game\Data\GameData.cpp" />
+    <ClCompile Include="SRAC\Game\Data\LoadingBar.cpp" />
+    <ClCompile Include="SRAC\Game\Data\LoadingManager.cpp" />
+    <ClCompile Include="SRAC\Game\GameController.cpp" />
+    <ClCompile Include="SRAC\Game\GameSetup.cpp" />
+    <ClCompile Include="GameSource\GameStates\GameState.cpp" />
+    <ClCompile Include="GameSource\GameStates\PauseState.cpp" />
+    <ClCompile Include="GameSource\GameStates\PreGameState.cpp" />
+    <ClCompile Include="SRAC\Game\GameStates\StartupState.cpp" />
+    <ClCompile Include="SRAC\Game\SystemStateManager.cpp" />
+    <ClCompile Include="SRAC\Graphics\Renderable.cpp" />
+    <ClCompile Include="SRAC\Graphics\Renderer.cpp" />
+    <ClCompile Include="SRAC\Graphics\RenderManager.cpp" />
+    <ClCompile Include="SRAC\Graphics\RenderPacket.cpp" />
+    <ClCompile Include="SRAC\Graphics\Texture.cpp" />
+    <ClCompile Include="SRAC\Graphics\TextureManager.cpp" />
+    <ClCompile Include="SRAC\Graphics\TextureMap.cpp" />
+    <ClCompile Include="SRAC\Graphics\TileSet.cpp" />
+    <ClCompile Include="SRAC\Input\Button.cpp" />
+    <ClCompile Include="SRAC\Input\Cursor.cpp" />
+    <ClCompile Include="SRAC\Input\InputManager.cpp" />
+    <ClCompile Include="SRAC\Physics\Physics.cpp" />
+    <ClCompile Include="SRAC\System\Files\Config.cpp" />
+    <ClCompile Include="SRAC\System\Files\ConfigManager.cpp" />
+    <ClCompile Include="SRAC\System\Files\FileManager.cpp" />
+    <ClCompile Include="SRAC\System\Files\StatReader.cpp" />
+    <ClCompile Include="SRAC\System\Files\TextFileReader.cpp" />
+    <ClCompile Include="SRAC\System\Files\XMLNode.cpp" />
+    <ClCompile Include="SRAC\System\Files\XMLParser.cpp" />
+    <ClCompile Include="SRAC\System\Window.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\imgui.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\imgui_demo.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\imgui_draw.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\imgui_tables.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\imgui_widgets.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdlrenderer2.cpp" />
+    <ClCompile Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UIBox.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UIButton.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UIElement.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UISlider.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UISwitch.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UITextBox.cpp" />
+    <ClCompile Include="SRAC\UI\Elements\UIWindow.cpp" />
+    <ClCompile Include="SRAC\UI\ScreenController.cpp" />
+    <ClCompile Include="SRAC\UI\ScreenLayers.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\GameOverScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\GameScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\LoadingScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\MainMenuScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\PauseScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\PopupScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\Screen.cpp" />
+    <ClCompile Include="SRAC\UI\Screens\SettingsScreen.cpp" />
+    <ClCompile Include="SRAC\UI\Text\Font.cpp" />
+    <ClCompile Include="SRAC\UI\Text\Text.cpp" />
+    <ClCompile Include="SRAC\UI\UIEventHandler.cpp" />
+    <ClCompile Include="SRAC\UI\UIManager.cpp" />
+    <ClCompile Include="SRAC\Core\BasicString.cpp" />
+    <ClCompile Include="SRAC\Core\Buffer.cpp" />
+    <ClCompile Include="SRAC\Core\Helpers.cpp" />
+    <ClCompile Include="SRAC\Core\Maps\PropertyMap.cpp" />
+    <ClCompile Include="SRAC\Core\Maps\StringMap.cpp" />
+    <ClCompile Include="SRAC\Core\NSISFileOutput.cpp" />
+    <ClCompile Include="SRAC\Core\Property.cpp" />
+    <ClCompile Include="SRAC\Core\Colour.cpp" />
+    <ClCompile Include="SRAC\Core\StringBuffers.cpp" />
+    <ClCompile Include="SRAC\Core\TypeDefs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SRAC\Animations\AnimationStates.h" />
+    <ClInclude Include="GameSource\Configs.h" />
+    <ClInclude Include="GameSource\EntSystems\AnimationSystem.h" />
+    <ClInclude Include="GameSource\EntSystems\MovementSystem.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="SRAC\Animations\Animation.h" />
+    <ClInclude Include="SRAC\Animations\AnimationReader.h" />
+    <ClInclude Include="SRAC\Animations\Animator.h" />
+    <ClInclude Include="SRAC\Audio\Audio.h" />
+    <ClInclude Include="SRAC\Audio\AudioManager.h" />
+    <ClInclude Include="SRAC\Audio\Channel.h" />
+    <ClInclude Include="SRAC\Audio\SoundController.h" />
+    <ClInclude Include="SRAC\Colliders\Collider.h" />
+    <ClInclude Include="SRAC\Colliders\QuadCollider.h" />
+    <ClInclude Include="SRAC\Core\Maths.h" />
+    <ClInclude Include="SRAC\Debug\DebugDraw.h" />
+    <ClInclude Include="SRAC\Debug\DebugSettings.h" />
+    <ClInclude Include="SRAC\Debug\FrameRateController.h" />
+    <ClInclude Include="SRAC\Debug\Logging.h" />
+    <ClInclude Include="SRAC\Debug\MapDebugging.h" />
+    <ClInclude Include="SRAC\Debug\MemTrack.h" />
+    <ClInclude Include="SRAC\Debug\PerformanceProfiler.h" />
+    <ClInclude Include="SRAC\Debug\UIEditor.h" />
+    <ClInclude Include="GameSource\ECS\Components.h" />
+    <ClInclude Include="SRAC\ECS\ComponentArray.h" />
+    <ClInclude Include="SRAC\ECS\ComponentManager.h" />
+    <ClInclude Include="SRAC\ECS\EntityCommon.h" />
+    <ClInclude Include="SRAC\ECS\EntityCoordinator.h" />
+    <ClInclude Include="SRAC\ECS\EntityManager.h" />
+    <ClInclude Include="GameSource\EntSystems\PlayerInputSystem.h" />
+    <ClInclude Include="GameSource\EntSystems\RenderSystem.h" />
+    <ClInclude Include="SRAC\ECS\SystemManager.h" />
+    <ClInclude Include="SRAC\Events\Dispatcher.h" />
+    <ClInclude Include="SRAC\Events\Events.h" />
+    <ClInclude Include="SRAC\Events\LocalDispatcher.h" />
+    <ClInclude Include="SRAC\Events\Observer.h" />
+    <ClInclude Include="SRAC\Game\Camera\Camera.h" />
+    <ClInclude Include="SRAC\Game\Camera\CameraShake.h" />
+    <ClInclude Include="SRAC\Game\Data\GameData.h" />
+    <ClInclude Include="SRAC\Game\Data\LoadingBar.h" />
+    <ClInclude Include="SRAC\Game\Data\LoadingManager.h" />
+    <ClInclude Include="SRAC\Game\GameController.h" />
+    <ClInclude Include="SRAC\Game\GameSetup.h" />
+    <ClInclude Include="GameSource\GameStates\GameState.h" />
+    <ClInclude Include="GameSource\GameStates\PauseState.h" />
+    <ClInclude Include="GameSource\GameStates\PreGameState.h" />
+    <ClInclude Include="SRAC\Game\GameStates\StartupState.h" />
+    <ClInclude Include="SRAC\Game\GameStates\State.h" />
+    <ClInclude Include="SRAC\Game\GameStates\StateMachine.h" />
+    <ClInclude Include="SRAC\Game\SystemStateManager.h" />
+    <ClInclude Include="SRAC\Graphics\Renderable.h" />
+    <ClInclude Include="SRAC\Graphics\Renderer.h" />
+    <ClInclude Include="SRAC\Graphics\RenderManager.h" />
+    <ClInclude Include="SRAC\Graphics\RenderPacket.h" />
+    <ClInclude Include="SRAC\Graphics\Texture.h" />
+    <ClInclude Include="SRAC\Graphics\TextureManager.h" />
+    <ClInclude Include="SRAC\Graphics\TextureMap.h" />
+    <ClInclude Include="SRAC\Graphics\TileSet.h" />
+    <ClInclude Include="SRAC\Input\Button.h" />
+    <ClInclude Include="SRAC\Input\Cursor.h" />
+    <ClInclude Include="SRAC\Input\InputManager.h" />
+    <ClInclude Include="SRAC\Physics\Physics.h" />
+    <ClInclude Include="SRAC\rapidxml\Include\rapidxml.hpp" />
+    <ClInclude Include="SRAC\rapidxml\Include\rapidxml_iterators.hpp" />
+    <ClInclude Include="SRAC\rapidxml\Include\rapidxml_print.hpp" />
+    <ClInclude Include="SRAC\rapidxml\Include\rapidxml_utils.hpp" />
+    <ClInclude Include="SRAC\System\Files\Config.h" />
+    <ClInclude Include="SRAC\System\Files\ConfigManager.h" />
+    <ClInclude Include="SRAC\System\Files\FileManager.h" />
+    <ClInclude Include="SRAC\System\Files\StatReader.h" />
+    <ClInclude Include="SRAC\System\Files\TextFileReader.h" />
+    <ClInclude Include="SRAC\System\Files\XMLNode.h" />
+    <ClInclude Include="SRAC\System\Files\XMLParser.h" />
+    <ClInclude Include="SRAC\System\Window.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\imconfig.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\imgui.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\imgui_internal.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\imstb_rectpack.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\imstb_textedit.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\imstb_truetype.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdl2.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdlrenderer2.h" />
+    <ClInclude Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.h" />
+    <ClInclude Include="SRAC\UI\Elements\UIBox.h" />
+    <ClInclude Include="SRAC\UI\Elements\UIButton.h" />
+    <ClInclude Include="SRAC\UI\Elements\UIElement.h" />
+    <ClInclude Include="SRAC\UI\Elements\UISlider.h" />
+    <ClInclude Include="SRAC\UI\Elements\UISwitch.h" />
+    <ClInclude Include="SRAC\UI\Elements\UITextBox.h" />
+    <ClInclude Include="SRAC\UI\Elements\UIWindow.h" />
+    <ClInclude Include="SRAC\UI\ScreenController.h" />
+    <ClInclude Include="SRAC\UI\ScreenLayers.h" />
+    <ClInclude Include="SRAC\UI\Screens\GameOverScreen.h" />
+    <ClInclude Include="SRAC\UI\Screens\GameScreen.h" />
+    <ClInclude Include="SRAC\UI\Screens\LoadingScreen.h" />
+    <ClInclude Include="SRAC\UI\Screens\MainMenuScreen.h" />
+    <ClInclude Include="SRAC\UI\Screens\PauseScreen.h" />
+    <ClInclude Include="SRAC\UI\Screens\PopupScreen.h" />
+    <ClInclude Include="SRAC\UI\Screens\Screen.h" />
+    <ClInclude Include="SRAC\UI\Screens\ScreenHeaders.h" />
+    <ClInclude Include="SRAC\UI\Screens\SettingsScreen.h" />
+    <ClInclude Include="SRAC\UI\ScreenTypes.h" />
+    <ClInclude Include="SRAC\UI\Text\Font.h" />
+    <ClInclude Include="SRAC\UI\Text\Text.h" />
+    <ClInclude Include="SRAC\UI\UIEventHandler.h" />
+    <ClInclude Include="SRAC\UI\UIManager.h" />
+    <ClInclude Include="SRAC\Core\BasicString.h" />
+    <ClInclude Include="SRAC\Core\Buffer.h" />
+    <ClInclude Include="SRAC\Core\Grid.h" />
+    <ClInclude Include="SRAC\Core\Helpers.h" />
+    <ClInclude Include="SRAC\Core\LinkedList.h" />
+    <ClInclude Include="SRAC\Core\Maps\Map.h" />
+    <ClInclude Include="SRAC\Core\Maps\PropertyMap.h" />
+    <ClInclude Include="SRAC\Core\Maps\StringMap.h" />
+    <ClInclude Include="SRAC\Core\NSISFileOutput.h" />
+    <ClInclude Include="SRAC\Core\ObjectPool.h" />
+    <ClInclude Include="SRAC\Core\Property.h" />
+    <ClInclude Include="SRAC\Core\Quad2D.h" />
+    <ClInclude Include="SRAC\Core\Queue.h" />
+    <ClInclude Include="SRAC\Core\Rect.h" />
+    <ClInclude Include="SRAC\Core\Colour.h" />
+    <ClInclude Include="SRAC\Core\RingBuffer.h" />
+    <ClInclude Include="SRAC\Core\StringBuffers.h" />
+    <ClInclude Include="SRAC\Core\Timer.h" />
+    <ClInclude Include="SRAC\Core\TypeDefs.h" />
+    <ClInclude Include="SRAC\Core\UniqueQueue.h" />
+    <ClInclude Include="SRAC\Core\Vector2D.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
