@@ -11,6 +11,8 @@ public:
 	InputManager() { }
 	~InputManager() { }
 
+	static InputManager* Get();
+
 	void init();
 
 	void resetInputEvents();
@@ -45,7 +47,7 @@ private:
 	void bindDefaultButtons();
 
 
-private:
+public:
 	std::vector<Button> mButtons;
 	Cursor mCursor;
 };

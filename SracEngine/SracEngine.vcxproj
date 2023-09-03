@@ -85,7 +85,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)SRAC;$(SolutionDir)SDL2\rapidxml\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SRAC;$(ProjectDir)SRAC\ThirdParty\rapidxml\include;$(ProjectDir)GameSource;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)SRAC;$(SolutionDir)SDL2\rapidxml\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SRAC;$(ProjectDir)SRAC\ThirdParty\rapidxml\include;$(ProjectDir)GameSource;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -160,6 +160,10 @@
     <ClCompile Include="SRAC\Core\Maths.cpp" />
     <ClCompile Include="SRAC\Debug\DebugDraw.cpp" />
     <ClCompile Include="SRAC\Debug\FrameRateController.cpp" />
+    <ClCompile Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.cpp" />
+    <ClCompile Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.cpp" />
+    <ClCompile Include="SRAC\Debug\ImGui\ImGuiMainWindows.cpp" />
+    <ClCompile Include="SRAC\Debug\ImGui\ImGuiMenu.cpp" />
     <ClCompile Include="SRAC\Debug\Logging.cpp" />
     <ClCompile Include="SRAC\Debug\MapDebugging.cpp" />
     <ClCompile Include="SRAC\Debug\MemTrack.cpp" />
@@ -260,6 +264,11 @@
     <ClInclude Include="SRAC\Debug\DebugDraw.h" />
     <ClInclude Include="SRAC\Debug\DebugSettings.h" />
     <ClInclude Include="SRAC\Debug\FrameRateController.h" />
+    <ClInclude Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.h" />
+    <ClInclude Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.h" />
+    <ClInclude Include="SRAC\Debug\ImGui\ImGuiMainWindows.h" />
+    <ClInclude Include="SRAC\Debug\ImGui\ImGuiHelpers.h" />
+    <ClInclude Include="SRAC\Debug\ImGui\ImGuiMenu.h" />
     <ClInclude Include="SRAC\Debug\Logging.h" />
     <ClInclude Include="SRAC\Debug\MapDebugging.h" />
     <ClInclude Include="SRAC\Debug\MemTrack.h" />

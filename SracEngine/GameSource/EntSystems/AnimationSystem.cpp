@@ -4,6 +4,7 @@
 
 #include "GameSource/ECS/Components.h"
 #include "ECS/EntityCoordinator.h"
+#include "Debug/ImGui/Components/AnimationDebugMenu.h"
 
 namespace ECS
 {
@@ -29,35 +30,39 @@ namespace ECS
 			sprite.subRect = RectF(pos, animator.frameSize());
 			sprite.texture = animator.activeSpriteSheet();
 
-			// select the next action
-			ActionState action = state.action;
-			if (action != animator.activeAction() )
+			if (!DebugMenu::UsingPlaylist())
 			{
-				if (animator.inTransition() && animator.activeTransition().to == action)
-					continue;
-
-				if (!animator.canChange())
-					continue;
-
-				// if this a transition action change the action to the transition action
-				StateTransition transition;
-				transition.from = animator.activeAction();
-				transition.to = action;
-
-				const std::vector<StateTransition>& transitions = animator.mTransitions;
-				for (u32 i = 0; i < transitions.size(); i++)
+				// select the next action
+				ActionState action = state.action;
+				if (action != animator.activeAction())
 				{
-					if (transitions[i].from == transition.from && transitions[i].to == transition.to)
-					{
-						action = transitions[i].transitionAction;
-						animator.mTransitionIndex = i;
-						break;
-					}
-				}
+					if (animator.inTransition() && animator.activeTransition().to == action)
+						continue;
 
-				animator.selectAnimation(action);
-				transform.sizeFactor = animator.activeAnimation().spriteSheet.frameSize / animator.mBaseSize;
+					if (!animator.canChange())
+						continue;
+
+					// if this a transition action change the action to the transition action
+					StateTransition transition;
+					transition.from = animator.activeAction();
+					transition.to = action;
+
+					const std::vector<StateTransition>& transitions = animator.mTransitions;
+					for (u32 i = 0; i < transitions.size(); i++)
+					{
+						if (transitions[i].from == transition.from && transitions[i].to == transition.to)
+						{
+							action = transitions[i].transitionAction;
+							animator.mTransitionIndex = i;
+							break;
+						}
+					}
+
+					animator.selectAnimation(action);
+				}
 			}
+
+			transform.sizeFactor = animator.activeAnimation().spriteSheet.sizeFactor; // / animator.mBaseSize;
 		}
 	}
 }

@@ -10,6 +10,12 @@ void InputManager::init()
 	bindDefaultButtons();
 }
 
+InputManager* InputManager::Get()
+{
+	GameData& gd = GameData::Get();
+	ASSERT(gd.inputManager != nullptr, "Audio manager has no been set up yet");
+	return gd.inputManager;
+}
 
 void InputManager::processInputEvent(SDL_Event& event)
 {
@@ -75,10 +81,10 @@ void InputManager::resetInputEvents()
 		button.setPressed(false);
 		button.setReleased(false);
 
-		if (button.isHeld())
-			button.incrementHeldFrames();
-		else
-			button.setHeldFrames(0);
+		//if (button.isHeld())
+		//	button.incrementHeldFrames();
+		//else
+		//	button.setHeldFrames(0);
 	}
 }
 
@@ -133,9 +139,15 @@ void InputManager::processMouseButtonEvent(SDL_Event& event)
 	isReleased = (event.type == SDL_MOUSEBUTTONUP);
 
 	// Set input data
-	cursorButton.setHeld(isHeld);
+	//cursorButton.setHeld(isHeld);
 	cursorButton.setPressed(isPressed);
 	cursorButton.setReleased(isReleased);
+
+	if (isPressed)
+		cursorButton.mHeldFrames++;
+	if (isReleased)
+		cursorButton.mHeldFrames = 0;
+
 	mCursor.setButton(buttonType, cursorButton);
 }
 
@@ -149,10 +161,16 @@ void InputManager::processButtonEvent(SDL_Event& event)
 			if (!button.isHeld())
 				button.setPressed(event.type == SDL_KEYDOWN);
 
-			button.setHeld(event.type == SDL_KEYDOWN);
 			button.setReleased(event.type == SDL_KEYUP);
-			break;
 		}
+
+		if (button.mHeldFrames > 0)
+			button.mHeldFrames++;
+		else if (button.isPressed())
+			button.mHeldFrames = 1;
+
+		if (button.isReleased())
+			button.mHeldFrames = 0;
 	}
 }
 

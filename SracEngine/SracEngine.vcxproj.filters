@@ -306,6 +306,18 @@
     <ClCompile Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRAC\Debug\ImGui\ImGuiMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debug\ImGui\ImGuiMainWindows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -687,6 +699,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Debug\ImGui\ImGuiMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Debug\ImGui\ImGuiMainWindows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Debug\ImGui\ImGuiHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

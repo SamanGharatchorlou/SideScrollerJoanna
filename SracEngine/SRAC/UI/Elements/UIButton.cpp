@@ -48,7 +48,7 @@ void UIButton::reset()
 {
 	mButton.setPressed(false);
 	mButton.setReleased(false);
-	mButton.setHeld(false);
+	//mButton.setHeld(false);
 	mButton.setHeldFrames(0);
 
 	setActive(false);
@@ -87,7 +87,8 @@ void UIButton::setPressed(bool isPressed)
 
 void UIButton::setHeld(bool isHeld)
 {
-	mButton.setHeld(isHeld);
+	//mButton.setHeld(isHeld);
+	mButton.mHeldFrames = 1;
 
 	if (isHeld)
 		setState(State::Pressed);

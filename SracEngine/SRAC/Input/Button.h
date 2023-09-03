@@ -64,11 +64,11 @@ public:
 	Button(Key key);
 	void bind(Key key) { mKeyBinding = key; }
 
-	void reset();
+	//void reset();
 
 	State state() const;
 
-	bool isHeld() const { return mHeld; }
+	bool isHeld() const { return mHeldFrames > 0; }
 	bool isPressed() const { return mPressed; }
 	bool isReleased() const { return mReleased; }
 
@@ -76,7 +76,7 @@ public:
 	bool isKey(SDL_Keycode key) const { return mKeyBinding == key; }
 	bool isKey(Key key) const { return mKeyBinding == key; }
 
-	void setHeld(bool isHeld) { mHeld = isHeld; }
+	//void setHeld(bool isHeld) { mHeld = isHeld; }
 	void setPressed(bool isPressed) { mPressed = isPressed; }
 	void setReleased(bool isReleased) { mReleased = isReleased; }
 
@@ -84,9 +84,8 @@ public:
 	void setHeldFrames(int frames) { mHeldFrames = frames; }
 	void incrementHeldFrames() { mHeldFrames++; }
 
-private:
 	int mHeldFrames;
-	bool mHeld;
+	//bool mHeld;
 	bool mPressed;
 	bool mReleased;
 

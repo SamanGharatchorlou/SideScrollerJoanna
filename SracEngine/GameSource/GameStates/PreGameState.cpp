@@ -80,7 +80,7 @@ void PreGameState::init()
 	animation.animator = Animator(movement);
 	animation.animator.AddAnimations(attacks);
 
-	ECS::Entity entity = ecs->CreateEntity();
+	ECS::Entity entity = ecs->CreateEntity("Player");
 
 	ecs->AddComponent(Transform, entity, transform);
 	ecs->AddComponent(Sprite, entity, sprite);
