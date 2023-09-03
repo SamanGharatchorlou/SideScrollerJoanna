@@ -30,8 +30,6 @@ class RenderManager //: public Observer
 public:
 	RenderManager();
 
-	void Init();
-
 	void render();
 
 	void AddRenderPacket(RenderPack renderPacket) { mRenderPackets.push_back(renderPacket); }

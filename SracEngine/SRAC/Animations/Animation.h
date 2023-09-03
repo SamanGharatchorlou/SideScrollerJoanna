@@ -8,6 +8,7 @@ struct SpriteSheet
 {
 	Texture* sprite;
 	VectorF frameSize;
+	VectorF sizeFactor;
 	Index boundaries;
 };
 

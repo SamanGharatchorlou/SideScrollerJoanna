@@ -6,7 +6,7 @@
 
 struct AnimationConfig;
 
-#define FRAME_CAPTURING 1
+#define FRAME_CAPTURING 0
 
 class Animator
 {
@@ -26,6 +26,8 @@ public:
 	void start() { mState = TimeState::Running; }
 	void pause() { mState = TimeState::Paused; }
 	void stop();
+
+	bool RunActive(float dt);
 
 	bool isRunning() const { return mState == TimeState::Running; }
 	bool isStarted() const { return mState == TimeState::Running || mState == TimeState::Paused; }

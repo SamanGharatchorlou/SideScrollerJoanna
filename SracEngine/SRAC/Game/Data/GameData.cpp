@@ -14,6 +14,8 @@
 #include "System/Files/ConfigManager.h"
 #include "ECS/EntityCoordinator.h"
 
+#include "Debug/ImGui/ImGuiMenu.h"
+
 static GameData* gd = nullptr;
 
 GameData& GameData::Get()
@@ -39,7 +41,6 @@ void GameData::init(Window* newWindow)
 
 	// Rendering
 	renderManager = new RenderManager;
-	renderManager->Init();
 
 	// game system state
 	systemStateManager = new SystemStateManager;
@@ -56,6 +57,10 @@ void GameData::init(Window* newWindow)
 
 	// Entity Component System
 	ecs = new ECS::EntityCoordinator;
+
+#if IMGUI
+	DebugMenu::Init();
+#endif
 }
 
 

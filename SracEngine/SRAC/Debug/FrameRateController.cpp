@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "FrameRateController.h"
 
+static FrameRateController s_frameRateController;
+
+FrameRateController& FrameRateController::Get() { return s_frameRateController; }
+
 FrameRateController::FrameRateController() : dt(0.0f), frameRateCap(0.0f), frameNumber(0)
 {
 #if PRINT_FRAMERATE_EVERY

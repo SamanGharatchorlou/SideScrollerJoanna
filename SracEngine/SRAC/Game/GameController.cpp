@@ -17,8 +17,6 @@
 
 #include "GameStates/StartupState.h"
 
-static FrameRateController s_frameRateController;
-
 GameController::GameController()
 {
 	mStartupState = new StartupState(mGameData);
@@ -35,7 +33,8 @@ void GameController::run()
 	// add first game state
 	sm->replaceState(SystemStates::PreGameState);
 
-	s_frameRateController.start();
+	FrameRateController& frc = FrameRateController::Get();
+	frc.start();
 
 	SDL_Event event;
 
@@ -43,14 +42,14 @@ void GameController::run()
 	while (!sm->mQuit)
 	{
 #if FRAMERATE_CAP
-		s_frameRateController.resetCapTimer();
+		frc.resetCapTimer();
 #endif
 
 		handleInput(event);
-		updateLoops(s_frameRateController.delta());
+		updateLoops(frc.delta());
 		render();
 
-		s_frameRateController.update();
+		frc.update();
 
 		if (sm->mRestart)
 		{

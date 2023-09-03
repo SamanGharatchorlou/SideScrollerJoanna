@@ -3,6 +3,7 @@
 
 //#include "Button.h"
 #include "Game/Camera/Camera.h"
+#include "Debug/ImGui/ImGuiMenu.h"
 
 void InputManager::init()
 {
@@ -12,6 +13,12 @@ void InputManager::init()
 
 void InputManager::processInputEvent(SDL_Event& event)
 {
+#if IMGUI
+	bool has_input = DebugMenu::HandleInput(event);
+	if (has_input)
+		return;
+#endif
+
 	if (event.type == SDL_MOUSEMOTION)
 		processMouseMovementEvent();
 	else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)

@@ -6,6 +6,9 @@
 
 #include "Input/InputManager.h"
 
+#include "Debug/ImGui/Components/AnimationDebugMenu.h"
+
+
 Animator::Animator() :
 	mAnimationIndex(0), mFrameIndex(0),
 	mTime(0.0f),
@@ -50,6 +53,14 @@ void Animator::AddAnimations(AnimationConfig* config)
 	{
 		mBaseSize = config->animations.front().spriteSheet.frameSize;
 	}
+
+	if(!mBaseSize.isZero())
+	{
+		for (u32 i = 0; i < mAnimations.size(); i++)
+		{
+			mAnimations[i].spriteSheet.sizeFactor = mAnimations[i].spriteSheet.frameSize / mBaseSize;
+		}
+	}
 }
 
 VectorF Animator::getAnimationSubRect() const
@@ -74,6 +85,9 @@ VectorF Animator::getAnimationSubRect() const
 
 void Animator::selectAnimation(ActionState action)
 {
+	if (DebugMenu::UsingPlaylist())
+		return;
+
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
 		if (mAnimations[i].action == action)
@@ -114,7 +128,8 @@ void Animator::stop()
 	mState = TimeState::Stopped;
 }
 
-void Animator::slowUpdate(float dt)
+
+bool Animator::RunActive(float dt)
 {
 	if (mState == TimeState::Running)
 		mTime += dt;
@@ -123,58 +138,52 @@ void Animator::slowUpdate(float dt)
 	bool progress_frame = mTime >= animation.frameTime;
 	int next_frame = mFrameIndex + 1;
 
-#if FRAME_CAPTURING
-	progress_frame = false;
-
-	const InputManager* input = GameData::Get().inputManager;
-	if (input->isPressed(Button::Key::RightArrow))
-	{
-		next_frame = mFrameIndex + 1;
-
-		if (next_frame >= animation.frameCount)
-		{
-			frameCaptureIndex++;
-			frameCaptureIndex = Maths::clamp(frameCaptureIndex, (u32)0, (u32)mActions.size());
-		}
-
-		progress_frame = true;
-	}
-
-	if (input->isPressed(Button::Key::LeftArrow))
-	{
-		next_frame = mFrameIndex - 1;
-		if (next_frame < 0)
-		{
-			if (mLoops > 0)
-			{
-				mLoops--;
-			}
-			else if(mActions.size() > 2)
-			{
-				//mActions.popBack();
-				frameCaptureIndex--;
-				
-				selectAnimation(mActions.back());
-
-
-				return;
-			}
-
-			next_frame = animation.frameCount - 1;
-		}
-
-		progress_frame = true;
-	}
-#endif
-
 	if (progress_frame)
 	{
 		mFrameIndex = next_frame % animation.frameCount;
 		mTime = 0.0f;
-		
-		if (mFrameIndex == 0)
-			mLoops++;
 
+		if (mFrameIndex == 0)
+		{
+			mLoops++;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Animator::slowUpdate(float dt)
+{
+	if (DebugMenu::UsingPlaylist())
+		return;
+
+	//if (mState == TimeState::Running)
+	//	mTime += dt;
+
+	//const Animation& animation = mAnimations[mAnimationIndex];
+	//bool progress_frame = mTime >= animation.frameTime;
+	//int next_frame = mFrameIndex + 1;
+
+	//if (progress_frame)
+	//{
+	//	mFrameIndex = next_frame % animation.frameCount;
+	//	mTime = 0.0f;
+	//	
+	//	if (mFrameIndex == 0)
+	//		mLoops++;
+
+	//	if (inTransition() && canChange())
+	//	{
+	//		ActionState toAction = mTransitions[mTransitionIndex].to;
+	//		mTransitionIndex = -1;
+
+	//		selectAnimation(toAction);
+	//	}
+	//}
+
+	if (RunActive(dt))
+	{
 		if (inTransition() && canChange())
 		{
 			ActionState toAction = mTransitions[mTransitionIndex].to;
@@ -183,4 +192,5 @@ void Animator::slowUpdate(float dt)
 			selectAnimation(toAction);
 		}
 	}
+
 }

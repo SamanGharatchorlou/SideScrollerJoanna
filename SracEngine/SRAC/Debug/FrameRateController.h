@@ -1,9 +1,13 @@
 #pragma once
 
+// todo: this shouldnt be in debug
+
 class FrameRateController
 {
 public:
 	FrameRateController();
+
+	static FrameRateController& Get();
 
 	float delta() const { return dt; }
 	void start();
