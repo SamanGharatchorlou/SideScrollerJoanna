@@ -69,7 +69,7 @@ VectorF Animator::getAnimationSubRect() const
 	}
 	x = index;
 
-	return animation.spriteSheet.frameSize * VectorF(x, y);
+	return animation.spriteSheet.frameSize * Vector2D<int>(x, y).toFloat();
 }
 
 void Animator::selectAnimation(ActionState action)

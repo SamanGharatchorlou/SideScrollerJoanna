@@ -53,7 +53,7 @@ namespace ECS
 			if (state.action == ActionState::Idle && state.previousAction == ActionState::Run)
 			{
 				if(state.inTransition)
-					drag *= 0.2;
+					drag *= 0.2f;
 			}
 				
 

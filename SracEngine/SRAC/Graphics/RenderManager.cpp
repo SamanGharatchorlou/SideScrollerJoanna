@@ -117,8 +117,8 @@ void RenderManager::render()
 
 
 	// clear screen
-	//SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	//SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(renderer);
 
 	// todo: remove
 	for (uint32_t i = 0; i < mRenderables.size(); i++)
@@ -173,8 +173,8 @@ void RenderManager::render()
 	// Rendering
 	ImGui::Render();
 	//SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
-	SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
-	SDL_RenderClear(renderer);
+	//SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
+	//SDL_RenderClear(renderer);
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 	SDL_RenderPresent(renderer);
 
