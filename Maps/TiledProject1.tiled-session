@@ -1,0 +1,63 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/saman/Downloads/firstexport.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "C:/Users/saman/Downloads/TileSet1TEST.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/saman/Downloads/firstexport.tmx": {
+            "scale": 0.5511979166666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 481.67816309175095,
+                "y": 320.2116602097704
+            }
+        },
+        "TileSet1TEST.tsx": {
+            "scaleInDock": 0.4271,
+            "scaleInEditor": 1
+        },
+        "firstexport.tmx": {
+            "scale": 0.48687499999999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 545.3145057766368,
+                "y": 321.4377406931965
+            }
+        },
+        "firstmao.tmx": {
+            "scale": 0.48687499999999995,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 425.1604621309371,
+                "y": 321.4377406931965
+            }
+        }
+    },
+    "last.exportedFilePath": "C:/Users/saman/Documents/Coding/MyProjects/SideScrollerJoanna/Maps",
+    "last.imagePath": "C:/Users/saman/Documents/Coding/MyProjects/SideScrollerJoanna/Maps",
+    "lastUsedTilesetExportFilter": "All Files (*)",
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "TileSet1TEST.tsx",
+        "firstmao.tmx",
+        "firstexport.tmx",
+        "C:/Users/saman/Downloads/firstexport.tmx"
+    ],
+    "project": "TiledProject1.tiled-project",
+    "recentFiles": [
+        "TileSet1TEST.tsx",
+        "firstmao.tmx",
+        "firstexport.tmx",
+        "C:/Users/saman/Downloads/firstexport.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

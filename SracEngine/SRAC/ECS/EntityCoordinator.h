@@ -16,7 +16,7 @@ namespace ECS
 	struct EntityCoordinator
 	{
 		template<class T>
-		void RegisterComponent(Component::Type type) { components.Register<T>(type); }
+		void RegisterComponent(Component::Type type, u32 reserve_size) { components.Register<T>(type, reserve_size); }
 
 		template<class T>
 		void RegisterSystem(Archetype type) { systems.Register<T>(type); }
@@ -62,7 +62,7 @@ namespace ECS
 		SystemManager systems;
 	};
 
-#define RegisterComponent(compType) RegisterComponent<ECS::compType>(ECS::compType::type())
+#define RegisterComponent(compType, reserve) RegisterComponent<ECS::compType>(ECS::compType::type(), reserve)
 #define AddComponent(compType, entity, component) AddComponent<ECS::compType>(entity, component, ECS::compType::type())
 #define GetComponent(compType, entity) GetComponent<ECS::compType>(entity, ECS::compType::type())
 }

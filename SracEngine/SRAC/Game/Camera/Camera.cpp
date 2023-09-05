@@ -113,5 +113,8 @@ Quad2D<float> Camera::toCameraCoords(const Quad2D<float>& worldCoords) const
 
 VectorF Camera::lerpMovement(float dt)
 {
-	return (mFollowingRect->Center() - mRect.Center()) * 0.9f * dt * 10.0f;
+	if(mFollowingRect)
+		return (mFollowingRect->Center() - mRect.Center()) * 0.9f * dt * 10.0f;
+
+	return mRect.Center();
 }

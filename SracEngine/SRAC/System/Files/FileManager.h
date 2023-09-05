@@ -13,6 +13,8 @@ public:
 
 		PreLoadFiles,
 
+		Maps,
+
 		Images,
 		Image_UI,
 		Image_Maps,
@@ -22,7 +24,6 @@ public:
 		Font,
 
 		Configs,
-		Config_Map,
 		Config_Menus,
 		Config_Popups,
 		Config_Objects,

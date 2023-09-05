@@ -154,7 +154,7 @@ Window* GameSetup::createWindow()
 	const int height = gs->settings.getInt("Height");
 	const Vector2D<int> screenSize = Vector2D<int>(width, height);
 
-	window->init(gs->settings["Title"].c_str(), screenSize);
+	window->init(gs->settings.at("Title").c_str(), screenSize);
 	return window;
 }
 

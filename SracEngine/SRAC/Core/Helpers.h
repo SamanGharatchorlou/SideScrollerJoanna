@@ -43,3 +43,25 @@ static VectorF toVector(const char* x, const char* y)
 	float yVec = toFloat(y);
 	return VectorF(xVec, yVec);
 }
+
+//--------------------------------------------------------
+// map helpers
+template<class T, class K>
+static void log(const std::unordered_map<T,K>& map)
+{
+	DebugPrint(Log, "\n-String Data Map Values-");
+	for (auto iter = map.begin(); iter != map.end(); iter++)
+	{
+		DebugPrint(Log, "Data map %s has value %s", iter->first.c_str(), iter->second.c_str());
+	}
+	DebugPrint(Log, "----------------");
+}
+
+template <class T, class K>
+static void merge(std::unordered_map<T, K>& map_a, std::unordered_map<T, K>& map_b)
+{
+	for (auto iter = map_b.begin(); iter != map_b.end(); iter++)
+	{
+		map_a[iter->first] = iter->second;
+	}
+}

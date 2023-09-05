@@ -30,14 +30,14 @@ void GameScreen::init()
 	ScreenLayer layer("HotKeys");
 	add(layer);
 
-	getSlider("Health")->disableInput();
+	//getSlider("HealthSlider")->disableInput();
 
-	UISlider* expSlider = getSlider("Exp");
-	expSlider->disableInput();
-	expSlider->setSliderValue(0.0f);
+	//UISlider* expSlider = getSlider("ExpSlider");
+	//expSlider->disableInput();
+	//expSlider->setSliderValue(0.0f);
 
 	GameData::Get().uiManager->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
-	GameData::Get().uiManager->controller()->openPopup("Introduction");
+	//GameData::Get().uiManager->controller()->openPopup("Introduction");
 
 #if SET_GAME_SCALE
 	Renderer::Get()->setScale(game_scale);

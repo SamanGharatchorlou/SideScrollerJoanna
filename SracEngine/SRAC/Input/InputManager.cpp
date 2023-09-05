@@ -164,6 +164,7 @@ void InputManager::processButtonEvent(SDL_Event& event)
 			button.setReleased(event.type == SDL_KEYUP);
 		}
 
+		// todo: move this up into the if(b.iskey) scope
 		if (button.mHeldFrames > 0)
 			button.mHeldFrames++;
 		else if (button.isPressed())

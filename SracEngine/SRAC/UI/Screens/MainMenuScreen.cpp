@@ -11,13 +11,14 @@ void MainMenuScreen::init()
 
 void MainMenuScreen::slowUpdate()
 {
-	if (released("PlayButton"))
+	// todo: hack skip right into game state
+	if (released("PlayButton") || true)
 	{
 		u32 flags = 0;
 		setFlag<u32>(flags, Screen::RenderBelow);
 
-		GameData::Get().uiManager->controller()->addScreen(UIScreen::Type::Settings, flags);
-		//GameData::Get().systemStateManager->addState(SystemStates::GameState);
+		//GameData::Get().uiManager->controller()->addScreen(UIScreen::Type::Settings, flags);
+		GameData::Get().systemStateManager->addState(SystemStates::GameState);
 	}
 	else if (released("ExitButton"))
 	{

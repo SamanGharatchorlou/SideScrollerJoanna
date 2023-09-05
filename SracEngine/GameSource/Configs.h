@@ -4,6 +4,8 @@
 #include "SRAC/Animations/AnimationStates.h"
 #include "SRAC/Animations/Animation.h"
 
+#include "Scene/SceneParsing/SceneBuilder.h"
+
 class Texture;
 
 struct AnimationConfig : public Config
@@ -22,3 +24,12 @@ struct AnimationConfig : public Config
 	bool baseSize = false;
 	StringBuffer32 id;
 };
+
+
+//struct TileMapConfig : public Config
+//{
+//	TileMapConfig(const char* config_name) : Config(config_name) { }
+//	void Read(XMLParser& parser) override;
+//
+//	Map map;
+//};

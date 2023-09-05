@@ -12,10 +12,10 @@ namespace ECS
 		}
 
 		template<class T>
-		void Register(Component::Type type)
+		void Register(Component::Type type, u32 reserve_size)
 		{
 			ASSERT(componentArrays[type] == nullptr, "Component (%d) hasnt been registered but has a component array already", (u32)type);
-			componentArrays[type] = new ComponentArray<T>;
+			componentArrays[type] = new ComponentArray<T>(reserve_size);
 		}
 
 		template<class T>
@@ -38,4 +38,6 @@ namespace ECS
 
 		ComponentArrayBase* componentArrays[Component::Type::Count];
 	};
+
+
 }

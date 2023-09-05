@@ -13,6 +13,7 @@ public:
 	XMLParser(const char* file) { parseXML(file); }
 	~XMLParser();
 
+	void reload(const char* file);
 	void saveToFile(std::ofstream& file);
 
 	void parseXML(const char* filePath);
@@ -27,6 +28,6 @@ public:
 #endif
 
 private:
-	rapidxml::file<>* file;
+	rapidxml::file<>* file = nullptr;
 	rapidxml::xml_document<> xmlFile;
 };

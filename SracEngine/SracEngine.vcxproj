@@ -143,9 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameSource\Character\Player.cpp" />
     <ClCompile Include="GameSource\Configs.cpp" />
-    <ClCompile Include="GameSource\EntSystems\AnimationSystem.cpp" />
-    <ClCompile Include="GameSource\EntSystems\MovementSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\AnimationSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\MovementSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SRAC\Animations\Animation.cpp" />
@@ -170,8 +172,8 @@
     <ClCompile Include="SRAC\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="SRAC\Debug\UIEditor.cpp" />
     <ClCompile Include="SRAC\ECS\EntityManager.cpp" />
-    <ClCompile Include="GameSource\EntSystems\PlayerInputSystem.cpp" />
-    <ClCompile Include="GameSource\EntSystems\RenderSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\PlayerInputSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\RenderSystem.cpp" />
     <ClCompile Include="SRAC\Events\Dispatcher.cpp" />
     <ClCompile Include="SRAC\Game\Camera\Camera.cpp" />
     <ClCompile Include="SRAC\Game\Camera\CameraShake.cpp" />
@@ -197,6 +199,7 @@
     <ClCompile Include="SRAC\Input\Cursor.cpp" />
     <ClCompile Include="SRAC\Input\InputManager.cpp" />
     <ClCompile Include="SRAC\Physics\Physics.cpp" />
+    <ClCompile Include="SRAC\Scene\SceneParsing\SceneBuilder.cpp" />
     <ClCompile Include="SRAC\System\Files\Config.cpp" />
     <ClCompile Include="SRAC\System\Files\ConfigManager.cpp" />
     <ClCompile Include="SRAC\System\Files\FileManager.cpp" />
@@ -246,10 +249,12 @@
     <ClCompile Include="SRAC\Core\TypeDefs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSource\Character\Player.h" />
+    <ClInclude Include="GameSource\ECS\ComponentsSetup.h" />
     <ClInclude Include="SRAC\Animations\AnimationStates.h" />
     <ClInclude Include="GameSource\Configs.h" />
-    <ClInclude Include="GameSource\EntSystems\AnimationSystem.h" />
-    <ClInclude Include="GameSource\EntSystems\MovementSystem.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\MovementSystem.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SRAC\Animations\Animation.h" />
     <ClInclude Include="SRAC\Animations\AnimationReader.h" />
@@ -280,8 +285,8 @@
     <ClInclude Include="SRAC\ECS\EntityCommon.h" />
     <ClInclude Include="SRAC\ECS\EntityCoordinator.h" />
     <ClInclude Include="SRAC\ECS\EntityManager.h" />
-    <ClInclude Include="GameSource\EntSystems\PlayerInputSystem.h" />
-    <ClInclude Include="GameSource\EntSystems\RenderSystem.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\PlayerInputSystem.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\RenderSystem.h" />
     <ClInclude Include="SRAC\ECS\SystemManager.h" />
     <ClInclude Include="SRAC\Events\Dispatcher.h" />
     <ClInclude Include="SRAC\Events\Events.h" />
@@ -317,6 +322,7 @@
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml_iterators.hpp" />
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml_print.hpp" />
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml_utils.hpp" />
+    <ClInclude Include="SRAC\Scene\SceneParsing\SceneBuilder.h" />
     <ClInclude Include="SRAC\System\Files\Config.h" />
     <ClInclude Include="SRAC\System\Files\ConfigManager.h" />
     <ClInclude Include="SRAC\System\Files\FileManager.h" />
@@ -362,7 +368,6 @@
     <ClInclude Include="SRAC\Core\Grid.h" />
     <ClInclude Include="SRAC\Core\Helpers.h" />
     <ClInclude Include="SRAC\Core\LinkedList.h" />
-    <ClInclude Include="SRAC\Core\Maps\Map.h" />
     <ClInclude Include="SRAC\Core\Maps\PropertyMap.h" />
     <ClInclude Include="SRAC\Core\Maps\StringMap.h" />
     <ClInclude Include="SRAC\Core\NSISFileOutput.h" />

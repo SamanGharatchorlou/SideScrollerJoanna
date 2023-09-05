@@ -4,60 +4,42 @@
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "Game/Camera/Camera.h"
+#include "UI/UIManager.h"
 
+#include "ECS/EntityCoordinator.h"
+
+#include "GameSource/Character/Player.h"
+#include "GameSource/ECS/ComponentsSetup.h"
+
+#include "Scene/SceneParsing/SceneBuilder.h"
+
+#include "Configs.h"
 
 void GameState::init()
 {
+	ECS::RegisterAllComponents();
+	ECS::RegisterAllSystems();
+
+	player = new Player;
+	player->Init();
+
+
+	UIManager* ui = GameData::Get().uiManager;
+	ui->controller()->replaceScreen(UIScreen::Type::Game);
+
+	SceneBuilder::ReadScene("firstexport");
+
+
 	initCamera();
 
 	// Start Audio
 	AudioManager* audio = AudioManager::Get();
-
 	audio->push(AudioEvent(AudioEvent::FadeInMusic, "Game", nullptr, 1500));
 }
 
 
 void GameState::handleInput()
 {
-	//mGameData->environment->handleInput(mGameData->inputManager);
-
-	//int movement = mGameData->network->handleNetworkInput();
-	//if (movement > -1)
-	//{
-	//	PlayerManager* player = mGameData->environment->actors()->player();
-
-	//	VectorF position = player->position();
-
-	//	float x = 0.0f;
-	//	float y = 0.0f;
-	//	float speed = 1.0f;
-
-	//	if (movement == 1)
-	//	{
-	//		x = -speed;
-	//	}
-
-	//	if (movement == 2)
-	//	{
-	//		x = speed;
-	//	}
-
-	//	if (movement == 3)
-	//	{
-	//		y = -speed;
-	//	}
-
-	//	if (movement == 4)
-	//	{
-	//		y = speed;
-	//	}
-
-	//	position += VectorF(x, y);
-
-	//	player->setPosition(position);
-	//}
-
-
 
 }
 
@@ -65,15 +47,15 @@ void GameState::handleInput()
 void GameState::fastUpdate(float dt)
 {
 	Camera::Get()->fastUpdate(dt);
-	//mGameData->environment->fastUpdate(dt);
 }
 
 
 void GameState::slowUpdate(float dt)
 {
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ecs->UpdateSystems(dt);
+
 	Camera::Get()->slowUpdate(dt);
-	//mGameData->environment->slowUpdate(dt);
-	//mGameData->scoreManager->slowUpdate();
 
 	Cursor* cursor = GameData::Get().inputManager->getCursor();
 	cursor->mode();
@@ -97,6 +79,8 @@ void GameState::exit()
 	//mGameData->environment->clear();
 	//mGameData->scoreManager->reset();
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeOut, "Game", nullptr, 150));
+
+	delete player;
 }
 
 
@@ -115,10 +99,3 @@ void GameState::initCamera()
 	//RectF* playerRect = &mGameData->environment->actors()->player()->get()->rectRef();
 	//camera->follow(playerRect);
 }
-
-
-//void GameState::initRendering()
-//{
-//	//mGameData->renderManager->Set(mGameData->environment);
-//	//mGameData->renderManager->Set(mGameData->uiManager);
-//}

@@ -29,6 +29,21 @@ XMLParser::~XMLParser()
 	delete file;
 }
 
+void XMLParser::reload(const char* filePath)
+{
+	if (file)
+	{
+		delete file;
+		file = nullptr;
+	}
+
+	file = new rapidxml::file<>(filePath);
+	xmlFile.parse<rapidxml::parse_no_data_nodes>(file->data());
+
+#if DEBUG_CHECK
+	path = filePath;
+#endif
+}
 
 XMLNode XMLParser::rootNode() const
 {

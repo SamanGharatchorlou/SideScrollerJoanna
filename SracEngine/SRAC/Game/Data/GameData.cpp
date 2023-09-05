@@ -132,7 +132,7 @@ void GameData::load()
 	//environment->init(this);
 	//environment->load();
 
-	// load this right at the end since some of the above init's mad add more configs to load
+	// load this right at the end since some of the above init's might add more configs to load
 	configs->load();
 
 	loader->setLoadingAssets(false);

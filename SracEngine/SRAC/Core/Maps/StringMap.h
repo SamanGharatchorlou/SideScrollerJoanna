@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Map.h"
+//#include "Map.h"
 
-class StringMap32 : public Map<StringBuffer32, StringBuffer32>
+class XMLNode;
+
+class StringMap32 //: public Map<StringBuffer32, StringBuffer32>
 {
 public:
 	StringMap32() { }
@@ -10,8 +12,13 @@ public:
 	void fillAtributes(const XMLNode& node);
 	void fillValues(const XMLNode& node);
 
+	StringBuffer32 at(const char* key) const { return mData.at(key); }
+	bool contains(const char* key) const { return mData.count(key) > 0; }
+
 	bool getBool(const char* key) const;
 	float getFloat(const char* key) const;
 	int getInt(const char* key) const;
 	VectorF getVector(const char* x, const char* y) const;
+
+	std::unordered_map<StringBuffer32, StringBuffer32> mData;
 };

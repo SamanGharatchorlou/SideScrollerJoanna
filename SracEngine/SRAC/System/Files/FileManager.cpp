@@ -20,6 +20,9 @@ void FileManager::init()
 
 	folderPaths[PreLoadFiles] = folderPaths[Root] + "PreLoadFiles\\";
 
+	// Maps
+	folderPaths[Maps] = folderPaths[Root] + "Maps\\";
+
 	// Images
 	folderPaths[Images] = folderPaths[Root] + "Images\\";
 	folderPaths[Image_UI] = folderPaths[Images] + "UI\\";
@@ -36,10 +39,13 @@ void FileManager::init()
 	// Font
 	folderPaths[Font] = folderPaths[Root] + "Font\\";
 
+	// Scenes
+	//folderPaths[Scenes] = folderPaths[Root] + "Scenes\\";
+
 	// Configs
 	folderPaths[Configs] = folderPaths[Root] + "Configs\\";
 
-	folderPaths[Config_Map] = folderPaths[Configs] + "Map\\";
+	//folderPaths[Config_Map] = folderPaths[Configs] + "Map\\";
 	folderPaths[Config_Menus] = folderPaths[Configs] + "UIMenus\\";
 	folderPaths[Config_Popups] = folderPaths[Config_Menus] + "PopupInfo\\";
 
@@ -152,12 +158,23 @@ BasicString FileManager::findFile(const Folder folder, const char* name) const
 {
 	BasicString outPath("");
 
+	u32 compare_length = strlen(name);
+	for (u32 i = 0; i < strlen(name); i++)
+	{
+		if (name[i] == '.')
+		{
+			compare_length = i;
+			break;
+		}
+	}
+
+
 	fs::path folder_path = fsPath(folder);
 	if (!folder_path.empty())
 	{
 		for (const auto& directoryPath : fs::directory_iterator(folder_path))
 		{
-			if (!fs::is_directory(directoryPath) && getItemName(directoryPath.path()) == name)
+			if (!fs::is_directory(directoryPath) && StringCompare(getItemName(directoryPath.path()).c_str(), name, compare_length))
 			{
 				outPath = pathToString(directoryPath.path());
 			}

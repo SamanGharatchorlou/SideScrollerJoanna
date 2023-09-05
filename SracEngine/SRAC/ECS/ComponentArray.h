@@ -16,6 +16,11 @@ namespace ECS
 	template<class T>
 	struct ComponentArray : public ComponentArrayBase
 	{
+		ComponentArray(u32 reserve_size)
+		{
+			components.reserve(reserve_size);
+		}
+
 		void InsertComponent(Entity entity, const T& component)
 		{
 			u32 index = components.size();

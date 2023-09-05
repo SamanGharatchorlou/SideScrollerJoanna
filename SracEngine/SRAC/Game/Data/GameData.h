@@ -8,7 +8,7 @@ class FrameRateController;
 class ConfigManager;
 class AudioManager;
 struct SystemStateManager;
-namespace ECS { class EntityCoordinator; }
+namespace ECS { struct EntityCoordinator; }
 
 struct GameData
 {

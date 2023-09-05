@@ -267,19 +267,19 @@
     <ClCompile Include="SRAC\ECS\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\EntSystems\RenderSystem.cpp">
+    <ClCompile Include="GameSource\ECS\EntSystems\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\EntSystems\PlayerInputSystem.cpp">
+    <ClCompile Include="GameSource\ECS\EntSystems\PlayerInputSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\EntSystems\MovementSystem.cpp">
+    <ClCompile Include="GameSource\ECS\EntSystems\MovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameSource\Configs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\EntSystems\AnimationSystem.cpp">
+    <ClCompile Include="GameSource\ECS\EntSystems\AnimationSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdl2.cpp">
@@ -316,6 +316,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Character\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Scene\SceneParsing\SceneBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -551,9 +560,6 @@
     <ClInclude Include="SRAC\UI\UIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Core\Maps\Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SRAC\Core\Maps\PropertyMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -650,7 +656,7 @@
     <ClInclude Include="SRAC\ECS\ComponentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\EntSystems\RenderSystem.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\ECS\SystemManager.h">
@@ -659,19 +665,19 @@
     <ClInclude Include="SRAC\ECS\EntityCoordinator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\EntSystems\PlayerInputSystem.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\PlayerInputSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Animations\AnimationStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\EntSystems\MovementSystem.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\MovementSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\Configs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\EntSystems\AnimationSystem.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdlrenderer2.h">
@@ -714,6 +720,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\ComponentsSetup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Character\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Scene\SceneParsing\SceneBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
