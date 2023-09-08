@@ -4,19 +4,11 @@
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerEnvironment>$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;
-$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;
-$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;
-$(SolutionDir)SDL2\SDL2-2.0.10\lib\x86;
-$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerEnvironment>$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;
-$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;
-$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;
-$(SolutionDir)SDL2\SDL2-2.0.10\lib\x86;
-$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

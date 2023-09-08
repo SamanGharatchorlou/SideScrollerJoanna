@@ -1,0 +1,37 @@
+Debuggin: Environment
+$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;
+$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;
+$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;
+$(SolutionDir)SDL2\SDL2_main\lib\x86;
+
+
+VC directories: include directories
+$(SolutionDir)SDL2\SDL2_image-2.0.4\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\include;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\include;$(SolutionDir)SDL2\SDL2_main\include;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui_sdl-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src;$(IncludePath)
+
+$(SolutionDir)SDL2\SDL2_image-2.0.4\include
+$(SolutionDir)SDL2\SDL2_mixer-2.0.4\include
+$(SolutionDir)SDL2\SDL2_ttf-2.0.15\include
+$(SolutionDir)SDL2\SDL2_main\include
+$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master
+$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui_sdl-master
+$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src
+
+
+VC directories: library directories
+$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(SolutionDir)SDL2\SDL2_main\lib\x86;$(LibraryPath)
+
+$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86
+$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86
+$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86
+$(SolutionDir)SDL2\SDL2_main\lib\x86
+
+
+C/C++: additional include directories
+
+$(ProjectDir)SRAC
+$(ProjectDir)SRAC\ThirdParty\rapidxml\include
+$(ProjectDir)GameSource
+$(ProjectDir)
+
+Linker Input: Additional dependencies
+SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;d3d9.lib;
