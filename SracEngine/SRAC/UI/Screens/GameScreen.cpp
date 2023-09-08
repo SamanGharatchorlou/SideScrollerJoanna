@@ -56,19 +56,19 @@ void GameScreen::handleInput(const InputManager* input)
 
 void GameScreen::slowUpdate()
 {
-	UISlider* healthSlider = getSlider("HealthSlider");
-	if (healthSlider && healthSlider->getValue() == 0.0f)
-	{
-		UIButton* icon = healthSlider->handle();
-		Texture* texture = TextureManager::Get()->getTexture("DeadIcon", FileManager::Image_UI);
-		icon->setTextures(texture, nullptr, nullptr);
+	//UISlider* healthSlider = getSlider("HealthSlider");
+	//if (healthSlider && healthSlider->getValue() == 0.0f)
+	//{
+	//	UIButton* icon = healthSlider->handle();
+	//	Texture* texture = TextureManager::Get()->getTexture("DeadIcon", FileManager::Image_UI);
+	//	icon->setTextures(texture, nullptr, nullptr);
 
-		const float maxDim = icon->rect().Height();
-		const VectorF newSize = texture->originalDimentions.realiseSize(maxDim);
-		RectF newRect = icon->rect();
-		newRect.SetSize(newSize);
-		icon->setRect(newRect);
-	}
+	//	const float maxDim = icon->rect().Height();
+	//	const VectorF newSize = texture->originalDimentions.realiseSize(maxDim);
+	//	RectF newRect = icon->rect();
+	//	newRect.SetSize(newSize);
+	//	icon->setRect(newRect);
+	//}
 }
 
 

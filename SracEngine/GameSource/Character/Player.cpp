@@ -18,7 +18,7 @@ void Player::Init()
 
 	ECS::Sprite sprite;
 	sprite.texture = TextureManager::Get()->getTexture("PlayerMovementSheet", FileManager::Image_Animations);
-	sprite.renderLayer = RenderPack::Layer::Highest;
+	sprite.renderLayer = 5;
 
 	ECS::Velocity velocity;
 	velocity.acceleration = VectorF(40.0f, 40.0f);

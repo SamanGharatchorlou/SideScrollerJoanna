@@ -163,6 +163,7 @@
     <ClCompile Include="SRAC\Debug\DebugDraw.cpp" />
     <ClCompile Include="SRAC\Debug\FrameRateController.cpp" />
     <ClCompile Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.cpp" />
+    <ClCompile Include="SRAC\Debug\ImGui\Components\TileMapDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debug\ImGui\ImGuiMainWindows.cpp" />
     <ClCompile Include="SRAC\Debug\ImGui\ImGuiMenu.cpp" />
@@ -247,6 +248,7 @@
     <ClCompile Include="SRAC\Core\Colour.cpp" />
     <ClCompile Include="SRAC\Core\StringBuffers.cpp" />
     <ClCompile Include="SRAC\Core\TypeDefs.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\TileMapSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSource\Character\Player.h" />
@@ -274,6 +276,7 @@
     <ClInclude Include="SRAC\Debug\ImGui\ImGuiMainWindows.h" />
     <ClInclude Include="SRAC\Debug\ImGui\ImGuiHelpers.h" />
     <ClInclude Include="SRAC\Debug\ImGui\ImGuiMenu.h" />
+    <ClInclude Include="SRAC\Debug\ImGui\Components\TileMapDebugMenu.h" />
     <ClInclude Include="SRAC\Debug\Logging.h" />
     <ClInclude Include="SRAC\Debug\MapDebugging.h" />
     <ClInclude Include="SRAC\Debug\MemTrack.h" />
@@ -340,6 +343,10 @@
     <ClInclude Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdl2.h" />
     <ClInclude Include="SRAC\ThirdParty\imgui-master\src\imgui_impl_sdlrenderer2.h" />
     <ClInclude Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.h" />
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml.hpp" />
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_iterators.hpp" />
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_print.hpp" />
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_utils.hpp" />
     <ClInclude Include="SRAC\UI\Elements\UIBox.h" />
     <ClInclude Include="SRAC\UI\Elements\UIButton.h" />
     <ClInclude Include="SRAC\UI\Elements\UIElement.h" />
@@ -383,6 +390,7 @@
     <ClInclude Include="SRAC\Core\TypeDefs.h" />
     <ClInclude Include="SRAC\Core\UniqueQueue.h" />
     <ClInclude Include="SRAC\Core\Vector2D.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\TileMapSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

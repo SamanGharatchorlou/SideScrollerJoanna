@@ -18,7 +18,8 @@ public:
 	bool getBool(const char* key) const;
 	float getFloat(const char* key) const;
 	int getInt(const char* key) const;
-	VectorF getVector(const char* x, const char* y) const;
+	VectorF getVectorF(const char* x, const char* y) const;
+	Vector2D<int> getVectorI(const char* x, const char* y) const;
 
 	std::unordered_map<StringBuffer32, StringBuffer32> mData;
 };

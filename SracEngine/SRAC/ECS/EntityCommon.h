@@ -25,6 +25,7 @@ namespace ECS
 			CharacterState,
 			Physics,
 			Animation,
+			TileMap,
 
 			Count
 		};

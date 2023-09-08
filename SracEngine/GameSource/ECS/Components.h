@@ -7,6 +7,7 @@
 #include "ECS/EntityCommon.h"
 #include "Physics/Physics.h"
 #include "Animations/Animator.h"
+#include "Scene/SceneParsing/SceneBuilder.h"
 
 class Texture;
 enum class ActionState;
@@ -77,6 +78,13 @@ namespace ECS
 		std::vector<Texture*> spriteSheets;
 
 		static ECS::Component::Type type() { return ECS::Component::Animation; }
+	};
+
+	struct TileMap
+	{
+		TileMapLayers tileMap;
+
+		static ECS::Component::Type type() { return ECS::Component::TileMap; }
 	};
 
 

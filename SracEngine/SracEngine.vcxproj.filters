@@ -327,6 +327,12 @@
     <ClCompile Include="SRAC\Scene\SceneParsing\SceneBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\ECS\EntSystems\TileMapSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debug\ImGui\Components\TileMapDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -729,6 +735,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Scene\SceneParsing\SceneBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\EntSystems\TileMapSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_iterators.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_print.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRAC\Debug\ImGui\Components\TileMapDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

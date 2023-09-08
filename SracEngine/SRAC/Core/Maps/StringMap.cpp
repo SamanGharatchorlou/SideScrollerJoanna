@@ -34,7 +34,12 @@ int StringMap32::getInt(const char* key) const
 	return toInt(mData.at(key).c_str());
 }
 
-VectorF StringMap32::getVector(const char* x, const char* y) const
+VectorF StringMap32::getVectorF(const char* x, const char* y) const
 {
-	return toVector(mData.at(x).c_str(), mData.at(y).c_str());
+	return toVectorF(mData.at(x).c_str(), mData.at(y).c_str());
+}
+
+Vector2D<int> StringMap32::getVectorI(const char* x, const char* y) const
+{
+	return toVectorI(mData.at(x).c_str(), mData.at(y).c_str());
 }

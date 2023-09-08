@@ -6,6 +6,7 @@
 #include "Game/Camera/Camera.h"
 #include "UI/UIManager.h"
 
+#include "ECS/Components.h"
 #include "ECS/EntityCoordinator.h"
 
 #include "GameSource/Character/Player.h"
@@ -23,12 +24,15 @@ void GameState::init()
 	player = new Player;
 	player->Init();
 
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::Entity entity = ecs->CreateEntity("Map");
+
+	ECS::TileMap tile_map;
+	SceneBuilder::BuildTileMap("test_project_export.xml", tile_map.tileMap);
+	ecs->AddComponent(TileMap, entity, tile_map);
 
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->replaceScreen(UIScreen::Type::Game);
-
-	SceneBuilder::ReadScene("firstexport");
-
 
 	initCamera();
 

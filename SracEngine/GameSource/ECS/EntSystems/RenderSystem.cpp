@@ -24,7 +24,7 @@ namespace ECS
 				renderRect.SetCenter(center);
 			}
 
-			RenderPack pack(sprite.texture, renderRect, (RenderPack::Layer)sprite.renderLayer);
+			RenderPack pack(sprite.texture, renderRect, sprite.renderLayer);
 			pack.subRect = sprite.subRect;
 			pack.flip = transform.flip;
 			GameData::Get().renderManager->AddRenderPacket(pack);

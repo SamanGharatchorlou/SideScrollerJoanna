@@ -55,6 +55,8 @@ void TextureManager::load()
 		folders.push_back(folder);
 	}
 
+	folders.push_back(FileManager::Maps);
+
 	DebugPrint(Log, "\n--- Loading Textures ---");
 	int fails = 0;
 
@@ -89,6 +91,9 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder resource_folder, FileM
 	std::vector<BasicString> imagePaths = FileManager::Get()->allFilesInFolder(resource_folder);
 	for (const BasicString& path : imagePaths)
 	{
+		if (!FileManager::HasExt(path.c_str(), ".png"))
+			continue;
+
 		fails += !loadTexture(textureMap, path.c_str());
 #if DEBUG_CHECK
 		count++;
@@ -154,17 +159,27 @@ Texture* TextureManager::getTexture(const char* label, const FileManager::Folder
 	Texture* texture = nullptr;
 	const TextureMap* textureMap = findTextureMap(folder);
 
+	StringBuffer32 buffer = label;
+	for (int i = strlen(label) - 1; i >= 0; i--)
+	{
+		if (label[i] == '.') 
+		{
+			buffer.buffer()[i] = '\0';
+			break;
+		}
+	}
+
 	if(textureMap)
-		texture = textureMap->find(label);
+		texture = textureMap->find(buffer.c_str());
 
 	if (!texture)
 	{
-		DebugPrint(Log, "No item in folder map '%d' with label: '%s'", folder, label);
+		DebugPrint(Log, "No item in folder map '%d' with label: '%s'", folder, buffer.c_str());
 
-		texture = searchAllFiles(label);
+		texture = searchAllFiles(buffer.c_str());
 		if (!texture)
 		{
-			DebugPrint(Warning, "No image file with label: '%s' exists in any loaded folder", label);
+			DebugPrint(Warning, "No image file with label: '%s' exists in any loaded folder", buffer.c_str());
 		}
 	}
 

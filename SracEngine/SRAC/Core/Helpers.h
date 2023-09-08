@@ -37,11 +37,18 @@ static float toFloat(const char* string)
 	return (float)atof(string);
 }
 
-static VectorF toVector(const char* x, const char* y)
+static VectorF toVectorF(const char* x, const char* y)
 {
 	float xVec = toFloat(x);
 	float yVec = toFloat(y);
 	return VectorF(xVec, yVec);
+}
+
+static Vector2D<int> toVectorI(const char* x, const char* y)
+{
+	int xVec = toInt(x);
+	int yVec = toInt(y);
+	return Vector2D<int>(xVec, yVec);
 }
 
 //--------------------------------------------------------

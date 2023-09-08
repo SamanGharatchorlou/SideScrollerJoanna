@@ -3,26 +3,31 @@
 class Texture;
 struct Renderable;
 
+constexpr u32 c_RenderLayers = 10;
+
 struct RenderPack
 {
-	enum Layer
-	{
-		Lowest,
-		Floor,
-		LowerTiles,
-		Actors,
-		UpperTiles,
-		UI,
-		Highest,
-		Count
-	};
-
-	RenderPack(Texture* tex, RectF box, Layer renderLayer) : texture(tex), rect(box), layer(renderLayer) { }
+	RenderPack(Texture* tex, RectF box, u32 renderLayer) : texture(tex), rect(box), layer(renderLayer) { }
 	Texture* texture = nullptr;
 	RectF rect;
 	RectF subRect = InvalidRectF;
-	Layer layer = Layer::Highest;
+	u32 layer = c_RenderLayers;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
+};
+
+struct DebugRenderPack
+{
+	enum DrawType
+	{
+		Point,
+		Line,
+		RectOutline,
+		RectFill,
+		Quad
+	};
+	RectF rect;
+	Colour colour;
+	DrawType type;
 };
 
 class RenderManager //: public Observer
@@ -32,7 +37,10 @@ public:
 
 	void render();
 
-	void AddRenderPacket(RenderPack renderPacket) { mRenderPackets.push_back(renderPacket); }
+	void AddRenderPacket(RenderPack renderPacket) { mRenderPackets[renderPacket.layer].push_back(renderPacket); }
+	//void AddRenderPacketList(RenderPack renderPacket) { mRenderPackets[renderPacket.layer].push_back(renderPacket); }
+
+	void AddDebugRenderPacker(const DebugRenderPack& renderPack);
 
 	//void handleEvent(EventData& data) override;
 	void addRenderable(Renderable* renderable);
@@ -45,7 +53,9 @@ private:
 
 private:
 	std::vector<Renderable*> mRenderables;
-	std::vector<RenderPack> mRenderPackets;
+	//std::vector<RenderPack> mRenderPackets;
 
-
+	// renderlayers + the lowest
+	std::vector<RenderPack> mRenderPackets[c_RenderLayers];
+	std::vector<DebugRenderPack> mDebugRenders;
 };

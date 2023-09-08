@@ -158,23 +158,12 @@ BasicString FileManager::findFile(const Folder folder, const char* name) const
 {
 	BasicString outPath("");
 
-	u32 compare_length = strlen(name);
-	for (u32 i = 0; i < strlen(name); i++)
-	{
-		if (name[i] == '.')
-		{
-			compare_length = i;
-			break;
-		}
-	}
-
-
 	fs::path folder_path = fsPath(folder);
 	if (!folder_path.empty())
 	{
 		for (const auto& directoryPath : fs::directory_iterator(folder_path))
 		{
-			if (!fs::is_directory(directoryPath) && StringCompare(getItemName(directoryPath.path()).c_str(), name, compare_length))
+			if (!fs::is_directory(directoryPath) && StringCompare(getItemName(directoryPath.path()).c_str(), name))
 			{
 				outPath = pathToString(directoryPath.path());
 			}
@@ -192,6 +181,33 @@ BasicString FileManager::findFile(const Folder folder, const char* name) const
 	return outPath;
 }
 
+BasicString FileManager::findFileEtx(const Folder folder, const char* name) const
+{
+	BasicString outPath("");
+
+	fs::path folder_path = fsPath(folder);
+	if (!folder_path.empty())
+	{
+		for (const auto& directoryPath : fs::directory_iterator(folder_path))
+		{
+			if (!fs::is_directory(directoryPath) && StringCompare(getItemNameAndExt(directoryPath.path()).c_str(), name))
+			{
+				outPath = pathToString(directoryPath.path());
+			}
+			else if (fs::is_directory(directoryPath))
+			{
+				outFilePath(outPath, directoryPath.path(), name);
+			}
+
+			if (!outPath.empty())
+				return outPath;
+		}
+	}
+
+	DebugPrint(Warning, "No file named '%s' was found in the folder '%s'", name, folderPath(folder).c_str());
+	return outPath;
+
+}
 
 StringBuffer32 FileManager::getItemName(const char* filePath) const
 {
@@ -208,6 +224,21 @@ StringBuffer32 FileManager::getItemName(const fs::path& filePath) const
 	return StringBuffer32(fileName);
 }
 
+StringBuffer32 FileManager::getItemNameAndExt(const fs::path& filePath) const
+{
+	char fileName[26];
+	char ext[6];
+	errno_t error = _splitpath_s(pathToString(filePath).c_str(), NULL, 0, NULL, 0, fileName, 26, ext, 6);
+	return StringBuffer32(fileName) + ext;
+}
+
+
+bool FileManager::HasExt(const char* filePath, const char* extension)
+{
+	StringBuffer32 buffer;
+	errno_t error = _splitpath_s(filePath, NULL, 0, NULL, 0, NULL, 0, buffer.buffer(), 6);
+	return buffer == extension;
+}
 
 std::vector<BasicString> FileManager::fullPathsInFolder(const Folder folder) const
 {

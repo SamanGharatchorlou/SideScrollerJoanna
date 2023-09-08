@@ -61,7 +61,7 @@ void debugDrawRect(RectF rect, Colour colour)
 }
 
 
-void debugDrawRects(std::vector<RectF> rects, Colour colour)
+void debugDrawRects(const std::vector<RectF>& rects, Colour colour)
 {
 	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
 	

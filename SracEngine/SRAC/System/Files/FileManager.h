@@ -53,6 +53,8 @@ public:
 
 	bool exists(const Folder folder, const char* name) const;
 	BasicString findFile(const Folder folder, const char* name) const;
+	BasicString findFile(const Folder folder, StringBuffer32 name) const { findFile(folder, name.c_str()); }
+	BasicString findFileEtx(const Folder folder, const char* name) const;
 
 	// todo: dont return these vectors, fill some in instead, same with allFilesinFolder functions
 	std::vector<BasicString> fullPathsInFolder(const Folder folder) const;
@@ -61,6 +63,7 @@ public:
 
 	StringBuffer32 getItemName(const char* filePath) const;
 	StringBuffer32 getItemName(const fs::path& filePath) const;
+	StringBuffer32 getItemNameAndExt(const fs::path& filePath) const;
 
 	std::vector<BasicString> allFilesInFolder(const Folder folder) const;
 	std::vector<BasicString> allFilesInFolder(const fs::path& directory) const;
@@ -71,6 +74,7 @@ public:
 
 	Folder getFolderIndex(const char* directory);
 
+	static bool HasExt(const char* filePath, const char* extension);
 
 private:
 	fs::path fsPath(const Folder folder) const;

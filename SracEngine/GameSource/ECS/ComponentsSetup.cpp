@@ -9,6 +9,7 @@
 #include "EntSystems/PlayerInputSystem.h"
 #include "EntSystems/MovementSystem.h"
 #include "EntSystems/AnimationSystem.h"
+#include "EntSystems/TileMapSystem.h"
 
 void ECS::RegisterAllComponents()
 {
@@ -21,6 +22,7 @@ void ECS::RegisterAllComponents()
 	ecs->RegisterComponent(Velocity, 32);
 	ecs->RegisterComponent(MovementPhysics, 32);
 	ecs->RegisterComponent(Animation, 8);
+	ecs->RegisterComponent(TileMap, 4);
 }
 
 void ECS::RegisterAllSystems()
@@ -42,4 +44,8 @@ void ECS::RegisterAllSystems()
 	// AnimationSystem
 	Archetype animationArchetype = ArcheBit(Sprite) | ArcheBit(Animation) | ArcheBit(CharacterState) | ArcheBit(Transform);
 	ecs->RegisterSystem<AnimationSystem>(animationArchetype);
+
+	// Map
+	Archetype mapTileArcheType = ArcheBit(TileMap);
+	ecs->RegisterSystem<TileMapSystem>(mapTileArcheType);
 }
