@@ -3,3 +3,5 @@ Debug/
 Release/
 SracEngine/Debug/
 SracEngine/Release/
+SracEngine/SracEngine.vcxproj
+SracEngine/SracEngine.vcxproj.user
