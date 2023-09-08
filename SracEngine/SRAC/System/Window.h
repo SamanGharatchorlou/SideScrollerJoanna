@@ -11,7 +11,7 @@ public:
 	SDL_Renderer* createRenderer();
 
 	SDL_Window* get() const { return mWindow; }
-	Vector2D<int> size() const;
+	VectorF size() const;
 
 	void setTitle(const char* title);
 

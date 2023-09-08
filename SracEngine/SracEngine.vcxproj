@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp" />
     <ClCompile Include="GameSource\Character\Player.cpp" />
     <ClCompile Include="GameSource\Configs.cpp" />
     <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp" />
@@ -157,8 +158,8 @@
     <ClCompile Include="SRAC\Audio\AudioManager.cpp" />
     <ClCompile Include="SRAC\Audio\Channel.cpp" />
     <ClCompile Include="SRAC\Audio\SoundController.cpp" />
-    <ClCompile Include="SRAC\Colliders\Collider.cpp" />
-    <ClCompile Include="SRAC\Colliders\QuadCollider.cpp" />
+    <ClCompile Include="SRAC\ECS\Components\Collider.cpp" />
+    <ClCompile Include="SRAC\Physics\QuadCollider.cpp" />
     <ClCompile Include="SRAC\Core\Maths.cpp" />
     <ClCompile Include="SRAC\Debugging\DebugDraw.cpp" />
     <ClCompile Include="SRAC\Debugging\FrameRateController.cpp" />
@@ -251,6 +252,7 @@
     <ClCompile Include="GameSource\ECS\EntSystems\TileMapSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h" />
     <ClInclude Include="GameSource\Character\Player.h" />
     <ClInclude Include="GameSource\ECS\ComponentsSetup.h" />
     <ClInclude Include="SRAC\Animations\AnimationStates.h" />
@@ -265,8 +267,8 @@
     <ClInclude Include="SRAC\Audio\AudioManager.h" />
     <ClInclude Include="SRAC\Audio\Channel.h" />
     <ClInclude Include="SRAC\Audio\SoundController.h" />
-    <ClInclude Include="SRAC\Colliders\Collider.h" />
-    <ClInclude Include="SRAC\Colliders\QuadCollider.h" />
+    <ClInclude Include="SRAC\ECS\Components\Collider.h" />
+    <ClInclude Include="SRAC\Physics\QuadCollider.h" />
     <ClInclude Include="SRAC\Core\Maths.h" />
     <ClInclude Include="SRAC\Debugging\DebugDraw.h" />
     <ClInclude Include="SRAC\Debugging\DebugSettings.h" />
@@ -391,6 +393,9 @@
     <ClInclude Include="SRAC\Core\UniqueQueue.h" />
     <ClInclude Include="SRAC\Core\Vector2D.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\TileMapSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Credits.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

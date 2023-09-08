@@ -33,7 +33,7 @@ Tileset::Tileset(TilesetData& data) :
 	{
 		for (int x = 0; x < mTiles.xCount(); x++)
 		{
-			Index index(x, y);
+			VectorI index(x, y);
 			Tile& tile = mTiles[index];
 
 			RectF rect(tileDimentions * index.toFloat(), tileDimentions);
@@ -45,7 +45,7 @@ Tileset::Tileset(TilesetData& data) :
 }
 
 
-Tile& Tileset::getTile(Index index)
+Tile& Tileset::getTile(VectorI index)
 {
 	ASSERT(mTiles.inBounds(index),
 		"Animation index (%d, %d) out of sprite sheet bounds (%d, %d)",

@@ -62,6 +62,17 @@ namespace ECS
 
 			return entityId;
 		}
+
+		Entity FindEntity(const char* name) 
+		{
+			for(auto iter = entityNames.begin(); iter != entityNames.end(); iter++) 
+			{
+				if(StringCompare(iter->second.c_str(), name)) 
+				{
+					return iter->first;
+				}     
+			}
+		}
 #endif
 	};
 }

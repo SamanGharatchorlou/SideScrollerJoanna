@@ -74,7 +74,7 @@ public:
 
 // typedefs
 typedef Vector2D<float>  VectorF;
-using Index = Vector2D<int>;
+typedef Vector2D<int>  VectorI;
 
 
 template<class T>

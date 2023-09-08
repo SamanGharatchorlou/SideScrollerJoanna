@@ -4,6 +4,7 @@
 #include "GameSource/ECS/Components.h"
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/RenderManager.h"
+#include "System/Window.h"
 
 namespace ECS
 {
@@ -15,24 +16,33 @@ namespace ECS
 		{
 			const TileMap& tile_map = ecs->GetComponent(TileMap, entity);
 
-			for (u32 i = 0; i < tile_map.tileMap.layers.size(); i++)
+			const VectorF window_size = GameData::Get().window->size();
+			const VectorF map_size = tile_map.tileMap.mapSize;
+			const VectorF size_ratio = window_size / map_size;
+			
+			const SceneTileMapping& map = tile_map.tileMap;
+			const VectorF tile_size = map.tileSize * size_ratio;
+
+			for (u32 l = 0; l < tile_map.tileMap.layers.size(); l++)
 			{
-				const TileMapLayers::Layer& layer = tile_map.tileMap.layers[i];
+				const SceneTileMapping::Layer& layer = tile_map.tileMap.layers[l];
 				const TileSet& tile_set = layer.tileset;
-				VectorF tile_size = tile_set.tileSize.toFloat();
-				for (u32 tile = 0; tile < layer.tilesetIndexes.size(); tile++)
+
+				for (u32 idx = 0; idx < layer.tileMapping.size(); idx++)
 				{
-					TileSet::Index index = layer.tilesetIndexes[i];
+					VectorI index = layer.tileMapping[idx];
 					if (index.isZero())
 						continue;
+									
+					// Rect for on screen size and position
+					VectorI map_index = IndexToMapIndex(idx, map.tileCount);
+					VectorF pos = map_index.toFloat() * tile_size;
+					RectF rect(pos, tile_size);
 
-					VectorF top_left = (tile_set.tileSize * index).toFloat();
-					RectF subRect(top_left, tile_size);
+					// SubRect for tile map entry so we know what bit of texture to draw
 
-					Index map_index = IndexToMapIndex(i, tile_set.tileSize);
-					VectorF pos = (map_index * tile_map.tileMap.tileSize.toInt()).toFloat();
-
-					RectF rect(pos, tile_map.tileMap.tileSize.toFloat());
+					VectorF top_left = index.toFloat() * tile_set.tileSize;
+					RectF subRect(top_left, tile_set.tileSize);
 
 					RenderPack pack(tile_set.texture, rect, layer.render_layer);
 					pack.subRect = subRect;

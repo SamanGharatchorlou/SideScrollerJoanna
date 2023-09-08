@@ -20,7 +20,7 @@ public:
 	void setAllValues(T value);
 
 	// Getters
-	const T& get(Index index) const { return data[index.y][index.x]; }
+	const T& get(VectorI index) const { return data[index.y][index.x]; }
 	const std::vector<std::vector<T>>& get() const { return data; }
 
 	const int rows() const { return data.size(); }

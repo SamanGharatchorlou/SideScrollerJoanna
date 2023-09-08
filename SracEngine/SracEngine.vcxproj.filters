@@ -42,10 +42,10 @@
     <ClCompile Include="SRAC\Audio\SoundController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Colliders\Collider.cpp">
+    <ClCompile Include="SRAC\ECS\Components\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Colliders\QuadCollider.cpp">
+    <ClCompile Include="SRAC\Physics\QuadCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Debugging\DebugDraw.cpp">
@@ -333,6 +333,9 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -359,10 +362,10 @@
     <ClInclude Include="SRAC\Audio\SoundController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Colliders\Collider.h">
+    <ClInclude Include="SRAC\ECS\Components\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Colliders\QuadCollider.h">
+    <ClInclude Include="SRAC\Physics\QuadCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Debugging\DebugDraw.h">
@@ -755,5 +758,11 @@
     <ClInclude Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Credits.txt" />
   </ItemGroup>
 </Project>

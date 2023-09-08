@@ -5,6 +5,7 @@
 #include "System/Files/FileManager.h"
 #include "System/Files/ConfigManager.h"
 #include "Configs.h"
+#include "System/Window.h"
 
 #include "ECS/Components.h"
 
@@ -31,7 +32,7 @@ static void ReadTileMap(XMLParser& parser, TileMapConfig& tile_map)
 	{
 		if (StringCompare(layer_node.name(), "layer"))
 		{
-			MapLayerConfig map_layer;
+			TileMapConfig::Layer map_layer;
 			map_layer.attributes.fillAtributes(layer_node);
 
 			const char* data_string = layer_node.child("data").value();
@@ -67,7 +68,7 @@ static void ReadTileMap(XMLParser& parser, TileMapConfig& tile_map)
 }
 
 
-void SceneBuilder::BuildTileMap(const char* mapName, TileMapLayers& map_layers)
+void SceneBuilder::BuildTileMap(const char* mapName, SceneTileMapping& tile_mapping)
 {
 	TextureManager* tm = TextureManager::Get();
 	FileManager* fm = FileManager::Get();
@@ -90,54 +91,51 @@ void SceneBuilder::BuildTileMap(const char* mapName, TileMapLayers& map_layers)
 	config.tilesetAttributes.fillAtributes(parser->rootNode());
 	config.tilesetImage.fillAtributes(parser->rootChild("image"));
 
-	Texture* tileset_texture = tm->getTexture(config.tilesetImage.at("source"), FileManager::Maps);
+	// base map data - sizes and counts
+	tile_mapping.tileCount = config.attributes.getVectorI("width", "height");
+	tile_mapping.tileSize = config.attributes.getVectorF("tilewidth", "tileheight");
+	tile_mapping.mapSize = tile_mapping.tileCount.toFloat() * tile_mapping.tileSize;
 
+	// tilset set data - texture, 
+	Texture* tileset_texture = tm->getTexture(config.tilesetImage.at("source"), FileManager::Maps);
 	TileSet tileset;
 	tileset.texture = tileset_texture;
-	tileset.size = config.tilesetImage.getVectorI("width", "height");
-	tileset.tileSize = config.tilesetAttributes.getVectorI("tilewidth", "tileheight");
+	tileset.mapSize = config.tilesetImage.getVectorF("width", "height");
+	tileset.tileSize = config.tilesetAttributes.getVectorF("tilewidth", "tileheight");
 
+	VectorF tile_count = (tileset.mapSize / tileset.tileSize) + VectorF(0.5f, 0.5f);
+	tileset.tileCount = tile_count.toInt();
+
+	// convert a map index into a tilset index
 	for (u32 l = 0; l < config.layers.size(); l++)
 	{
-		MapLayerConfig& layer_config = config.layers[l];
+		TileMapConfig::Layer& layer_config = config.layers[l];
 		const u32 tile_count = layer_config.tildIds.size();
 
-		TileMapLayers::Layer map_layer;
+		SceneTileMapping::Layer map_layer;
 		map_layer.tileset = tileset;
-		map_layer.tilesetIndexes.reserve(tile_count);
+		map_layer.tileMapping.reserve(tile_count);
 		map_layer.render_layer = layer_config.attributes.getInt("name");
+		map_layer.tileCount = layer_config.attributes.getVectorI("width", "height");
 
 		for (u32 i = 0; i < tile_count; i++)
 		{
-			int id = layer_config.tildIds[i];
+			VectorI index(-1, -1);
+			if(layer_config.tildIds[i] > 0)
+			{
+				// provides a tile id, so -1 to turn that bad boi into an index
+				int idx = layer_config.tildIds[i] - 1;
 
-			// yes int divide so i floor the value
-			int row = id / tileset.tileSize.x;
-			int column = id % tileset.tileSize.x;
+				// int divide to floor the value
+				int row = idx / tileset.tileCount.x;
+				int column = idx % tileset.tileCount.x;
 
-			if (id > 0)
-				int a = 4;
-
-			TileSet::Index index(column, row);
-			map_layer.tilesetIndexes.push_back(index);
+				index = VectorI(column, row);
+			}
+			
+			map_layer.tileMapping.push_back(index);
 		}
 
-		map_layers.layers.push_back(map_layer);
+		tile_mapping.layers.push_back(map_layer);
 	}
-
-	//map_layers.tileSize = config.attributes.getVectorI("tilewidth", "tileheight");
-
-	GameSettingsConfig* gs = ConfigManager::Get()->getConfig<GameSettingsConfig>("GameSettings");
-
-
-	const VectorF screenSize = gs->settings.getVectorF("Width", "Height");
-
-	VectorF tile_size = config.attributes.getVectorF("tilewidth", "tileheight");
-	float map_width = tile_size.x * config.attributes.getFloat("width");
-	float map_height = tile_size.y * config.attributes.getFloat("height");
-
-	const VectorF mapSize = VectorF(map_width, map_height);
-	VectorF ratio = screenSize / mapSize;
-
-	map_layers.tileSize = tile_size * ratio;
 }

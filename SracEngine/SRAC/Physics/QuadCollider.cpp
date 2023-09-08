@@ -6,9 +6,9 @@
 #endif
 
 
-bool QuadCollider::doesIntersect(Collider* collider) const
+bool QuadCollider::intersects(const Collider& collider) const
 {
-	RectF thatRect = collider->scaledRect();
+	RectF thatRect = collider.mRect;
 	Quad2D<float> thatQuad(thatRect);
 
 	// Assuming 'thatRect' is orientated on the x/y axis, test for overlaps
@@ -56,26 +56,6 @@ bool QuadCollider::doesIntersect(Collider* collider) const
 
 	return true;
 }
-
-
-RectF QuadCollider::scaledRect() const
-{
-	return mQuad->getRect();
-}
-
-
-float QuadCollider::xMin() const
-{
-	return mQuad->xMin();
-}
-
-
-float QuadCollider::xMax() const
-{
-	return mQuad->xMax();
-}
-
-
 
 #if TRACK_COLLISIONS
 void QuadCollider::renderCollider()

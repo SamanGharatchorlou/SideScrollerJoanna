@@ -28,14 +28,14 @@ namespace ImGui
 
 	static bool ActiveButton(const char* label, bool isActive)
 	{
-		if (isActive)
+		if (!isActive)
 		{
 			ImGui::BeginDisabled();
 		}
 
 		bool did_press = ImGui::Button(label);
 
-		if (isActive)
+		if (!isActive)
 		{
 			ImGui::EndDisabled();
 		}

@@ -24,6 +24,7 @@ namespace ECS
 		Entity CreateNewEntity() { return entities.CreateEntityId(); }
 #if ENTITY_LOGGING
 		Entity CreateNewEntity(const char* name) { return entities.CreateEntityWithName(name); }
+		Entity FindEntity(const char* name) { return entities.FindEntity(name); }
 #endif
 
 		bool IsAlive(Entity entity) const { return entities.GetAchetype(entity) != ArchetypeInvalid; }
@@ -46,6 +47,9 @@ namespace ECS
 
 		template<class T>
 		T& GetComponent(Entity entity, Component::Type type) { return components.GetComponent<T>(entity, type); }
+
+		template<class T>
+		ComponentArray<T>& GetComponents(Component::Type type) { return *static_cast<ComponentArray<T>*>(components.componentArrays[type]); }
 
 		bool HasComponent(Entity entity, Component::Type type) { return entities.HasComponent(entity, type); }
 

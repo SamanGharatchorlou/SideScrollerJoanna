@@ -13,6 +13,7 @@ static bool s_usingPlaylist = false;
 static bool s_playingPlaylist = false;
 static bool s_playSingleAnimation = false;
 
+
 bool DebugMenu::UsingPlaylist() { return s_usingPlaylist; }
 
 static Animation* SetAnimation(Animator& animator)

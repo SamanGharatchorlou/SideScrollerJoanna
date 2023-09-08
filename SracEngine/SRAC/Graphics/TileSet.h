@@ -41,7 +41,7 @@ public:
 	Tileset() : mTexture(nullptr) { }
 	Tileset(TilesetData& data);
 
-	Tile& getTile(Index index);
+	Tile& getTile(VectorI index);
 
 
 private:

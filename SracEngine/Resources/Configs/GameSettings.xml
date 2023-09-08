@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Settings>
-	<Title>DUNGEON DASH</Title>
-	<Width>800</Width>
-	<Height>600</Height>
+	<Title>SIDE SCROLLER JOANNA</Title>
+	<Width>1200</Width>
+	<Height>800</Height>
 	<MusicVolume>25</MusicVolume>
 	<SoundVolume>50</SoundVolume>
 	<Tutorial>OFF</Tutorial>

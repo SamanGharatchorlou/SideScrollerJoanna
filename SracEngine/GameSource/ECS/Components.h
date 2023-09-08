@@ -14,17 +14,13 @@ enum class ActionState;
 
 namespace ECS
 {
-	struct Position
-	{
-		VectorF pos;
-		static ECS::Component::Type type() { return ECS::Component::Position; }
-	};
-
 	struct Velocity
 	{
 		VectorF speed;
 		VectorF maxSpeed;
+
 		VectorF acceleration;
+		VectorF maxAcceleration;
 
 		static ECS::Component::Type type() { return ECS::Component::Velocity; }
 	};
@@ -32,6 +28,8 @@ namespace ECS
 	struct Transform
 	{
 		RectF baseRect;
+		VectorF targetCenterPosition;
+
 		VectorF sizeFactor;
 		SDL_RendererFlip flip;
 		static ECS::Component::Type type() { return ECS::Component::Transform; }
@@ -68,6 +66,7 @@ namespace ECS
 	struct MovementPhysics
 	{
 		Physics physics;
+		bool applyGravity;
 
 		static ECS::Component::Type type() { return ECS::Component::Physics; }
 	};
@@ -82,11 +81,10 @@ namespace ECS
 
 	struct TileMap
 	{
-		TileMapLayers tileMap;
+		SceneTileMapping tileMap;
 
 		static ECS::Component::Type type() { return ECS::Component::TileMap; }
 	};
-
 
 	// ----------------------------------------------------------------------
 	// helpers

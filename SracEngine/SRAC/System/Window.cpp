@@ -30,10 +30,10 @@ void Window::setTitle(const char* title)
 }
 
 
-Vector2D<int> Window::size() const
+VectorF Window::size() const
 {
 	int width = -1;
 	int height = -1;
 	SDL_GetWindowSize(mWindow, &width, &height);
-	return Vector2D<int>(width, height);
+	return VectorF(width, height);
 }

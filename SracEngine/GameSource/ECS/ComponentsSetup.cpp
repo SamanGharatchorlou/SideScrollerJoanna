@@ -3,6 +3,7 @@
 
 #include "ECS/EntityCoordinator.h"
 #include "GameSource/ECS/Components.h"
+#include "ECS/Components/Collider.h"
 
 #include "ECS/SystemManager.h"
 #include "EntSystems/RenderSystem.h"
@@ -10,6 +11,7 @@
 #include "EntSystems/MovementSystem.h"
 #include "EntSystems/AnimationSystem.h"
 #include "EntSystems/TileMapSystem.h"
+#include "EntSystems/CollisionSystem.h"
 
 void ECS::RegisterAllComponents()
 {
@@ -23,6 +25,7 @@ void ECS::RegisterAllComponents()
 	ecs->RegisterComponent(MovementPhysics, 32);
 	ecs->RegisterComponent(Animation, 8);
 	ecs->RegisterComponent(TileMap, 4);
+	ecs->RegisterComponent(Collider, 32);
 }
 
 void ECS::RegisterAllSystems()
@@ -48,4 +51,8 @@ void ECS::RegisterAllSystems()
 	// Map
 	Archetype mapTileArcheType = ArcheBit(TileMap);
 	ecs->RegisterSystem<TileMapSystem>(mapTileArcheType);
+
+	// Collisions
+	Archetype collisionArcheType = ArcheBit(Collider) | ArcheBit(Transform);
+	ecs->RegisterSystem<CollisionSystem>(collisionArcheType);
 }

@@ -58,6 +58,12 @@ namespace ECS
 			u32 index = entityToComponent[entity];
 			return components[index];
 		}
+				
+		u32 GetComponentIndex(Entity entity)
+		{
+			ASSERT(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity], "Entity does not have an entry in this component list");
+			return entityToComponent[entity];
+		}
 
 		// mapping from an entity id to a compoenents array index;
 		std::unordered_map<Entity, u32> entityToComponent;

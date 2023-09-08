@@ -9,7 +9,7 @@ struct SpriteSheet
 	Texture* sprite;
 	VectorF frameSize;
 	VectorF sizeFactor;
-	Index boundaries;
+	VectorI boundaries;
 };
 
 struct Animation

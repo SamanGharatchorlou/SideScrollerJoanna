@@ -17,7 +17,6 @@ namespace ECS
 	{
 		enum Type : u64
 		{
-			Position,
 			Velocity,
 			Transform,
 			Sprite,
@@ -26,6 +25,7 @@ namespace ECS
 			Physics,
 			Animation,
 			TileMap,
+			Collider,
 
 			Count
 		};

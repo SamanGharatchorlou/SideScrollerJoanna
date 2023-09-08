@@ -69,7 +69,7 @@ VectorF Animator::getAnimationSubRect() const
 
 	int index = animation.startIndex + mFrameIndex;
 
-	Index bounaries = (animation.spriteSheet.sprite->originalDimentions / animation.spriteSheet.frameSize).toInt();
+	VectorI bounaries = (animation.spriteSheet.sprite->originalDimentions / animation.spriteSheet.frameSize).toInt();
 
 	int y = 0;
 	int x = 0;
