@@ -48,25 +48,25 @@
     <ClCompile Include="SRAC\Colliders\QuadCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\DebugDraw.cpp">
+    <ClCompile Include="SRAC\Debugging\DebugDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\FrameRateController.cpp">
+    <ClCompile Include="SRAC\Debugging\FrameRateController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\Logging.cpp">
+    <ClCompile Include="SRAC\Debugging\Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\MapDebugging.cpp">
+    <ClCompile Include="SRAC\Debugging\MapDebugging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\MemTrack.cpp">
+    <ClCompile Include="SRAC\Debugging\MemTrack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\PerformanceProfiler.cpp">
+    <ClCompile Include="SRAC\Debugging\PerformanceProfiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\UIEditor.cpp">
+    <ClCompile Include="SRAC\Debugging\UIEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Events\Dispatcher.cpp">
@@ -306,16 +306,16 @@
     <ClCompile Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\ImGui\ImGuiMenu.cpp">
+    <ClCompile Include="SRAC\Debugging\ImGui\ImGuiMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.cpp">
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\AnimationDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\ImGui\ImGuiMainWindows.cpp">
+    <ClCompile Include="SRAC\Debugging\ImGui\ImGuiMainWindows.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.cpp">
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\TransformDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp">
@@ -330,7 +330,7 @@
     <ClCompile Include="GameSource\ECS\EntSystems\TileMapSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debug\ImGui\Components\TileMapDebugMenu.cpp">
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -365,28 +365,28 @@
     <ClInclude Include="SRAC\Colliders\QuadCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\DebugDraw.h">
+    <ClInclude Include="SRAC\Debugging\DebugDraw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\DebugSettings.h">
+    <ClInclude Include="SRAC\Debugging\DebugSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\FrameRateController.h">
+    <ClInclude Include="SRAC\Debugging\FrameRateController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\Logging.h">
+    <ClInclude Include="SRAC\Debugging\Logging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\MapDebugging.h">
+    <ClInclude Include="SRAC\Debugging\MapDebugging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\MemTrack.h">
+    <ClInclude Include="SRAC\Debugging\MemTrack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\PerformanceProfiler.h">
+    <ClInclude Include="SRAC\Debugging\PerformanceProfiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\UIEditor.h">
+    <ClInclude Include="SRAC\Debugging\UIEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Events\Dispatcher.h">
@@ -713,19 +713,19 @@
     <ClInclude Include="SRAC\ThirdParty\imgui_sdl-master\imgui_sdl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\ImGui\ImGuiMenu.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\ImGui\Components\AnimationDebugMenu.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\Components\AnimationDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\ImGui\ImGuiMainWindows.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMainWindows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\ImGui\ImGuiHelpers.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\ImGuiHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\ImGui\Components\TransformDebugMenu.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\Components\TransformDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\ComponentsSetup.h">
@@ -752,7 +752,7 @@
     <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debug\ImGui\Components\TileMapDebugMenu.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

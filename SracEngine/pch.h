@@ -47,7 +47,7 @@ namespace fs = std::filesystem;
 // --- Custom ---
 
 // I should change the name, this also includes some Release settings needed
-#include "Debug/DebugSettings.h"
+#include "Debugging/DebugSettings.h"
 #include "Core/Maths.h"
 
 // Basic Containers - no dependencies
@@ -91,13 +91,13 @@ namespace fs = std::filesystem;
 
 // --- Debug Only Includes ---
 #if DEBUG_CHECK
-#include "Debug/DebugDraw.h"
-#include "Debug/Logging.h"
+#include "Debugging/DebugDraw.h"
+#include "Debugging/Logging.h"
 #endif
 
 // NEW operator override
 #if MEMORY_TRACKING
-#include "Debug/MemTrack.h"
+#include "Debugging/MemTrack.h"
 #else
 #define PRINT_MEMORY 0
 #endif

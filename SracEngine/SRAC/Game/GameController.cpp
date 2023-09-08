@@ -13,7 +13,7 @@
 #include "Input/inputManager.h"
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
-#include "Debug/FrameRateController.h"
+#include "Debugging/FrameRateController.h"
 
 #include "GameStates/StartupState.h"
 

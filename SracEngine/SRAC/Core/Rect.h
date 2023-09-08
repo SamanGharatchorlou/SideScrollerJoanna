@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vector2D.h"
-#include "Debug/Logging.h"
+#include "Debugging/Logging.h"
 
 template<class T>
 class Rect

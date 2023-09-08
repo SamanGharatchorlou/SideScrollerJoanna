@@ -1,7 +1,7 @@
 #pragma once
 
 #if DEBUG_CHECK
-#include "Debug/Logging.h"
+#include "Debugging/Logging.h"
 #endif
 
 static inline bool StringCompare(const char* string_a, const char* string_b, uint32_t len)

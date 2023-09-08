@@ -2,7 +2,7 @@
 #include "QuadCollider.h"
 
 #if TRACK_COLLISIONS
-#include "Debug/DebugDraw.h"
+#include "Debugging/DebugDraw.h"
 #endif
 
 

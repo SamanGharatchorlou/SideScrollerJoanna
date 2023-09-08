@@ -3,7 +3,7 @@
 
 //#include "Button.h"
 #include "Game/Camera/Camera.h"
-#include "Debug/ImGui/ImGuiMenu.h"
+#include "Debugging/ImGui/ImGuiMenu.h"
 
 void InputManager::init()
 {

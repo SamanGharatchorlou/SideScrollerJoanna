@@ -4,7 +4,7 @@
 #include "Graphics/Texture.h"
 
 #if DEBUG_CHECK
-#include "Debug/DebugDraw.h"
+#include "Debugging/DebugDraw.h"
 #endif
 
 UIBox::UIBox() : mTexture(nullptr) 

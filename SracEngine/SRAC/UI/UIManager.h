@@ -4,7 +4,7 @@
 #include "ScreenController.h"
 #include "Graphics/Renderable.h"
 #if UI_EDITOR
-#include "Debug/UIEditor.h"
+#include "Debugging/UIEditor.h"
 #endif
 
 class InputManager;
