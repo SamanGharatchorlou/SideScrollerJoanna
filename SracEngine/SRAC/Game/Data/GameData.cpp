@@ -14,7 +14,7 @@
 #include "System/Files/ConfigManager.h"
 #include "ECS/EntityCoordinator.h"
 
-#include "Debug/ImGui/ImGuiMenu.h"
+#include "Debugging/ImGui/ImGuiMenu.h"
 
 static GameData* gd = nullptr;
 

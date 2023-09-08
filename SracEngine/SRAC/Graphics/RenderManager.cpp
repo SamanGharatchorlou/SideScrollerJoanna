@@ -5,7 +5,7 @@
 #include "Renderable.h"
 #include "Renderer.h"
 
-#include "Debug/ImGui/ImGuiMenu.h"
+#include "Debugging/ImGui/ImGuiMenu.h"
 
 
 RenderManager::RenderManager() { }

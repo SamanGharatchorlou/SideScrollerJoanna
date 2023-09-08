@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Debug/Logging.h"
+#include "Debugging/Logging.h"
 #include "EntityCommon.h"
 
 namespace ECS
