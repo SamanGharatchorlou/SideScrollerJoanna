@@ -336,6 +336,9 @@
     <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -719,16 +722,10 @@
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debugging\ImGui\Components\AnimationDebugMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMainWindows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SRAC\Debugging\ImGui\Components\TransformDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\ComponentsSetup.h">
@@ -755,10 +752,10 @@
     <ClInclude Include="SRAC\ThirdParty\rapidxml\Include\rapidxml_utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h">
+    <ClInclude Include="SRAC\Debugging\ImGui\Components\ComponentDebugMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

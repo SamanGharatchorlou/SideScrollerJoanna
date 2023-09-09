@@ -7,25 +7,25 @@ namespace ECS
 {
 	struct EntitySystem
 	{
-		EntitySystem(Archetype _archetype) : archetype(_archetype) { }
+		EntitySystem(Signature sig) : signature(sig) { }
 
 		virtual void Update(float dt) = 0;
 
 		std::vector<Entity> entities;
-		Archetype archetype;
+		Signature signature;
 	};
 
 	struct SystemManager
 	{
 		template<class T>
-		void Register(Archetype type)
+		void Register(Signature type)
 		{
 			for (u32 i = 0; i < entSystems.size(); i++)
 			{
-				if (type == entSystems[i]->archetype)
+				if (type == entSystems[i]->signature)
 				{
 					const char* id = typeid(T).name();
-					DebugPrint(Warning, "System %s alread registered with archetype %d", id, type);
+					DebugPrint(Warning, "System %s alread registered with signature %d", id, type);
 					return;
 				}
 			}
@@ -33,45 +33,45 @@ namespace ECS
 			entSystems.emplace_back(new T(type));
 		}
 
-		void EntityAddType(Entity entity, Component::Type type)
+		void EntityAddType(Entity entity, Signature type)
 		{
-			const u64 signature = (u64)1 << type;
 			for (u32 i = 0; i < entSystems.size(); i++)
 			{
-				if (entSystems[i]->archetype & signature)
+				if (LockAndKey(entSystems[i]->signature, type))
 				{
-					for (u32 ent = 0; ent < entSystems[i]->entities.size(); i++)
+					bool already_exists = false;
+					for (u32 ent = 0; ent < entSystems[i]->entities.size(); ent++)
 					{
 						// this entity is already in this system
-						if (entSystems[i]->entities[ent] == entity)
-							return;
+						if (entSystems[i]->entities[ent] == entity) 
+						{
+							already_exists = true;
+							break;                    
+						}
 					}
 
-					entSystems[i]->entities.push_back(entity);
+					if(!already_exists)
+						entSystems[i]->entities.push_back(entity);
 				}
 			}
 		}
 
-		void EntityRemoveType(Entity entity, Component::Type type)
+		void EntityRemoveType(Entity entity, Signature type)
 		{
-			const u64 signature = (u64)1 << type;
 			for (u32 i = 0; i < entSystems.size(); i++)
 			{
-				EntitySystem* entSystem = entSystems[i];
-				if (entSystem->archetype & signature)
+				if (!(entSystems[i]->signature & type))
 				{
-					const u32 et_count = entSystem->entities.size();
-					for (u32 et = 0; et < et_count; et++)
+					const u32 ent_count = entSystems[i]->entities.size();
+					for (u32 ent = 0; ent < ent_count; ent++)
 					{
-						if (entSystem->entities[et] == entity)
+						if (entSystems[i]->entities[ent] == entity)
 						{
 							// copy the back element into the to be removed entities place, then pop the back
-							entSystem->entities[et] = entSystem->entities.back();
-							entSystem->entities.pop_back();
+							entSystems[i]->entities[ent] = entSystems[i]->entities.back();
+							entSystems[i]->entities.pop_back();
 						}
 					}
-
-					entSystems[i]->entities.push_back(entity);
 				}
 			}
 		}

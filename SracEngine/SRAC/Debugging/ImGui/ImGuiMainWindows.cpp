@@ -2,15 +2,14 @@
 #include "ImGuiMainWindows.h"
 
 #include "ThirdParty/imgui-master/imgui.h"
+#include "ImGuiHelpers.h"
 
 #include "ECS/EntityManager.h"
 #include "ECS/EntityCoordinator.h"
-
-#include "Debugging/ImGui/Components/AnimationDebugMenu.h"
-#include "Debugging/ImGui/Components/TransformDebugMenu.h"
-#include "Debugging/ImGui/Components/TileMapDebugMenu.h"
-
+#include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
+
+#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
 ECS::Entity s_selectedEntity = 1;
 u32 DebugMenu::GetSelectedEntity() { return s_selectedEntity; }
@@ -19,8 +18,9 @@ u32 DebugMenu::GetSelectedEntity() { return s_selectedEntity; }
 void DebugMenu::DoEntitySystemWindow()
 {
     ImGui::Begin("Entity Window", nullptr, ImGuiWindowFlags_MenuBar);
-
-    ECS::EntityManager& em = GameData::Get().ecs->entities;
+    
+    ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+    ECS::EntityManager& em = ecs->entities;
     std::unordered_map<ECS::Entity, StringBuffer32>& entityNames = em.entityNames;
 
     const char* selected = entityNames.count(s_selectedEntity) > 0 ? entityNames[s_selectedEntity].c_str() : "No selection";
@@ -43,35 +43,29 @@ void DebugMenu::DoEntitySystemWindow()
 
         ImGui::EndCombo();
     }
-    ImGui::End();
-}
 
-// Components Window
-void DebugMenu::DoComponentWindow()
-{
-    ImGui::Begin("Component Window", nullptr, ImGuiWindowFlags_MenuBar);
-
-    ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-
-    u32 entity = GetSelectedEntity();
-    if (ecs->IsAlive(entity))
+    if (GameData::Get().ecs->IsAlive(s_selectedEntity)) 
     {
-        if (ecs->HasComponent(entity, ECS::Component::Animation))
+        if (ecs->IsAlive(s_selectedEntity))
         {
-            ECS::Animation& animation = ecs->GetComponent(Animation, entity);
-            DoAnimationDebugMenu(animation);
-        }
+            ECS::Archetype type = 0;
+            SetFlag<u64>(type, ECS::archetypeBit(DoTransformDebugMenu(s_selectedEntity)));
+            SetFlag<u64>(type, ECS::archetypeBit(DoAnimationDebugMenu(s_selectedEntity)));
+            SetFlag<u64>(type, ECS::archetypeBit(DoTileMapDebugMenu(s_selectedEntity)));
+            SetFlag<u64>(type, ECS::archetypeBit(DoColliderDebugMenu(s_selectedEntity)));
 
-        if (ecs->HasComponent(entity, ECS::Component::Transform))
-        {
-            ECS::Transform& transform = ecs->GetComponent(Transform, entity);
-            DoTransformDebugMenu(transform);
-        }
+            ECS::Archetype entity_type = ecs->entities.GetAchetype(s_selectedEntity);
+            for (u32 i = 0; i < ECS::Component::Count; i++) 
+            {
+                if(entity_type & ECS::archetypeBit((ECS::Component::Type)i))
+                {
+                    if(type & ECS::archetypeBit((ECS::Component::Type)i))
+                        continue;
 
-        if (ecs->HasComponent(entity, ECS::Component::TileMap))
-        {
-            ECS::TileMap& map = ecs->GetComponent(TileMap, entity);
-            DoTileMapDebugMenu(map);
+		            ImGui::CollapsingHeader(ECS::ComponentNames[i]);
+                }
+
+            }
         }
     }
 
@@ -129,7 +123,6 @@ void DebugMenu::DoInputWindow()
             ImGui::Text("Cursor %s Moving: ", im->mCursor.isMoving() ? "is" : "is not");
             ImGui::Text("Cursor: %s", cursorState.c_str());
 
-
             for (u32 i = 0; i < im->mButtons.size(); i++)
             {
                 Button& button = im->mButtons[i];
@@ -155,4 +148,36 @@ void DebugMenu::DoInputWindow()
         }
     }
     ImGui::End();
+}
+
+static bool s_displayStatics = true;
+static bool s_displayDynamics = true;
+static DebugDrawType s_drawType = DebugDrawType::RectOutline;
+
+void DebugMenu::DoColliderWindow() 
+{
+    ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+
+	ECS::ComponentArray<ECS::Collider>& colliders =  ecs->GetComponents<ECS::Collider>(ECS::Component::Type::Collider);
+	std::vector<ECS::Collider>& collider_list = colliders.components;
+
+    ImGui::Checkbox("Display Statics", &s_displayStatics);
+    ImGui::Checkbox("Display Dynamics", &s_displayDynamics);
+
+    ImGui::DoDebugRenderTypeDropDown(s_drawType);
+
+    // first we need to update the collider position with where the entity wants to be
+    for(u32 i = 0; i < collider_list.size(); i++)
+	{
+        const ECS::Collider& collider = collider_list[i];
+
+		// ignore static colliders, they dont move
+        bool is_static = HasFlag(collider.mFlags, ECS::Collider::Flags::Static);
+		if(!s_displayStatics && is_static)
+            continue;
+        if(!s_displayDynamics && !is_static)
+            continue;
+
+        DebugDraw::Shape(s_drawType, collider.mRect, Colour::Blue);
+	}
 }

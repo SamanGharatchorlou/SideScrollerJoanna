@@ -4,7 +4,7 @@
 
 #include "GameSource/ECS/Components.h"
 #include "ECS/EntityCoordinator.h"
-#include "Debugging/ImGui/Components/AnimationDebugMenu.h"
+#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
 namespace ECS
 {

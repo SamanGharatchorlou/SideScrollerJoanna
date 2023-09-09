@@ -1,25 +1,6 @@
 #pragma once
 
 class Texture;
-struct TileMap;
-
-
-struct TileMapConfig
-{
-	struct Layer
-	{
-		std::vector<u32> tildIds;
-		StringMap32 attributes;
-	};
-
-	StringMap32 attributes;
-
-	StringMap32 tilesetAttributes;
-	StringMap32 tilesetImage;
-
-	std::vector<Layer> layers;
-};
-
 
 struct TileSet
 {
@@ -32,22 +13,29 @@ struct TileSet
 
 struct SceneTileMapping
 {
-	struct Layer
+	struct TileLayer
 	{
 		u32 render_layer;
-
 		VectorI tileCount;
 		TileSet tileset;
-
 		std::vector<VectorI> tileMapping;
+	};
 
+	struct ObjectLayer
+	{
+		u32 id;
+		StringBuffer32 name;
+		std::vector<RectF> rects;
 	};
 
 	VectorF mapSize;
 	VectorF tileSize;
 	VectorI tileCount;
 
-	std::vector<Layer> layers;
+	std::vector<TileLayer> tileLayers;
+	std::vector<ObjectLayer> objectLayers;
+
+	std::vector<u32> colliderEntities;
 };
 
 static VectorI IndexToMapIndex(u32 index, Vector2D<int> size)

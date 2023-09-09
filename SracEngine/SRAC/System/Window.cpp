@@ -35,5 +35,5 @@ VectorF Window::size() const
 	int width = -1;
 	int height = -1;
 	SDL_GetWindowSize(mWindow, &width, &height);
-	return VectorF(width, height);
+	return VectorF((float)width, (float)height);
 }

@@ -75,7 +75,7 @@ void ScreenController::openPopup(const char* popupInfo)
 		popup->build(config->title.c_str(), config->body.c_str());
 
 		u32 flags = 0;
-		setFlag<u32>(flags, Screen::RenderBelow | Screen::HanleBelowInputs);
+		SetFlag<u32>(flags, Screen::RenderBelow | Screen::HanleBelowInputs);
 
 		addScreen(UIScreen::Type::Popup, flags);
 		setPersistingScreen(popup);

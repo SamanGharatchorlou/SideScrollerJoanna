@@ -62,6 +62,7 @@ public:
 	inline void SetWidth(T width) { x2 = x1 + width; }
 	inline void SetHeight(T height) { y2 = y1 + height; }
 
+	inline void Scale(Vector2D<T> scale);
 
 	// Get Dimentions
 	inline const T Width() const { return x2 - x1; }
@@ -244,6 +245,13 @@ inline void Rect<T>::SetCenter(T x, T y)
 	x2 = x + halfWidth;
 	y1 = y - halfHeight;
 	y2 = y + halfHeight;
+}
+
+template <class T>
+inline void Rect<T>::Scale(Vector2D<T> scale)
+{
+	SetTopLeft(TopLeft() * scale);
+	SetSize(Size() * scale);
 }
 
 

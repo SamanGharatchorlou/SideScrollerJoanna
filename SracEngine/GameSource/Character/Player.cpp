@@ -8,14 +8,14 @@
 #include "Graphics/TextureManager.h"
 #include "Configs.h"
 #include "System/Files/ConfigManager.h"
-#include "Graphics/RenderManager.h"
 
 void Player::Init()
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 
 	ECS::Transform transform;
-	transform.baseRect = RectF(VectorF(100, 300), VectorF(100, 100));
+	transform.baseRect = RectF(VectorF(200, 300), VectorF(100, 100));
+	transform.targetCenterPosition = transform.baseRect.Center();
 
 	ECS::Sprite sprite;
 	sprite.texture = TextureManager::Get()->getTexture("PlayerMovementSheet", FileManager::Image_Animations);

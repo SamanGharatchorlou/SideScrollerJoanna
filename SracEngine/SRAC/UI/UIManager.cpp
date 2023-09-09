@@ -93,7 +93,7 @@ void UIManager::handleInput(const InputManager* input)
 	node<Screen*>* screen_node = mController.mScreens.getActiveStateNode();
 
 	// update the below one first (order doesnt really matter here)
-	if (hasFlag(screen_node->data->mFlags, Screen::HanleBelowInputs))
+	if (HasFlag(screen_node->data->mFlags, Screen::HanleBelowInputs))
 	{
 		screen_node->prev->data->handleInput(input);
 		screen_node->prev->data->updateInputs(input);
@@ -109,7 +109,7 @@ void UIManager::update()
 	node<Screen*>* screen_node = mController.mScreens.getActiveStateNode();
 
 	// update the below one first (order doesnt really matter here)
-	if (hasFlag(screen_node->data->mFlags, Screen::UpdateBelow))
+	if (HasFlag(screen_node->data->mFlags, Screen::UpdateBelow))
 	{
 		screen_node->prev->data->slowUpdate();
 	}
@@ -132,7 +132,7 @@ void UIManager::render()
 	node<Screen*>* screen_node = mController.mScreens.getActiveStateNode();
 
 	// render the below one first
-	if (hasFlag(screen_node->data->mFlags, Screen::RenderBelow))
+	if (HasFlag(screen_node->data->mFlags, Screen::RenderBelow))
 	{
 		screen_node->prev->data->render();
 	}

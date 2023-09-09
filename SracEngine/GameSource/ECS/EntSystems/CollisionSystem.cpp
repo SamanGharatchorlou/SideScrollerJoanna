@@ -25,7 +25,7 @@ namespace ECS
 			Transform& transform = ecs->GetComponent(Transform, entity);
 
 			// ignore static colliders, they dont move
-			if(hasFlag(collider.mFlags, Collider::Flags::Static))
+			if(HasFlag(collider.mFlags, Collider::Flags::Static))
 				continue;
 
 			collider.mRect.SetCenter(transform.targetCenterPosition);
@@ -35,10 +35,10 @@ namespace ECS
 		{
 			Collider& this_collider = ecs->GetComponent(Collider, entity);
 			Transform& transform = ecs->GetComponent(Transform, entity);
-			Velocity& velocity = ecs->GetComponent(Velocity, entity);
+			//Velocity& velocity = ecs->GetComponent(Velocity, entity);
 
 			// ignore static colliders, we check against them, but not from them
-			if(hasFlag(this_collider.mFlags, Collider::Flags::Static))
+			if(HasFlag(this_collider.mFlags, Collider::Flags::Static))
 				continue;
 
 			u32 index = colliders.GetComponentIndex(entity);
@@ -54,6 +54,7 @@ namespace ECS
 				 {
 					 transform.targetCenterPosition = transform.baseRect.Center();
 					 //velocity.speed.zero();
+
 				 }
             }
 		}

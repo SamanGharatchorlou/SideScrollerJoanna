@@ -33,16 +33,20 @@ namespace ECS
 		void AddComponent(Entity entity, const T& component, Component::Type type)
 		{
 			components.AddComponent<T>(entity, component, type);
-			systems.EntityAddType(entity, type);
 			entities.AddComponent(entity, type);
+
+			Archetype archetype = entities.GetAchetype(entity);
+			systems.EntityAddType(entity, archetype);
 		}
 
 		template<class T>
 		void RemoveComponent(Entity entity, const T& component, Component::Type type)
 		{
 			components.RemoveComponent<T>(entity, component, type);
-			systems.EntityRemoveType(entity, type);
 			entities.RemoveComponent(entity, type);
+
+			Archetype archetype = entities.GetAchetype(entity);
+			systems.EntityRemoveType(entity, type);
 		}
 
 		template<class T>
@@ -51,7 +55,10 @@ namespace ECS
 		template<class T>
 		ComponentArray<T>& GetComponents(Component::Type type) { return *static_cast<ComponentArray<T>*>(components.componentArrays[type]); }
 
-		bool HasComponent(Entity entity, Component::Type type) { return entities.HasComponent(entity, type); }
+		bool HasComponent(Entity entity, Component::Type type) 
+		{ 
+			return entities.HasComponent(entity, type); 
+		}
 
 		void UpdateSystems(float dt)
 		{

@@ -10,6 +10,13 @@
 
 RenderManager::RenderManager() { }
 
+RenderManager* RenderManager::Get()
+{
+	GameData& gd = GameData::Get();
+	ASSERT(gd.configs != nullptr, "Render manager has no been set up yet");
+	return gd.renderManager;
+}
+
 void RenderManager::addRenderable(Renderable* renderable)
 {
 	mRenderables.push_back(renderable);
@@ -46,41 +53,7 @@ void RenderManager::render()
 		mRenderables[i]->render();
 	}
 
-	//auto order_by_layer = [](const RenderPack& a, const RenderPack& b) { return a.layer < b.layer; };
-	//std::sort(mRenderPackets.begin(), mRenderPackets.end(), order_by_layer);
-
-	//const u32 render_count = mRenderPackets.size();
-
-	//int starting_indexes[RenderPack::Layer::Count];
-	//memset(starting_indexes, 0, sizeof(int) * RenderPack::Layer::Count);
-	//for (u32 layer = 0; layer < RenderPack::Layer::Count; layer++)
-	//{
-	//	for (int i = 0; i < mRenderPackets.size(); )
-	//	{
-	//		// if the render layer is > pack layer then we've got out next starting point
-	//		if (mRenderPackets[i].layer >= layer)
-	//		{
-	//			starting_indexes[layer] = i;
-	//			layer++;
-	//			continue;
-	//		}
-
-	//		i++;
-	//	}
-	//}
-
-	//renderPacketRange(0, starting_indexes[1]);
-
-	//for (u32 layer = 1; layer < RenderPack::Layer::Count - 1; layer++)
-	//{
-	//	u32 start = starting_indexes[layer];
-	//	u32 end = starting_indexes[layer + 1];
-
-	//	renderPacketRange(start, end);
-	//}
-
-	//renderPacketRange(starting_indexes[RenderPack::Layer::Highest], mRenderPackets.size());
-
+	// render all the packs we received in the layer order
 	for (u32 i = 0; i < c_RenderLayers; i++)
 	{
 		std::vector<RenderPack>& render_packs = mRenderPackets[i];
@@ -95,29 +68,24 @@ void RenderManager::render()
 		render_packs.clear();
 	}
 
-	//mRenderPackets.clear();
-	// 
 	// always debug draw last
 	for (u32 i = 0; i < mDebugRenders.size(); i++)
 	{
 		switch (mDebugRenders[i].type)
 		{
-		case DebugRenderPack::Line:
+		case DebugDrawType::Line:
 		{
 			Colour colour = mDebugRenders[i].colour;
 			SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
 
-			//Vector2D<int> A = Camera::Get()->toCameraCoords(pointA).toInt();
-			//Vector2D<int> B = Camera::Get()->toCameraCoords(pointB).toInt();
-			RectF& rect = mDebugRenders[i].rect;
-
-			Vector2D<int> A = rect.TopLeft().toInt();
-			Vector2D<int> B = rect.BotRight().toInt();
+			const RectF& rect = mDebugRenders[i].rect;
+			const Vector2D<int> A = rect.TopLeft().toInt();
+			const Vector2D<int> B = rect.BotRight().toInt();
 
 			SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), A.x, A.y, B.x, B.y);
 			break;
 		}
-		case DebugRenderPack::RectOutline:
+		case DebugDrawType::RectOutline:
 		{
 			Colour colour = mDebugRenders[i].colour;
 			SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
@@ -131,15 +99,27 @@ void RenderManager::render()
 			SDL_RenderDrawRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
 			break;
 		}
-		case DebugRenderPack::Point:
-		case DebugRenderPack::RectFill:
+		case DebugDrawType::Point:
+		case DebugDrawType::RectFill:
 		{
+			Colour colour = mDebugRenders[i].colour;
+			SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+			
+			RectF& rect = mDebugRenders[i].rect;
+			SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
+							static_cast<int>(rect.y1),
+							static_cast<int>(rect.Width()),
+							static_cast<int>(rect.Height()) };
+
+			SDL_RenderFillRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
 			break;
 		}
 		default:
 			break;
 		}
 	}
+
+	mDebugRenders.clear();
 
 #if IMGUI
 	DebugMenu::Draw();
@@ -148,42 +128,3 @@ void RenderManager::render()
 	// update window surface
 	SDL_RenderPresent(renderer);
 }
-
-//void RenderManager::renderPacketRange(int start, int end)
-//{
-//	for (u32 i = start; i < end; i++)
-//	{
-//		if(mRenderPackets[i].subRect.isValid())
-//			mRenderPackets[i].texture->renderSubTexture(mRenderPackets[i].rect, mRenderPackets[i].subRect, mRenderPackets[i].flip);
-//		else
-//			mRenderPackets[i].texture->render(mRenderPackets[i].rect, mRenderPackets[i].flip);
-//	}
-//}
-
-
-//void RenderManager::renderPackets(RenderLayer layer)
-//{
-//	for (int i = 0; i < mRenderPackets.size(); i++)
-//	{
-//		if(mRenderPackets[i].layer == layer)	
-//		{
-//			mRenderPackets[i].texture->render(mRenderPackets[i].rect);
-//		}
-//	}
-//}
-
-
-//void RenderManager::handleEvent(EventData& data)
-//{
-//	switch (data.eventType)
-//	{
-//		case Event::Render:
-//		{
-//			RenderEvent eventData = static_cast<RenderEvent&>(data);
-//
-//			RenderPack renderPacket(eventData.mTexture, eventData.mRect, static_cast<RenderLayer>(eventData.mRenderLayer));
-//			AddRenderPacket(renderPacket);
-//			break;
-//		}
-//	}
-//}

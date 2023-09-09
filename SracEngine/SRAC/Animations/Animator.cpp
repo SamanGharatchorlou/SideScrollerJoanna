@@ -6,7 +6,7 @@
 
 #include "Input/InputManager.h"
 
-#include "Debugging/ImGui/Components/AnimationDebugMenu.h"
+#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
 
 Animator::Animator() :

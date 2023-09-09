@@ -8,7 +8,7 @@ namespace ECS
 	{
 		EntityManager() : entityIdIndex(0)
 		{
-			memset(archetypes, -1, sizeof(Archetype) * MaxEntityCount);
+			memset(archetypes, (int)ArchetypeInvalid, sizeof(Archetype) * MaxEntityCount);
 		}
 
 		Entity CreateEntityId()
@@ -24,7 +24,6 @@ namespace ECS
 			// todo:....
 			// set achetype to -1
 		}
-
 
 		// todo: not currently using these... i assume i do, but when will i need the archetype array
 		bool HasComponent(Entity entity, Component::Type component) const

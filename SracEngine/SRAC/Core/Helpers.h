@@ -2,13 +2,13 @@
 
 #include "Vector2D.h"
 
-static bool hasFlag(uint32_t flag, uint32_t marker)
+static bool HasFlag(uint32_t flag, uint32_t marker)
 {
 	return flag & marker;
 }
 
 template<class T>
-static void setFlag(T& flag, T marker)
+static void SetFlag(T& flag, T marker)
 {
 	flag |= marker;
 }

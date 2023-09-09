@@ -23,9 +23,9 @@ namespace ECS
 			const SceneTileMapping& map = tile_map.tileMap;
 			const VectorF tile_size = map.tileSize * size_ratio;
 
-			for (u32 l = 0; l < tile_map.tileMap.layers.size(); l++)
+			for (u32 l = 0; l < tile_map.tileMap.tileLayers.size(); l++)
 			{
-				const SceneTileMapping::Layer& layer = tile_map.tileMap.layers[l];
+				const SceneTileMapping::TileLayer& layer = tile_map.tileMap.tileLayers[l];
 				const TileSet& tile_set = layer.tileset;
 
 				for (u32 idx = 0; idx < layer.tileMapping.size(); idx++)
@@ -40,7 +40,6 @@ namespace ECS
 					RectF rect(pos, tile_size);
 
 					// SubRect for tile map entry so we know what bit of texture to draw
-
 					VectorF top_left = index.toFloat() * tile_set.tileSize;
 					RectF subRect(top_left, tile_set.tileSize);
 

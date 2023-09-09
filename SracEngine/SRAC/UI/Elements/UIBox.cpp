@@ -70,7 +70,7 @@ void UIBox::render()
 
 #if DEBUG_CHECK
 	if (mDrawRect || DRAW_UI_RECTS)
-		debugDrawRectOutline(mRect, Colour::Blue);
+		DebugDraw::RectOutline(mRect, Colour::Blue);
 #endif
 }
 
@@ -82,7 +82,7 @@ void UIBox::render(RectF subRect)
 
 #if DEBUG_CHECK
 	if (mDrawRect || DRAW_UI_RECTS)
-		debugDrawRectOutline(mRect, Colour::Blue);
+		DebugDraw::RectOutline(mRect, Colour::Blue);
 #endif
 }
 

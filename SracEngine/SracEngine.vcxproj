@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp" />
     <ClCompile Include="GameSource\Character\Player.cpp" />
     <ClCompile Include="GameSource\Configs.cpp" />
@@ -267,18 +268,16 @@
     <ClInclude Include="SRAC\Audio\AudioManager.h" />
     <ClInclude Include="SRAC\Audio\Channel.h" />
     <ClInclude Include="SRAC\Audio\SoundController.h" />
+    <ClInclude Include="SRAC\Debugging\ImGui\Components\ComponentDebugMenu.h" />
     <ClInclude Include="SRAC\ECS\Components\Collider.h" />
     <ClInclude Include="SRAC\Physics\QuadCollider.h" />
     <ClInclude Include="SRAC\Core\Maths.h" />
     <ClInclude Include="SRAC\Debugging\DebugDraw.h" />
     <ClInclude Include="SRAC\Debugging\DebugSettings.h" />
     <ClInclude Include="SRAC\Debugging\FrameRateController.h" />
-    <ClInclude Include="SRAC\Debugging\ImGui\Components\AnimationDebugMenu.h" />
-    <ClInclude Include="SRAC\Debugging\ImGui\Components\TransformDebugMenu.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMainWindows.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiHelpers.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMenu.h" />
-    <ClInclude Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.h" />
     <ClInclude Include="SRAC\Debugging\Logging.h" />
     <ClInclude Include="SRAC\Debugging\MapDebugging.h" />
     <ClInclude Include="SRAC\Debugging\MemTrack.h" />

@@ -38,6 +38,4 @@ namespace ECS
 
 		ComponentArrayBase* componentArrays[Component::Type::Count];
 	};
-
-
 }

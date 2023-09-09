@@ -33,26 +33,26 @@ void ECS::RegisterAllSystems()
 	EntityCoordinator* ecs = GameData::Get().ecs;
 
 	// RenderSystem
-	Archetype renderArchetype = ArcheBit(Transform) | ArcheBit(Sprite);
-	ecs->RegisterSystem<RenderSystem>(renderArchetype);
+	Signature renderSignature = ArcheBit(Transform) | ArcheBit(Sprite);
+	ecs->RegisterSystem<RenderSystem>(renderSignature);
 
 	// PlayerInputSystem
-	Archetype playerInputArchetype = ArcheBit(PlayerInput) | ArcheBit(CharacterState) | ArcheBit(Velocity);
-	ecs->RegisterSystem<PlayerInputSystem>(playerInputArchetype);
+	Signature playerInputSignature = ArcheBit(PlayerInput) | ArcheBit(CharacterState) | ArcheBit(Velocity);
+	ecs->RegisterSystem<PlayerInputSystem>(playerInputSignature);
 
 	// MovementSystem
-	Archetype movementArchetype = ArcheBit(Transform) | ArcheBit(Velocity) | ArcheBit(CharacterState) | ArcheBit(MovementPhysics);
-	ecs->RegisterSystem<MovementSystem>(movementArchetype);
+	Signature movementSignature = ArcheBit(Transform) | ArcheBit(Velocity) | ArcheBit(CharacterState) | ArcheBit(MovementPhysics);
+	ecs->RegisterSystem<MovementSystem>(movementSignature);
 
 	// AnimationSystem
-	Archetype animationArchetype = ArcheBit(Sprite) | ArcheBit(Animation) | ArcheBit(CharacterState) | ArcheBit(Transform);
-	ecs->RegisterSystem<AnimationSystem>(animationArchetype);
+	Signature animationSignature = ArcheBit(Sprite) | ArcheBit(Animation) | ArcheBit(CharacterState) | ArcheBit(Transform);
+	ecs->RegisterSystem<AnimationSystem>(animationSignature);
 
 	// Map
-	Archetype mapTileArcheType = ArcheBit(TileMap);
-	ecs->RegisterSystem<TileMapSystem>(mapTileArcheType);
+	Signature mapTileSignature = ArcheBit(TileMap);
+	ecs->RegisterSystem<TileMapSystem>(mapTileSignature);
 
 	// Collisions
-	Archetype collisionArcheType = ArcheBit(Collider) | ArcheBit(Transform);
-	ecs->RegisterSystem<CollisionSystem>(collisionArcheType);
+	Signature collisionSignature = ArcheBit(Collider) | ArcheBit(Transform);
+	ecs->RegisterSystem<CollisionSystem>(collisionSignature);
 }

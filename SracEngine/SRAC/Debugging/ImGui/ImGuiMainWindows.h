@@ -3,8 +3,8 @@
 namespace DebugMenu
 {
 	void DoEntitySystemWindow();
-	void DoComponentWindow();
 	void DoInputWindow();
+	void DoColliderWindow();
 
 	u32 GetSelectedEntity();
 }

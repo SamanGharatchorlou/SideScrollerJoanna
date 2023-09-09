@@ -1,81 +1,64 @@
 #include "pch.h"
-#include "TransformDebugMenu.h"
+#include "ComponentDebugMenu.h"
 
+#include "ECS/EntityCoordinator.h"
+#include "ECS/Components.h"
 #include "ThirdParty/imgui-master/imgui.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
-
-void DisplayRect(RectF& rect)
-{
-	static float rectxy1[2] = { rect.x1, rect.y1 };
-	if (ImGui::InputFloat2("XY1", rectxy1))
-	{
-		rect.x1 = rectxy1[0];
-		rect.y1 = rectxy1[1];
-	}
-
-	static float rectxy2[2] = { rect.x2, rect.y2 };
-	if (ImGui::InputFloat2("XY2", rectxy2))
-	{
-		rect.x2 = rectxy2[0];
-		rect.y2 = rectxy2[1];
-	}
-
-	VectorF center = rect.Center();
-	float width = rect.Width();
-	float height = rect.Height();
-
-	static float rect_size[2] = { width, height };
-	if (ImGui::InputFloat2("size", rect_size))
-	{
-		rect.SetSize(VectorF(rect_size[0], rect_size[1]));
-		rect.SetCenter(center);
-	}
-}
 
 bool s_displayRect = false;
 bool s_displaySizedRect = false;
 
-void DebugMenu::DoTransformDebugMenu(ECS::Transform& component)
+ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 {
-	if (ImGui::CollapsingHeader("Transform Component"))
-	{
-		if (ImGui::TreeNode("Component Data"))
+    ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::Component::Type type = ECS::Component::Transform;
+
+    if (ecs->HasComponent(entity, type))
+    {
+		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-			DisplayRect(component.baseRect);
-
-			ImGui::VectorText("Trans Size Factor", component.sizeFactor);
-
-			if (ImGui::Button("Vertical Flip"))
+			ECS::Transform& transform = ecs->GetComponent(Transform, entity);
+			if (ImGui::TreeNode("Component Data"))
 			{
-				component.flip = component.flip == SDL_FLIP_HORIZONTAL ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-			}
+				ImGui::DisplayRect(transform.baseRect);
 
-			ImGui::TreePop();
-		}
+				ImGui::VectorText("Trans Size Factor", transform.sizeFactor);
 
-		if (ImGui::TreeNode("Display"))
-		{
-			ImGui::Checkbox("Display Base Rect", &s_displayRect);
-			if (s_displayRect)
-			{
-				debugDrawRectOutline(component.baseRect, Colour::Green);
-			}
-
-			ImGui::Checkbox("Display Size Factored Rect", &s_displaySizedRect);
-			if (s_displaySizedRect)
-			{
-				RectF renderRect = component.baseRect;
-				if (!component.sizeFactor.isZero())
+				if (ImGui::Button("Vertical Flip"))
 				{
-					VectorF center = renderRect.Center();
-					renderRect.SetSize(renderRect.Size() * component.sizeFactor);
-					renderRect.SetCenter(center);
+					transform.flip = transform.flip == SDL_FLIP_HORIZONTAL ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 				}
 
-				debugDrawRectOutline(renderRect, Colour::Red);
+				ImGui::TreePop();
 			}
 
-			ImGui::TreePop();
+			if (ImGui::TreeNode("Display"))
+			{
+				ImGui::Checkbox("Display Base Rect", &s_displayRect);
+				if (s_displayRect)
+				{
+					DebugDraw::RectOutline(transform.baseRect, Colour::Green);
+				}
+
+				ImGui::Checkbox("Display Size Factored Rect", &s_displaySizedRect);
+				if (s_displaySizedRect)
+				{
+					RectF renderRect = transform.baseRect;
+					if (!transform.sizeFactor.isZero())
+					{
+						VectorF center = renderRect.Center();
+						renderRect.SetSize(renderRect.Size() * transform.sizeFactor);
+						renderRect.SetCenter(center);
+					}
+
+					DebugDraw::RectOutline(renderRect, Colour::Red);
+				}
+
+				ImGui::TreePop();
+			}
 		}
 	}
+
+	return type;
 }

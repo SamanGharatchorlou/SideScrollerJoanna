@@ -42,4 +42,38 @@ namespace ImGui
 
 		return did_press;
 	}
+
+	static void DisplayRect(RectF& rect)
+	{
+		static float rectxy1[2] = { rect.x1, rect.y1 };
+		if (ImGui::InputFloat2("XY1", rectxy1))
+		{
+			rect.x1 = rectxy1[0];
+			rect.y1 = rectxy1[1];
+		}
+
+		static float rectxy2[2] = { rect.x2, rect.y2 };
+		if (ImGui::InputFloat2("XY2", rectxy2))
+		{
+			rect.x2 = rectxy2[0];
+			rect.y2 = rectxy2[1];
+		}
+
+		VectorF center = rect.Center();
+		float width = rect.Width();
+		float height = rect.Height();
+
+		static float rect_size[2] = { width, height };
+		if (ImGui::InputFloat2("size", rect_size))
+		{
+			rect.SetSize(VectorF(rect_size[0], rect_size[1]));
+			rect.SetCenter(center);
+		}
+	}
+
+	static void DoDebugRenderTypeDropDown(DebugDrawType& type) 
+	{
+        const char* arrayDebugDrawType[4] = { "Point", "Line", "RectOutline", "RectFill"};
+		ImGui::Combo("Draw Types", (int*)&type, arrayDebugDrawType, 4);
+	}
 }

@@ -15,25 +15,29 @@ struct RenderPack
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 };
 
+enum DebugDrawType
+{
+	Point,
+	Line,
+	RectOutline,
+	RectFill,
+	Quad,
+	Count
+};
+
 struct DebugRenderPack
 {
-	enum DrawType
-	{
-		Point,
-		Line,
-		RectOutline,
-		RectFill,
-		Quad
-	};
 	RectF rect;
 	Colour colour;
-	DrawType type;
+    DebugDrawType type;
 };
 
 class RenderManager //: public Observer
 {
 public:
 	RenderManager();
+
+	static RenderManager* Get();
 
 	void render();
 

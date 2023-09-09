@@ -47,8 +47,8 @@ namespace DebugMenu
 	}
 
 	static bool s_entitySystemWindow = false;
-	static bool s_componentWindow = false;
 	static bool s_inputWindow = false;
+	static bool s_colliderWindow = false;
 
 	void Draw()
 	{
@@ -60,9 +60,9 @@ namespace DebugMenu
 		ImGui::Begin("MainWindow", 0, ImGuiWindowFlags_MenuBar);
 		ImGui::Checkbox("Entity System", &s_entitySystemWindow);
 		ImGui::SameLine();
-		ImGui::Checkbox("Components", &s_componentWindow);
-		ImGui::SameLine();
 		ImGui::Checkbox("Input", &s_inputWindow);
+		ImGui::SameLine();
+		ImGui::Checkbox("Colliders", &s_colliderWindow);
 		ImGui::End();
 
 		if (s_entitySystemWindow)
@@ -70,14 +70,14 @@ namespace DebugMenu
 			DoEntitySystemWindow();
 		}
 
-		if (s_componentWindow)
-		{
-			DoComponentWindow();
-		}
-
 		if (s_inputWindow)
 		{
 			DoInputWindow();
+		}
+
+		if(s_colliderWindow) 
+		{
+			DoColliderWindow();
 		}
 
 		ImGui::ShowDemoWindow();

@@ -1,10 +1,16 @@
 #pragma once
 
+enum DebugDrawType;
 
-void debugDrawPoint(VectorF point, float size, Colour colour);
-void debugDrawLine(VectorF pointA, VectorF pointB, Colour colour);
-void debugDrawRectOutline(RectF rect, Colour colour, bool translateToCameraCoords = false);
-void debugDrawRect(RectF rect, Colour colour);
-void debugDrawRects(std::vector<RectF> rects, Colour colour);
-void debugDrawQuad(Quad2D<float> quad, Colour colour);
-void debugRenderText(const BasicString text, int ptSize, VectorF position, Colour colour, const char* alignment = "Center");
+namespace DebugDraw 
+{
+	void Shape(DebugDrawType renderType, RectF rect, Colour colour);
+
+	void Point(VectorF point, float size, Colour colour);
+	void Line(VectorF pointA, VectorF pointB, Colour colour);
+	void RectOutline(RectF rect, Colour colour);
+	void RectFill(RectF rect, Colour colour);
+	//void debugDrawRects(std::vector<RectF> rects, Colour colour);
+	//void debugDrawQuad(Quad2D<float> quad, Colour colour);
+	void Text(const BasicString text, int ptSize, VectorF position, Colour colour, const char* alignment = "Center");
+}

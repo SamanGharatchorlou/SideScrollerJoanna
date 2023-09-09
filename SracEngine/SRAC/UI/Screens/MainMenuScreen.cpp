@@ -15,7 +15,7 @@ void MainMenuScreen::slowUpdate()
 	if (released("PlayButton") || true)
 	{
 		u32 flags = 0;
-		setFlag<u32>(flags, Screen::RenderBelow);
+		SetFlag<u32>(flags, Screen::RenderBelow);
 
 		//GameData::Get().uiManager->controller()->addScreen(UIScreen::Type::Settings, flags);
 		GameData::Get().systemStateManager->addState(SystemStates::GameState);

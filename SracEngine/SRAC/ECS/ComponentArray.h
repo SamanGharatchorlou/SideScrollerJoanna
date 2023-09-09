@@ -53,7 +53,13 @@ namespace ECS
 
 		T& GetComponent(Entity entity)
 		{
-			ASSERT(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity], "Entity does not have an entry in this component list");
+			if(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity]) {
+                        
+			} else {
+            int a = 4;            
+			}
+
+			ASSERT(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity], "Entity %d does not have an entry in this component list", entity);
 
 			u32 index = entityToComponent[entity];
 			return components[index];
