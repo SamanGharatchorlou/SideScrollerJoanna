@@ -42,6 +42,17 @@ namespace ECS
 				acceleration *= speed_factor;
 			}
 
+			if (state.action == ActionState::Jump)
+			{
+				const float speed_factor = 5.0f;
+				maxSpeed *= speed_factor;
+
+				if (state.previousAction != ActionState::Jump)
+				{
+					velocity.speed -= VectorF(0.0f, maxSpeed.y);
+				}
+			}
+
 			if(physics.applyGravity) 
 			{
 				acceleration += VectorF(0.0f, 10.0f);

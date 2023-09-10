@@ -13,6 +13,8 @@ enum class ActionState
 	Idle,
 	Walk,
 	Run,
+	Jump,
+	Fall,
 	AirAttack,
 	LightAttack,
 	UpLightAttack,
@@ -53,6 +55,9 @@ static void initActionMap()
 	s_actionMap["Idle"] = ActionState::Idle;
 	s_actionMap["Walk"] = ActionState::Walk;
 	s_actionMap["Run"] = ActionState::Run;
+
+	s_actionMap["Jump"] = ActionState::Jump;
+	s_actionMap["Fall"] = ActionState::Fall;
 
 	s_actionMap["AirAttack"] = ActionState::AirAttack;
 	s_actionMap["LightAttack"] = ActionState::LightAttack;

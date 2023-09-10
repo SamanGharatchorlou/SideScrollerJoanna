@@ -14,6 +14,7 @@ namespace ECS
 		static ECS::Component::Type type() { return ECS::Component::Collider; }
 		
 		virtual bool intersects(const Collider& collider) const;
+		virtual bool intersects(const RectF& rect) const;
 		bool contains(VectorF position) const;
 	
 		static bool test1DOverlap(float minA, float maxA, float minB, float maxB);

@@ -59,6 +59,7 @@ namespace ECS
 
 		bool inTransition = false;
 		bool canChange = true;
+		bool onFloor = false;
 
 		static ECS::Component::Type type() { return ECS::Component::CharacterState; }
 	};

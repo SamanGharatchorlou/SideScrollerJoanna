@@ -17,41 +17,61 @@ namespace ECS
 			CharacterState& state = ecs->GetComponent(CharacterState, entity);
 			Velocity& velocity = ecs->GetComponent(Velocity, entity);
 
-			ActionState actionState = ActionState::Idle;
+			ActionState actionState;
 			VectorF direction;
 
-			// Movement
-			if (input->isHeld(Button::Right))
+			if (state.onFloor)
 			{
-				actionState = ActionState::Walk;
-				direction += VectorF(1.0f, 0.0f);
-			}
-
-			if (input->isHeld(Button::Left))
-			{
-				actionState = ActionState::Walk;
-				direction += VectorF(-1.0f, 0.0f);
-			}
-
-			if (input->isHeld(Button::Shift) && actionState == ActionState::Walk)
-			{
-				actionState = ActionState::Run;
-			}
-
-			if (direction.isZero() && velocity.speed.x < velocity.maxSpeed.x * 0.05)
-			{
+				// default
 				actionState = ActionState::Idle;
+
+				// Walk
+				if (input->isHeld(Button::Right))
+				{
+					actionState = ActionState::Walk;
+					direction += VectorF(1.0f, 0.0f);
+				}
+				if (input->isHeld(Button::Left))
+				{
+					actionState = ActionState::Walk;
+					direction += VectorF(-1.0f, 0.0f);
+				}
+
+				// Run
+				if (input->isHeld(Button::Shift) && actionState == ActionState::Walk)
+				{
+					actionState = ActionState::Run;
+				}
+
+				// To Idle
+				if (direction.isZero() && velocity.speed.x < velocity.maxSpeed.x * 0.05)
+				{
+					actionState = ActionState::Idle;
+				}
+
+				// Jump
+				if (input->isPressed(Button::Space))
+				{
+					actionState = ActionState::Jump;
+					direction += VectorF(0.0f, 1.0f);
+					//state.onFloor = false;
+				}
+
+				// Attacks
+				if (input->isCursorPressed(Cursor::ButtonType::Left))
+				{
+					actionState = ActionState::LightAttack;
+				}
 			}
+			else
+			{
+				// default
+				actionState = ActionState::Fall;
+			}
+
 
 			state.facingDirection = direction;
 			state.movementDirection = direction;
-
-			// Attacks
-			if (input->isCursorPressed(Cursor::ButtonType::Left))
-			{
-				actionState = ActionState::LightAttack;
-			}
-
 
 			if (actionState != state.action && state.canChange)
 			{

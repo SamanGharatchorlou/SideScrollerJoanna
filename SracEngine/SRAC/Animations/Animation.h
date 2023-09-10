@@ -1,8 +1,7 @@
 #pragma once
 
-#include "AnimationStates.h"
-
 class Texture;
+enum class ActionState;
 
 struct SpriteSheet
 {
@@ -16,7 +15,7 @@ struct Animation
 {
 	SpriteSheet spriteSheet;
 
-	ActionState action = ActionState::None;
+	ActionState action = (ActionState)0;
 	int startIndex = 0;
 	int frameCount = 0;
 

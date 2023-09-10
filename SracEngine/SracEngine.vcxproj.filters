@@ -339,6 +339,9 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -680,7 +683,7 @@
     <ClInclude Include="GameSource\ECS\EntSystems\PlayerInputSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Animations\AnimationStates.h">
+    <ClInclude Include="SRAC\Animations\CharacterStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\EntSystems\MovementSystem.h">

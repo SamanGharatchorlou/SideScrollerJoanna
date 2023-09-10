@@ -2,7 +2,7 @@
 
 #include "Graphics/Tileset.h"
 #include "Animation.h"
-#include "AnimationStates.h"
+#include "CharacterStates.h"
 
 struct AnimationConfig;
 

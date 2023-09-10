@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp" />
     <ClCompile Include="GameSource\Character\Player.cpp" />
@@ -256,7 +257,7 @@
     <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h" />
     <ClInclude Include="GameSource\Character\Player.h" />
     <ClInclude Include="GameSource\ECS\ComponentsSetup.h" />
-    <ClInclude Include="SRAC\Animations\AnimationStates.h" />
+    <ClInclude Include="SRAC\Animations\CharacterStates.h" />
     <ClInclude Include="GameSource\Configs.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\MovementSystem.h" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Settings>
 	<Title>SIDE SCROLLER JOANNA</Title>
-	<Width>1200</Width>
-	<Height>800</Height>
+	<Width>900</Width>
+	<Height>600</Height>
 	<MusicVolume>25</MusicVolume>
 	<SoundVolume>50</SoundVolume>
 	<Tutorial>OFF</Tutorial>

@@ -52,9 +52,29 @@ namespace ECS
 				 Collider& that_collider = collider_list[i];
 				 if(this_collider.intersects(that_collider)) 
 				 {
-					 transform.targetCenterPosition = transform.baseRect.Center();
-					 //velocity.speed.zero();
+					 VectorF velocity = transform.targetCenterPosition - transform.baseRect.Center();
 
+					 VectorF allowed_velocity;
+
+					 const RectF horizontal_rect = transform.baseRect.Translate(VectorF(velocity.x, 0.0f));
+					 const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
+					 if (can_move_horizontally)
+						 allowed_velocity.x = velocity.x;
+
+					 const RectF vertical_rect = transform.baseRect.Translate(VectorF(0.0f, velocity.y));
+					 const bool can_move_vertically = !that_collider.intersects(vertical_rect);
+					 if (can_move_vertically)
+						 allowed_velocity.y = velocity.y;
+
+					 // todo: the colliders are getting stuck verically
+					 // i.e. bottom of the player collider is lower than the top of the floor collider???
+					 if (ecs->HasComponent(entity, ECS::Component::CharacterState))
+					 {
+						 CharacterState& state = ecs->GetComponent(CharacterState, entity);
+						 state.onFloor = !can_move_vertically;
+					 }
+
+					 transform.targetCenterPosition = transform.baseRect.Center() + allowed_velocity;
 				 }
             }
 		}

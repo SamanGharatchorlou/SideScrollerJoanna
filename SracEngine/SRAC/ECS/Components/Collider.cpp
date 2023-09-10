@@ -7,15 +7,17 @@
 
 namespace ECS 
 {
-	bool Collider::intersects(const Collider& collider) const
+	bool Collider::intersects(const RectF& rect) const
 	{
-		const RectF& thisRect = mRect;
-		const RectF& thatRect = collider.mRect;
-
-		bool xOverlaps = thisRect.LeftPoint() < thatRect.RightPoint() && thisRect.RightPoint() > thatRect.LeftPoint();
-		bool yOverlaps = thisRect.TopPoint() < thatRect.BotPoint() && thisRect.BotPoint() > thatRect.TopPoint();
+		const bool xOverlaps = mRect.LeftPoint() < rect.RightPoint() && mRect.RightPoint() > rect.LeftPoint();
+		const bool yOverlaps = mRect.TopPoint() < rect.BotPoint() && mRect.BotPoint() > rect.TopPoint();
 
 		return xOverlaps && yOverlaps;
+	}
+
+	bool Collider::intersects(const Collider& collider) const
+	{
+		return intersects(collider.mRect);
 	}
 
 	bool Collider::contains(VectorF position) const 
