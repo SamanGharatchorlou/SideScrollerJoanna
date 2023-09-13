@@ -54,6 +54,7 @@ void DebugMenu::DoEntitySystemWindow()
             SetFlag<u64>(type, ECS::archetypeBit(DoTileMapDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoColliderDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoCharacterStateDebugMenu(s_selectedEntity)));
+            SetFlag<u64>(type, ECS::archetypeBit(DoVelocityDebugMenu(s_selectedEntity)));
 
             ECS::Archetype entity_type = ecs->entities.GetAchetype(s_selectedEntity);
             for (u32 i = 0; i < ECS::Component::Count; i++) 

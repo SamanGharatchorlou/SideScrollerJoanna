@@ -24,7 +24,7 @@ namespace ECS
 
 
 			// new frame calculations
-			VectorF acceleration = velocity.acceleration * state.movementDirection;
+			velocity.currAcceleration = velocity.acceleration * state.movementDirection;
 			VectorF maxSpeed = velocity.maxSpeed;
 
 
@@ -39,27 +39,36 @@ namespace ECS
 				// also dont want this, we want almost instant stop to turn and move the other way
 				const float speed_factor = 3.0f;
 				maxSpeed *= speed_factor;
-				acceleration *= speed_factor;
+				velocity.currAcceleration *= speed_factor;
 			}
 
 			if (state.action == ActionState::Jump)
 			{
-				const float speed_factor = 5.0f;
-				maxSpeed *= speed_factor;
-
-				if (state.previousAction != ActionState::Jump)
+				// do the actual jump
+				if (state.jumpped)
 				{
+					const float speed_factor = 5.0f;
+					maxSpeed *= speed_factor;
+
 					velocity.speed -= VectorF(0.0f, maxSpeed.y);
 				}
 			}
 
 			if(physics.applyGravity) 
 			{
-				acceleration += VectorF(0.0f, 10.0f);
-				acceleration.clamp(velocity.maxAcceleration * -1.0f, velocity.maxAcceleration);
+				velocity.currAcceleration += VectorF(0.0f, 10.0f);
+
+				if (state.action == ActionState::Fall)
+					velocity.currAcceleration += VectorF(0.0f, 10.0f);
+				else if (state.IsJumping())
+				{
+					velocity.currAcceleration -= VectorF(0.0f, 5.0f);
+				}
+
+				velocity.currAcceleration.clamp(velocity.maxAcceleration * -1.0f, velocity.maxAcceleration);
 			}
 
-			VectorF nextSpeed = velocity.speed + (acceleration * dt);
+			VectorF nextSpeed = velocity.speed + (velocity.currAcceleration * dt);
 			velocity.speed = nextSpeed.clamp(maxSpeed * -1.0f, maxSpeed);
 
 			if (state.facingDirection.x < 0)
@@ -79,8 +88,10 @@ namespace ECS
 			}
 				
 			// set a new speed, we can set this again next frame
-			velocity.speed = physics.physics.applyDrag(velocity.speed, maxSpeed, acceleration, drag);
+			velocity.speed = physics.physics.applyDrag(velocity.speed, maxSpeed, velocity.currAcceleration, drag);
 			transform.targetCenterPosition = transform.baseRect.Translate(velocity.speed).Center();
+
+			int a = 4;
 		}
 	}
 }

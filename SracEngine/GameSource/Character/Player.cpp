@@ -23,7 +23,7 @@ void Player::Init()
 
 	ECS::Velocity velocity;
 	velocity.acceleration = VectorF(40.0f, 40.0f);
-	velocity.maxSpeed = VectorF(2.0f, 2.0f);
+	velocity.maxSpeed = VectorF(20.0f, 20.0f);
 	velocity.maxAcceleration = VectorF(200.0f, 200.0f);
 
 	ECS::MovementPhysics physics;

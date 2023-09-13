@@ -1,8 +1,7 @@
 #pragma once
 
-#include <unordered_map>
+#include <unordered_map> // could remove this by moving it into .cpp
 #include "Core/StringBuffers.h"
-#include "Core/Vector2D.h"
 
 class Texture;
 
@@ -13,12 +12,15 @@ enum class ActionState
 	Idle,
 	Walk,
 	Run,
+
 	Jump,
 	Fall,
+
 	AirAttack,
 	LightAttack,
 	UpLightAttack,
 	HeavyAttack,
+
 	Alert,
 	Hurt,
 	Dead,

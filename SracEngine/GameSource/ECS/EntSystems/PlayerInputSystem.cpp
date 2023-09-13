@@ -10,7 +10,7 @@ namespace ECS
 	void PlayerInputSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
-		const InputManager* input = GameData::Get().inputManager;
+		const InputManager* input = InputManager::Get();
 ;
 		for (Entity entity : entities)
 		{
@@ -19,6 +19,15 @@ namespace ECS
 
 			ActionState actionState;
 			VectorF direction;
+
+			// NEW -----------------
+			// state.states.Top().fastUpdate(dt);
+			state.states.Top().slowUpdate(dt);
+
+			// -----------------
+
+			// reset a bunch of states here
+			state.jumpped = false;
 
 			if (state.onFloor)
 			{
@@ -53,8 +62,8 @@ namespace ECS
 				if (input->isPressed(Button::Space))
 				{
 					actionState = ActionState::Jump;
-					direction += VectorF(0.0f, 1.0f);
-					//state.onFloor = false;
+					state.jumpped = true;
+					//direction += VectorF(0.0f, 1.0f);
 				}
 
 				// Attacks
@@ -65,8 +74,15 @@ namespace ECS
 			}
 			else
 			{
-				// default
-				actionState = ActionState::Fall;
+				if (velocity.speed.y < 0.0f)
+				{
+					actionState = ActionState::Jump;
+				}
+				else
+				{
+					// default
+					actionState = ActionState::Fall;
+				}
 			}
 
 
@@ -77,6 +93,8 @@ namespace ECS
 			{
 				state.previousAction = state.action;
 				state.action = actionState;
+
+
 
 				DebugPrint(Log, "Setting action %s", actionToString(actionState).c_str());
 			}

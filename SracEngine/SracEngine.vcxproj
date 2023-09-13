@@ -160,6 +160,7 @@
     <ClCompile Include="SRAC\Audio\AudioManager.cpp" />
     <ClCompile Include="SRAC\Audio\Channel.cpp" />
     <ClCompile Include="SRAC\Audio\SoundController.cpp" />
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\VelocityDebugMenu.cpp" />
     <ClCompile Include="SRAC\ECS\Components\Collider.cpp" />
     <ClCompile Include="SRAC\Physics\QuadCollider.cpp" />
     <ClCompile Include="SRAC\Core\Maths.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h" />
     <ClInclude Include="GameSource\Character\Player.h" />
     <ClInclude Include="GameSource\ECS\ComponentsSetup.h" />
+    <ClInclude Include="GameSource\PlayerStates\PlayerState.h" />
     <ClInclude Include="SRAC\Animations\CharacterStates.h" />
     <ClInclude Include="GameSource\Configs.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h" />
@@ -269,6 +271,7 @@
     <ClInclude Include="SRAC\Audio\AudioManager.h" />
     <ClInclude Include="SRAC\Audio\Channel.h" />
     <ClInclude Include="SRAC\Audio\SoundController.h" />
+    <ClInclude Include="SRAC\Core\Stack.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\Components\ComponentDebugMenu.h" />
     <ClInclude Include="SRAC\ECS\Components\Collider.h" />
     <ClInclude Include="SRAC\Physics\QuadCollider.h" />

@@ -28,6 +28,12 @@ namespace ECS
 			if(HasFlag(collider.mFlags, Collider::Flags::Static))
 				continue;
 
+			if (ecs->HasComponent(entity, ECS::Component::CharacterState))
+			{
+				CharacterState& state = ecs->GetComponent(CharacterState, entity);
+				state.onFloor = false;
+			}
+
 			collider.mRect.SetCenter(transform.targetCenterPosition);
 		}
 
@@ -35,7 +41,10 @@ namespace ECS
 		{
 			Collider& this_collider = ecs->GetComponent(Collider, entity);
 			Transform& transform = ecs->GetComponent(Transform, entity);
-			//Velocity& velocity = ecs->GetComponent(Velocity, entity);
+			
+			Velocity* velocityy = nullptr;
+			if(ecs->HasComponent(entity, ECS::Component::Velocity))
+				velocityy = &ecs->GetComponent(Velocity, entity);
 
 			// ignore static colliders, we check against them, but not from them
 			if(HasFlag(this_collider.mFlags, Collider::Flags::Static))
@@ -66,15 +75,28 @@ namespace ECS
 					 if (can_move_vertically)
 						 allowed_velocity.y = velocity.y;
 
-					 // todo: the colliders are getting stuck verically
-					 // i.e. bottom of the player collider is lower than the top of the floor collider???
 					 if (ecs->HasComponent(entity, ECS::Component::CharacterState))
 					 {
 						 CharacterState& state = ecs->GetComponent(CharacterState, entity);
 						 state.onFloor = !can_move_vertically;
 					 }
 
+					 if (!can_move_vertically)
+						 int a = 4;
+
 					 transform.targetCenterPosition = transform.baseRect.Center() + allowed_velocity;
+
+					 if (velocityy)
+					 {
+						 // set the velocity here
+						 if (!can_move_horizontally)
+							 velocityy->speed.x = 0.0f;
+						 if (!can_move_vertically)
+							 velocityy->speed.y = 0.0f;
+
+						 // also need to set acceleraton
+						 // make a velcity reset function matey
+					 }
 				 }
             }
 		}

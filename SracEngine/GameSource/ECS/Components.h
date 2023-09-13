@@ -9,6 +9,12 @@
 #include "Animations/Animator.h"
 #include "Scene/SceneParsing/SceneBuilder.h"
 
+#include "SRAC/Game/GameStates/StateMachine.h"
+#include "SRAC/Game/GameStates/State.h"
+
+#include "Core/Stack.h"
+#include "PlayerStates/PlayerState.h"
+
 class Texture;
 enum class ActionState;
 
@@ -19,6 +25,7 @@ namespace ECS
 		VectorF speed;
 		VectorF maxSpeed;
 
+		VectorF currAcceleration;
 		VectorF acceleration;
 		VectorF maxAcceleration;
 
@@ -57,9 +64,18 @@ namespace ECS
 		VectorF movementDirection;
 		VectorF facingDirection;
 
+		// todo: add character states
+		// i think i will need this
+		Stack8<PlayerState> states;
+
 		bool inTransition = false;
 		bool canChange = true;
+
+		// true on the frame the jump started
+		bool jumpped = false;
 		bool onFloor = false;
+
+		bool IsJumping() const { return !onFloor && action != ActionState::Fall; }
 
 		static ECS::Component::Type type() { return ECS::Component::CharacterState; }
 	};

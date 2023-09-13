@@ -16,13 +16,13 @@ public:
 	void popState();
 	void replaceState(T* state);
 
-	T& getActiveState() const;
-	node<T*>* getActiveStateNode() const;
+	T& Top() const { return *states.back(); }
+	T& getActiveState() const { return *states.back(); }
+	node<T*>* getActiveStateNode() const { states.get_tail(); }
 
 	size_t size() const { return states.size(); }
 
 private:
-	//std::stack<T*> states;
 	LinkedList<T*> states;
 	bool mOwnsStates;
 };
@@ -114,17 +114,4 @@ void StateMachine<T>::replaceState(T* state)
 	{
 		DebugPrint(Error, "Cannot replace state, stack size = %d", states.size());
 	}
-}
-
-template<class T>
-T& StateMachine<T>::getActiveState() const
-{
-	return *states.back();
-}
-
-
-template<class T>
-node<T*>* StateMachine<T>::getActiveStateNode() const
-{
-	return states.get_tail();
 }

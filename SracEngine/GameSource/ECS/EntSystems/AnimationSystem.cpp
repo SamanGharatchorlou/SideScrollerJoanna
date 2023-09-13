@@ -62,7 +62,7 @@ namespace ECS
 				}
 			}
 
-			transform.sizeFactor = animator.activeAnimation().spriteSheet.sizeFactor; // / animator.mBaseSize;
+			transform.sizeFactor = animator.activeAnimation().spriteSheet.sizeFactor;
 		}
 	}
 }
