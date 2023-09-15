@@ -345,6 +345,9 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\VelocityDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\PlayerStates\PlayerStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -768,6 +771,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Core\Stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\PlayerStates\PlayerStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

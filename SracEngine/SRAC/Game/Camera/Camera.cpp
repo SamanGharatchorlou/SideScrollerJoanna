@@ -76,7 +76,7 @@ void Camera::fastUpdate(float dt)
 
 
 
-void Camera::slowUpdate(float dt)
+void Camera::Update(float dt)
 {
 	if (shakeyCam.hasTrauma())
 	{

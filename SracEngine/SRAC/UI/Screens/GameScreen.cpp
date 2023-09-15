@@ -54,7 +54,7 @@ void GameScreen::handleInput(const InputManager* input)
 }
 
 
-void GameScreen::slowUpdate()
+void GameScreen::Update()
 {
 	//UISlider* healthSlider = getSlider("HealthSlider");
 	//if (healthSlider && healthSlider->getValue() == 0.0f)

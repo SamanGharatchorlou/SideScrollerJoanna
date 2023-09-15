@@ -83,9 +83,9 @@ void AudioManager::unload()
 	DebugPrint(Log, "Audio manager unloaded");
 }
 
-void AudioManager::slowUpdate()
+void AudioManager::Update()
 {
-	mSoundController.slowUpdate();
+	mSoundController.Update();
 }
 
 void AudioManager::push(AudioEvent event)

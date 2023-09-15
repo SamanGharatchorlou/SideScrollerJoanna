@@ -4,11 +4,11 @@ template<class T>
 class ActionStack
 {
 public:
-	static const u32 capacity() const { return 7; }
+	static const u32 Capacity() { return 7; }
 
 	void Push(const T& item)
 	{
-		if ( (idx + 1) < capacity() )
+		if ( (idx + 1) < Capacity() )
 		{
 			add = true;
 			stateToAdd = item;
@@ -21,31 +21,41 @@ public:
 			pop = true;
 	}
 
-	void replace(const T& item)
+	void Replace(const T& item)
 	{
-		pop();
+		Pop();
 		add(item);
 	}
 
-	T& Top()
-	{
+	T& Top() { return stack[idx]; }
+	const T& Top() const { return stack[idx]; }
+
+	const T& Previous() const { 
+		if(idx > 0)
+			return stack[idx - 1];
 		return stack[idx];
 	}
 
-	void ProcessStateChanges()
+	void ProcessStateChanges(bool can_change = true)
 	{
 		stateFrames++;
 
+		if(!can_change)
+		{
+			pop = false;
+			add = false;
+		}
+
 		if (pop && add) // replace
 		{
-			stack[idx]->OnExit();
+			stack[idx]->init();
 			stack[idx] = stateToAdd;
-			stack[idx]->OnEnter();
+			stack[idx]->exit();
 			stateFrames = 0;
 		}
 		else if (pop)
 		{
-			stack[idx]->OnExit();
+			stack[idx]->init();
 			idx--;
 			stateFrames = 0;
 		}
@@ -58,7 +68,6 @@ public:
 	}
 
 
-private:
 	T stack[7];
 	T stateToAdd;
 

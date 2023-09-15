@@ -20,7 +20,7 @@ void PauseScreen::handleInput(const InputManager* input)
 }
 
 
-void PauseScreen::slowUpdate()
+void PauseScreen::Update()
 {
 	if (released("SettingsButton"))
 	{

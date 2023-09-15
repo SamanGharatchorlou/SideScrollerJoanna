@@ -28,7 +28,7 @@ void PopupScreen::handleInput(const InputManager* input)
 }
 
 
-void PopupScreen::slowUpdate()
+void PopupScreen::Update()
 {
 	if (released("OkButton"))
 	{

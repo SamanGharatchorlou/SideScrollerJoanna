@@ -15,7 +15,7 @@ public:
 	Animator(AnimationConfig* config);
 	void AddAnimations(AnimationConfig* config);
 
-	void slowUpdate(float dt);
+	void Update(float dt);
 
 	const Animation* getAnimation(ActionState action) const;
 	const Animation& activeAnimation() const { return mAnimations[mAnimationIndex]; }

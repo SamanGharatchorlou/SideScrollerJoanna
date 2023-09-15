@@ -18,7 +18,7 @@ void SettingsScreen::init()
 }
 
 
-void SettingsScreen::slowUpdate()
+void SettingsScreen::Update()
 {
 	AudioManager* audio = AudioManager::Get();
 

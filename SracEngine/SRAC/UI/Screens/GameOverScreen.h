@@ -9,7 +9,7 @@ public:
 	GameOverScreen() { }
 
 	void init() override;
-	void slowUpdate() override;
+	void Update() override;
 	void exit() override { };
 
 	UIScreen::Type type() override { return UIScreen::Type::GameOver; }

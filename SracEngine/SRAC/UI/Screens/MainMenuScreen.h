@@ -13,7 +13,7 @@ public:
 
 	//void updateInputs(const InputManager* input) override;
 	void handleInput(const InputManager* input) { };
-	void slowUpdate() override;
+	void Update() override;
 
 	//void resume() override;
 	//void pause() override;

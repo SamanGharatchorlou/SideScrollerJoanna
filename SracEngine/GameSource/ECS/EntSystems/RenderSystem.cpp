@@ -13,8 +13,8 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
-			Transform& transform = ecs->GetComponent(Transform, entity);
-			Sprite& sprite = ecs->GetComponent(Sprite, entity);
+			Transform& transform = ecs->GetComponentRef(Transform, entity);
+			Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
 
 			RectF renderRect = transform.baseRect;
 			if (!transform.sizeFactor.isZero())

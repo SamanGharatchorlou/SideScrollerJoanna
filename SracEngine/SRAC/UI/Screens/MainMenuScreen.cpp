@@ -9,7 +9,7 @@ void MainMenuScreen::init()
 	//GameData::Get().uiManager->controller()->openPopup("IntroductionPopup");
 };
 
-void MainMenuScreen::slowUpdate()
+void MainMenuScreen::Update()
 {
 	// todo: hack skip right into game state
 	if (released("PlayButton") || true)

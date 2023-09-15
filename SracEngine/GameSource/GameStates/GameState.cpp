@@ -54,12 +54,12 @@ void GameState::fastUpdate(float dt)
 }
 
 
-void GameState::slowUpdate(float dt)
+void GameState::Update(float dt)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ecs->UpdateSystems(dt);
 
-	Camera::Get()->slowUpdate(dt);
+	Camera::Get()->Update(dt);
 
 	Cursor* cursor = GameData::Get().inputManager->getCursor();
 	cursor->mode();

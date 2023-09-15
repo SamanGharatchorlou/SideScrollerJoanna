@@ -111,10 +111,10 @@ void UIManager::update()
 	// update the below one first (order doesnt really matter here)
 	if (HasFlag(screen_node->data->mFlags, Screen::UpdateBelow))
 	{
-		screen_node->prev->data->slowUpdate();
+		screen_node->prev->data->Update();
 	}
 
-	screen_node->data->slowUpdate();
+	screen_node->data->Update();
 }
 
 

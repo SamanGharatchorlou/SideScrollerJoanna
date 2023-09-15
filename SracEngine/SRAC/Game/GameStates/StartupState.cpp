@@ -83,7 +83,7 @@ void StartupState::init()
 	loader.exit();
 }
 
-void StartupState::slowUpdate(float dt)
+void StartupState::Update(float dt)
 {
 	//GameData::Get().systemStateManager->popState();
 

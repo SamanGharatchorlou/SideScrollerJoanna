@@ -21,7 +21,7 @@ public:
 	// follow this object
 	void follow(RectF* rect);
 
-	void slowUpdate(float dt);
+	void Update(float dt);
 	void fastUpdate(float dt);
 
 	template <typename T>

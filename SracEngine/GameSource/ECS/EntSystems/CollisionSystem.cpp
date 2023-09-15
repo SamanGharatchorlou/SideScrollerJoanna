@@ -21,8 +21,8 @@ namespace ECS
 		// first we need to update the collider position with where the entity wants to be
 		for (Entity entity : entities)
 		{
-			Collider& collider = ecs->GetComponent(Collider, entity);
-			Transform& transform = ecs->GetComponent(Transform, entity);
+			Collider& collider = ecs->GetComponentRef(Collider, entity);
+			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
 			// ignore static colliders, they dont move
 			if(HasFlag(collider.mFlags, Collider::Flags::Static))
@@ -30,7 +30,7 @@ namespace ECS
 
 			if (ecs->HasComponent(entity, ECS::Component::CharacterState))
 			{
-				CharacterState& state = ecs->GetComponent(CharacterState, entity);
+				CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 				state.onFloor = false;
 			}
 
@@ -39,13 +39,10 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
-			Collider& this_collider = ecs->GetComponent(Collider, entity);
-			Transform& transform = ecs->GetComponent(Transform, entity);
+			Collider& this_collider = ecs->GetComponentRef(Collider, entity);
+			Transform& transform = ecs->GetComponentRef(Transform, entity);
 			
-			Velocity* velocityy = nullptr;
-			if(ecs->HasComponent(entity, ECS::Component::Velocity))
-				velocityy = &ecs->GetComponent(Velocity, entity);
-
+			Velocity* velocityy = ecs->GetComponent(Velocity, entity);
 			// ignore static colliders, we check against them, but not from them
 			if(HasFlag(this_collider.mFlags, Collider::Flags::Static))
 				continue;
@@ -77,7 +74,7 @@ namespace ECS
 
 					 if (ecs->HasComponent(entity, ECS::Component::CharacterState))
 					 {
-						 CharacterState& state = ecs->GetComponent(CharacterState, entity);
+						 CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 						 state.onFloor = !can_move_vertically;
 					 }
 

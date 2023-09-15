@@ -13,10 +13,9 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
-			const CharacterState& state = ecs->GetComponent(CharacterState, entity);
-			Transform& transform = ecs->GetComponent(Transform, entity);
-			Velocity& velocity = ecs->GetComponent(Velocity, entity);
-			MovementPhysics& physics = ecs->GetComponent(MovementPhysics, entity);
+			const CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+			Transform& transform = ecs->GetComponentRef(Transform, entity);
+			MovementPhysics& physics = ecs->GetComponentRef(MovementPhysics, entity);
 
 			// update the transform with where we wanted to move last frame 
 			// it may have been changed by the collision system
@@ -24,28 +23,28 @@ namespace ECS
 
 
 			// new frame calculations
-			velocity.currAcceleration = velocity.acceleration * state.movementDirection;
+			velocity.acceleration = velocity.acceleration * state.movementDirection;
 			VectorF maxSpeed = velocity.maxSpeed;
 
 
-			if (state.action == ActionState::Walk)
+			if (state.Action() == ActionState::Walk)
 			{
 				// todo: this direction thing is wrong
 				// also dont want this, we want almost instant stop to turn and move the other way
 			}
-			else if (state.action == ActionState::Run)
+			else if (state.Action() == ActionState::Run)
 			{
 				//todo: this direction thing is wrong
 				// also dont want this, we want almost instant stop to turn and move the other way
 				const float speed_factor = 3.0f;
 				maxSpeed *= speed_factor;
-				velocity.currAcceleration *= speed_factor;
+				velocity.acceleration *= speed_factor;
 			}
 
-			if (state.action == ActionState::Jump)
+			if (state.Action() == ActionState::Jump)
 			{
 				// do the actual jump
-				if (state.jumpped)
+				if(state.actions.stateFrames == 1)
 				{
 					const float speed_factor = 5.0f;
 					maxSpeed *= speed_factor;
@@ -56,19 +55,21 @@ namespace ECS
 
 			if(physics.applyGravity) 
 			{
-				velocity.currAcceleration += VectorF(0.0f, 10.0f);
+				velocity.acceleration += VectorF(0.0f, 10.0f);
 
-				if (state.action == ActionState::Fall)
-					velocity.currAcceleration += VectorF(0.0f, 10.0f);
+				if (state.Action() == ActionState::Fall)
+				{
+					velocity.acceleration += VectorF(0.0f, 10.0f);
+				}
 				else if (state.IsJumping())
 				{
-					velocity.currAcceleration -= VectorF(0.0f, 5.0f);
+					velocity.acceleration -= VectorF(0.0f, 5.0f);
 				}
 
-				velocity.currAcceleration.clamp(velocity.maxAcceleration * -1.0f, velocity.maxAcceleration);
+				velocity.acceleration.clamp(velocity.maxAcceleration * -1.0f, velocity.maxAcceleration);
 			}
 
-			VectorF nextSpeed = velocity.speed + (velocity.currAcceleration * dt);
+			VectorF nextSpeed = velocity.speed + (velocity.acceleration * dt);
 			velocity.speed = nextSpeed.clamp(maxSpeed * -1.0f, maxSpeed);
 
 			if (state.facingDirection.x < 0)
@@ -88,7 +89,7 @@ namespace ECS
 			}
 				
 			// set a new speed, we can set this again next frame
-			velocity.speed = physics.physics.applyDrag(velocity.speed, maxSpeed, velocity.currAcceleration, drag);
+			velocity.speed = physics.physics.applyDrag(velocity.speed, maxSpeed, velocity.acceleration, drag);
 			transform.targetCenterPosition = transform.baseRect.Translate(velocity.speed).Center();
 
 			int a = 4;

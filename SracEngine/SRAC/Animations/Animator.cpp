@@ -153,7 +153,7 @@ bool Animator::RunActive(float dt)
 	return false;
 }
 
-void Animator::slowUpdate(float dt)
+void Animator::Update(float dt)
 {
 	if (DebugMenu::UsingPlaylist())
 		return;

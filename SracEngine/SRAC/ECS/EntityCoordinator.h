@@ -50,7 +50,16 @@ namespace ECS
 		}
 
 		template<class T>
-		T& GetComponent(Entity entity, Component::Type type) { return components.GetComponent<T>(entity, type); }
+		T& GetComponentRef(Entity entity, Component::Type type) { return components.GetComponent<T>(entity, type); }
+
+		template<class T>
+		T* GetComponent(Entity entity, Component::Type type) 
+		{ 
+			if(entities.HasComponent(entity, type))
+				return &components.GetComponent<T>(entity, type); 
+			
+			return nullptr;
+		}
 
 		template<class T>
 		ComponentArray<T>& GetComponents(Component::Type type) { return *static_cast<ComponentArray<T>*>(components.componentArrays[type]); }
@@ -76,5 +85,6 @@ namespace ECS
 #define RegisterComponent(compType, reserve) RegisterComponent<ECS::compType>(ECS::compType::type(), reserve)
 #define AddComponent(compType, entity, component) AddComponent<ECS::compType>(entity, component, ECS::compType::type())
 #define GetComponent(compType, entity) GetComponent<ECS::compType>(entity, ECS::compType::type())
+#define GetComponentRef(compType, entity) GetComponentRef<ECS::compType>(entity, ECS::compType::type())
 }
 

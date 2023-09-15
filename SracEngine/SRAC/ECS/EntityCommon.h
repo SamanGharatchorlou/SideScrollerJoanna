@@ -11,18 +11,17 @@ namespace ECS
 	using Entity = u32;		// simple id for each entity
 	using Archetype = u64;	// bitwise encoding for every component type (max 64), a collection of types (key)
 	using Signature = u64;	// a collection of type for a system, called its signature (lock)
-
+	
+	constexpr Entity EntityInvalid = -1;
 	constexpr Archetype ArchetypeInvalid = -1;
 
 	struct Component
 	{
 		enum Type : u64
 		{
-			Velocity,
 			Transform,
 			Sprite,
-			PlayerInput,
-			CharacterState,
+			PlayerController,
 			Physics,
 			Animation,
 			TileMap,
@@ -34,11 +33,9 @@ namespace ECS
 
 	static constexpr const char* ComponentNames[Component::Count]
 	{
-		"Velocity", 
 		"Transform", 
-		"Sprite", 
-		"PlayerInput",
-		"CharacterState", 
+		"Sprite",
+		"PlayerController", 
 		"Physics", 
 		"Animation", 
 		"TileMap",

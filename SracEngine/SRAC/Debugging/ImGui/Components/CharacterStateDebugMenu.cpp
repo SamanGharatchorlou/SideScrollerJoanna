@@ -15,11 +15,11 @@ ECS::Component::Type DebugMenu::DoCharacterStateDebugMenu(ECS::Entity& entity)
 	{
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-			ECS::CharacterState& cs = ecs->GetComponent(CharacterState, entity);
+			ECS::CharacterState& cs = ecs->GetComponentRef(CharacterState, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
-				ImGui::Text("Current State: %s", actionToString(cs.action).c_str());
-				ImGui::Text("Previous State: %s", actionToString(cs.previousAction).c_str());
+				ImGui::Text("Current State: %s", actionToString(cs.Action()).c_str());
+				ImGui::Text("Previous State: %s", actionToString(cs.actions.Previous().action).c_str());
 
 				ImGui::VectorText("Movement Direction", cs.movementDirection);
 				ImGui::VectorText("Facing Direction", cs.facingDirection);

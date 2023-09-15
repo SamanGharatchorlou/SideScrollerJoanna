@@ -22,7 +22,7 @@ void PauseState::handleInput()
 
 }
 
-void PauseState::slowUpdate(float dt)
+void PauseState::Update(float dt)
 {
 
 }

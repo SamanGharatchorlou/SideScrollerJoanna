@@ -5,36 +5,53 @@
 #include "Animations/CharacterStates.h"
 
 #define DECLARE_CONSTRUCTOR(type) \
- type##State(ActionStack<PlayerState>& _actionState, ActionState _state) : PlayerState(_actionState,_state) { }
+ type##State(ActionStack<PlayerState>* _actionState, ActionState _state) : PlayerState(_actionState,_state) { }
 
 struct PlayerState : public State
 {
-	PlayerState(ActionStack<PlayerState>& _actionState, ActionState _state) :
-		actionStack(_actionState), state(_state) { }
+	PlayerState() : entity(ECS::EntityInvalid), action(ActionState::None), actionStack(nullptr)  { }
 
-	ActionStack<PlayerState>& actionStack;
-	const ActionState state;
+	PlayerState(ActionStack<PlayerState>* _actionState, ActionState _state) :
+		actionStack(_actionState), action(_state) { }
+
+	inline PlayerState& operator = (const PlayerState& state) { 
+		entity = state.entity; actionStack = state.actionStack; action = state.action; return *this; 
+	}
+
+	ActionStack<PlayerState>* actionStack;
+	ECS::Entity entity;
+	ActionState action;
 };
 
 struct IdleState : public PlayerState
 {
-	void slowUpdate(float dt) override;
+	void Update(float dt) override;
 };
 
 struct RunState : public PlayerState
 {
 	DECLARE_CONSTRUCTOR(Run);
-	void slowUpdate(float dt) override;
+	void Update(float dt) override;
 };
 
 struct JumpState : public PlayerState
 {
 	DECLARE_CONSTRUCTOR(Jump);
-	void slowUpdate(float dt) override;
+
+	void init() override;
+	void Update(float dt) override;
+};
+
+struct FallState : public PlayerState
+{
+	DECLARE_CONSTRUCTOR(Fall);
+
+	void Update(float dt) override;
 };
 
 struct LightAttackState : public PlayerState
 {
 	DECLARE_CONSTRUCTOR(LightAttack);
-	void slowUpdate(float dt) override;
+
+	void Update(float dt) override;
 };

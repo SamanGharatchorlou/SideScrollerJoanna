@@ -9,7 +9,7 @@ public:
 
 	void init() override { }
 	void handleInput(const InputManager* input) { };
-	void slowUpdate() override { };
+	void Update() override { };
 	void exit() override { }
 
 	UIScreen::Type type() override { return UIScreen::Type::LoadingScreen; }

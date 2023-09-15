@@ -10,7 +10,7 @@ struct State
 	virtual void handleInput() { };
 
 	// State changes etc.
-	virtual void slowUpdate(float dt) { };
+	virtual void Update(float dt) { };
 
 	// Movement, collisions etc 
 	virtual void fastUpdate(float dt) { };
@@ -28,7 +28,7 @@ struct NullState : public State
 {
 	void init() override {}
 	void handleInput() override {}
-	void slowUpdate(float /*dt*/) override { /* do nothing */ }
+	void Update(float /*dt*/) override { /* do nothing */ }
 	void fastUpdate(float /*dt*/) override { /* do nothing */ }
 	void exit() override { 
 		DebugPrint(Warning, "Removing the null state"); 

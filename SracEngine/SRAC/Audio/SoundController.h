@@ -19,7 +19,7 @@ public:
 	void attenuationDistance(float maxDistance) { mAttenuationDistance = maxDistance * maxDistance; }
 	//void setListener(Actor* listener) { mListener = listener; }
 
-	void slowUpdate();
+	void Update();
 
 	void play(const Audio* audio, uintptr_t id, VectorF source);
 	void loop(const Audio* audio, uintptr_t id, VectorF source);

@@ -12,7 +12,7 @@ void GameOverScreen::init()
 }
 
 
-void GameOverScreen::slowUpdate()
+void GameOverScreen::Update()
 {	
 	if (released("ContinueButton"))
 	{

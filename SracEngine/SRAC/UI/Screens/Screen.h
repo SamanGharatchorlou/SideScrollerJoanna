@@ -33,7 +33,7 @@ public:
 
 	virtual void updateInputs(const InputManager* input);
 	virtual void handleInput(const InputManager* input) { };
-	virtual void slowUpdate() { };
+	virtual void Update() { };
 	void render();
 
 	virtual UIScreen::Type type() { return UIScreen::Type::None; }
@@ -62,7 +62,7 @@ public:
 private:
 	void handleInput() override { }
 	void fastUpdate(float dt) override { }
-	void slowUpdate(float dt) { };
+	void Update(float dt) { };
 };
 
 
@@ -73,7 +73,7 @@ public:
 	NullScreen() { }
 
 	void init() { }
-	void slowUpdate() { }
+	void Update() { }
 	void exit() { }
 	void render() { }
 	UIScreen::Type type() { return UIScreen::Type::None; }

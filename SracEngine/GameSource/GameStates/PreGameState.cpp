@@ -33,7 +33,7 @@ void PreGameState::init()
 		audio->push(AudioEvent(AudioEvent::FadeInMusic, "Menu", nullptr, 1000));
 }
 
-void PreGameState::slowUpdate(float dt) 
+void PreGameState::Update(float dt) 
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ecs->UpdateSystems(dt);

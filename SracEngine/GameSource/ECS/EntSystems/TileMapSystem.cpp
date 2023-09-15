@@ -14,7 +14,7 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
-			const TileMap& tile_map = ecs->GetComponent(TileMap, entity);
+			const TileMap& tile_map = ecs->GetComponentRef(TileMap, entity);
 
 			const VectorF window_size = GameData::Get().window->size();
 			const VectorF map_size = tile_map.tileMap.mapSize;

@@ -127,14 +127,14 @@ void GameController::updateLoops(float dt)
 {
 	SystemStateManager* sm = mGameData.systemStateManager;
 
-	AudioManager::Get()->slowUpdate();
+	AudioManager::Get()->Update();
 
 	// Fast update runs updateLoopRepeats number of times per frame
 	float updateLoopRepeats = 10;
 	for (int i = 0; i < updateLoopRepeats; i++)
 		sm->mStates.getActiveState().fastUpdate(dt / updateLoopRepeats);
 
-	sm->mStates.getActiveState().slowUpdate(dt);
+	sm->mStates.getActiveState().Update(dt);
 
 	mGameData.uiManager->update();
 }

@@ -52,7 +52,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
     {
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-            ECS::Animation& anim = ecs->GetComponent(Animation, entity);
+            ECS::Animation& anim = ecs->GetComponentRef(Animation, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				Animator& animator = anim.animator;

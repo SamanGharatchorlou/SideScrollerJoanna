@@ -13,7 +13,7 @@ ECS::Component::Type DebugMenu::DoColliderDebugMenu(ECS::Entity& entity)
     {
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-			ECS::Collider& collider = ecs->GetComponent(Collider, entity);
+			ECS::Collider& collider = ecs->GetComponentRef(Collider, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				RectF rect = collider.mRect;

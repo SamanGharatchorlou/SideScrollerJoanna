@@ -41,7 +41,7 @@ void SoundController::init()
 }
 
 
-void SoundController::slowUpdate()
+void SoundController::Update()
 {
 #if DEBUG_CHECK
 	int counter = 0;

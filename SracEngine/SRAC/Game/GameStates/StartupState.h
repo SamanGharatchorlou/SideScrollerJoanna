@@ -12,7 +12,7 @@ class StartupState : public State
 public:
 	StartupState(GameData& gd);
 	void init() override;
-	void slowUpdate(float dt) override;
+	void Update(float dt) override;
 	void exit() override;
 
 private:

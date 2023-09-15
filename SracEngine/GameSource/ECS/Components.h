@@ -13,25 +13,13 @@
 #include "SRAC/Game/GameStates/State.h"
 
 #include "Core/Stack.h"
-#include "PlayerStates/PlayerState.h"
+#include "PlayerStates/PlayerStates.h"
 
 class Texture;
 enum class ActionState;
 
 namespace ECS
 {
-	struct Velocity
-	{
-		VectorF speed;
-		VectorF maxSpeed;
-
-		VectorF currAcceleration;
-		VectorF acceleration;
-		VectorF maxAcceleration;
-
-		static ECS::Component::Type type() { return ECS::Component::Velocity; }
-	};
-
 	struct Transform
 	{
 		RectF baseRect;
@@ -50,34 +38,37 @@ namespace ECS
 		static ECS::Component::Type type() { return ECS::Component::Sprite; }
 	};
 
-	// todo: an unused component really, could i just set the type somewhere and not event bother
-	// with adding to its component array
-	struct PlayerInput
+	struct Velocity
 	{
-		static ECS::Component::Type type() { return ECS::Component::PlayerInput; }
+		VectorF speed;
+		VectorF maxSpeed;	// config
+
+		//VectorF currAcceleration;
+		VectorF acceleration;
+		VectorF maxAcceleration; // config
+	};
+
+	struct PlayerController
+	{
+		Velocity velocity;
+		ActionStack<PlayerState> actions;
+
+		VectorF movementDirection;
+		VectorF facingDirection;
+
+		// true on the frame the jump started
+		//bool jumpped = false;
+		bool onFloor = false;
+
+		ActionState Action() const { return actions.Top().action; }
+		bool IsJumping() const { return !onFloor && Action() != ActionState::Fall; }
+
+		static ECS::Component::Type type() { return ECS::Component::PlayerController; }
 	};
 
 	struct CharacterState
 	{
-		ActionState previousAction;
-		ActionState action;
-		VectorF movementDirection;
-		VectorF facingDirection;
-
-		// todo: add character states
-		// i think i will need this
-		Stack8<PlayerState> states;
-
-		bool inTransition = false;
-		bool canChange = true;
-
-		// true on the frame the jump started
-		bool jumpped = false;
 		bool onFloor = false;
-
-		bool IsJumping() const { return !onFloor && action != ActionState::Fall; }
-
-		static ECS::Component::Type type() { return ECS::Component::CharacterState; }
 	};
 
 	struct MovementPhysics
@@ -92,6 +83,10 @@ namespace ECS
 	{
 		Animator animator;
 		std::vector<Texture*> spriteSheets;
+
+		ActionState action;
+		bool inTransition = false;
+		bool canChange = true;
 
 		static ECS::Component::Type type() { return ECS::Component::Animation; }
 	};

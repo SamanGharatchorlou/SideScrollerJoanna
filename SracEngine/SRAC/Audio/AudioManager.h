@@ -46,7 +46,7 @@ public:
 	void preLoad();
 
 	//void setSource(Actor* listener, float attenuationDistance);
-	void slowUpdate();
+	void Update();
 
 	Audio* getAudio(const char* label) const;
 	const char* getLabel(Audio* audio) const;

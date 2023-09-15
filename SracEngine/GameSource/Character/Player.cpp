@@ -21,10 +21,6 @@ void Player::Init()
 	sprite.texture = TextureManager::Get()->getTexture("PlayerMovementSheet", FileManager::Image_Animations);
 	sprite.renderLayer = 5;
 
-	ECS::Velocity velocity;
-	velocity.acceleration = VectorF(40.0f, 40.0f);
-	velocity.maxSpeed = VectorF(20.0f, 20.0f);
-	velocity.maxAcceleration = VectorF(200.0f, 200.0f);
 
 	ECS::MovementPhysics physics;
 	physics.physics.mDragFactor = 0.35f;
@@ -39,13 +35,20 @@ void Player::Init()
 	ECS::Collider collider;
 	collider.mRect = transform.baseRect;
 
+	ECS::PlayerController player_controller;
+
+	ECS::Velocity velocity;
+	velocity.acceleration = VectorF(40.0f, 40.0f);
+	velocity.maxSpeed = VectorF(20.0f, 20.0f);
+	velocity.maxAcceleration = VectorF(200.0f, 200.0f);
+	player_controller.velocity = velocity;
+
+
 	ECS::Entity entity = ecs->CreateEntity("Player");
 
 	ecs->AddComponent(Transform, entity, transform);
 	ecs->AddComponent(Sprite, entity, sprite);
-	ecs->AddComponent(PlayerInput, entity, ECS::PlayerInput());
-	ecs->AddComponent(CharacterState, entity, ECS::CharacterState());
-	ecs->AddComponent(Velocity, entity, velocity);
+	ecs->AddComponent(PlayerController, entity, player_controller);
 	ecs->AddComponent(MovementPhysics, entity, physics);
 	ecs->AddComponent(Animation, entity, animation);
 	ecs->AddComponent(Collider, entity, collider );

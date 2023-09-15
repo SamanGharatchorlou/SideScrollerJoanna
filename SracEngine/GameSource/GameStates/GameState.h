@@ -8,7 +8,7 @@ class GameState : public State
 {
 public:
 	void init() override;
-	void slowUpdate(float dt) override;
+	void Update(float dt) override;
 	void fastUpdate(float dt) override;
 	void handleInput() override;
 	
