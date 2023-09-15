@@ -19,10 +19,10 @@ namespace ECS
 
 			ActionState actionState;
 			VectorF direction;
-
+			//state.states.Process
 			// NEW -----------------
 			// state.states.Top().fastUpdate(dt);
-			state.states.Top().slowUpdate(dt);
+			//state.states.Top().slowUpdate(dt);
 
 			// -----------------
 

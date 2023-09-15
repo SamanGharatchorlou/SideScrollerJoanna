@@ -1,43 +1,69 @@
 #pragma once
 
 template<class T>
-class StateMachine
+class ActionStack
 {
 public:
+	static const u32 capacity() const { return 7; }
+
 	void Push(const T& item)
 	{
-		mTopIndex++;
-		mStack[mTopIndex] = item;
+		if ( (idx + 1) < capacity() )
+		{
+			add = true;
+			stateToAdd = item;
+		}
 	}
 
 	void Pop()
 	{
-		if (mTopIndex > 0)
-			mTopIndex--;
+		if (idx >= 0)
+			pop = true;
+	}
+
+	void replace(const T& item)
+	{
+		pop();
+		add(item);
 	}
 
 	T& Top()
 	{
-		return mStack[mTopIndex];
+		return stack[idx];
 	}
 
 	void ProcessStateChanges()
 	{
+		stateFrames++;
+
 		if (pop && add) // replace
 		{
-			mStack[mTopIndex]->OnExit();
-			mStack[mTopIndex] = mStateToAdd
-			mStack[mTopIndex]->OnEnter();
+			stack[idx]->OnExit();
+			stack[idx] = stateToAdd;
+			stack[idx]->OnEnter();
+			stateFrames = 0;
+		}
+		else if (pop)
+		{
+			stack[idx]->OnExit();
+			idx--;
+			stateFrames = 0;
+		}
+		else if(add)
+		{
+			idx++;
+			stack[idx] = stateToAdd;
+			stateFrames = 0;
 		}
 	}
 
 
 private:
-	int mTopIndex;
-	T mStack[8];
+	T stack[7];
+	T stateToAdd;
 
-	T mStateToAdd;
-
+	u32 stateFrames;
+	int idx;
 	bool pop;
 	bool add;
 };
