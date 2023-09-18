@@ -13,12 +13,11 @@ ECS::Component::Type DebugMenu::DoVelocityDebugMenu(ECS::Entity& entity)
 	{
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-			ECS::Velocity& velocity = ecs->GetComponent(Velocity, entity);
+			ECS::Velocity& velocity = ecs->GetComponentRef(Velocity, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				ImGui::VectorText("Speed", velocity.speed);
 				ImGui::VectorText("Max Speed", velocity.maxSpeed);
-				ImGui::VectorText("Current Acceleration", velocity.currAcceleration);
 				ImGui::VectorText("Acceleration", velocity.acceleration);
 				ImGui::VectorText("Max Acceleration", velocity.maxAcceleration);
 
@@ -27,16 +26,13 @@ ECS::Component::Type DebugMenu::DoVelocityDebugMenu(ECS::Entity& entity)
 
 			if (ImGui::TreeNode("Display"))
 			{
-				if (ecs->HasComponent(entity, ECS::Component::Transform))
+				if (const ECS::Transform* transform = ecs->GetComponent(Transform, entity))
 				{
-					const ECS::Transform& transform = ecs->GetComponent(Transform, entity);
-
-					VectorF A = transform.baseRect.Center();
+					VectorF A = transform->baseRect.Center();
 					VectorF B = A + velocity.speed.normalise();
 
 					DebugDraw::Line(A, B, Colour::Green);
 				}
-
 
 				ImGui::TreePop();
 			}

@@ -45,7 +45,7 @@
     <ClCompile Include="SRAC\ECS\Components\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Physics\QuadCollider.cpp">
+    <ClCompile Include="SRAC\Core\Physics\QuadCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Debugging\DebugDraw.cpp">
@@ -132,7 +132,7 @@
     <ClCompile Include="SRAC\Input\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Physics\Physics.cpp">
+    <ClCompile Include="SRAC\Core\Physics\Fisics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\System\Files\FileManager.cpp">
@@ -270,10 +270,10 @@
     <ClCompile Include="GameSource\ECS\EntSystems\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\ECS\EntSystems\PlayerInputSystem.cpp">
+    <ClCompile Include="GameSource\ECS\EntSystems\PlayerControllerSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\ECS\EntSystems\MovementSystem.cpp">
+    <ClCompile Include="GameSource\ECS\EntSystems\PhysicsSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameSource\Configs.cpp">
@@ -348,6 +348,9 @@
     <ClCompile Include="GameSource\PlayerStates\PlayerStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\PlayerControllerDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -377,7 +380,7 @@
     <ClInclude Include="SRAC\ECS\Components\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Physics\QuadCollider.h">
+    <ClInclude Include="SRAC\Core\Physics\QuadCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Debugging\DebugDraw.h">
@@ -482,7 +485,7 @@
     <ClInclude Include="SRAC\Input\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Physics\Physics.h">
+    <ClInclude Include="SRAC\Core\Physics\Fisics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml.hpp">
@@ -686,13 +689,13 @@
     <ClInclude Include="SRAC\ECS\EntityCoordinator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\ECS\EntSystems\PlayerInputSystem.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\PlayerControllerSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Animations\CharacterStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\ECS\EntSystems\MovementSystem.h">
+    <ClInclude Include="GameSource\ECS\EntSystems\PhysicsSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\Configs.h">

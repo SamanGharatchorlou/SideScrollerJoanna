@@ -30,13 +30,15 @@ namespace ECS
 		bool IsAlive(Entity entity) const { return entities.GetAchetype(entity) != ArchetypeInvalid; }
 
 		template<class T>
-		void AddComponent(Entity entity, const T& component, Component::Type type)
+		T& AddComponent(Entity entity, Component::Type type)
 		{
-			components.AddComponent<T>(entity, component, type);
+			T& comp = components.AddComponent<T>(entity, type);
 			entities.AddComponent(entity, type);
 
 			Archetype archetype = entities.GetAchetype(entity);
 			systems.EntityAddType(entity, archetype);
+
+			return comp;
 		}
 
 		template<class T>
@@ -83,7 +85,7 @@ namespace ECS
 	};
 
 #define RegisterComponent(compType, reserve) RegisterComponent<ECS::compType>(ECS::compType::type(), reserve)
-#define AddComponent(compType, entity, component) AddComponent<ECS::compType>(entity, component, ECS::compType::type())
+#define AddComponent(compType, entity) AddComponent<ECS::compType>(entity, ECS::compType::type())
 #define GetComponent(compType, entity) GetComponent<ECS::compType>(entity, ECS::compType::type())
 #define GetComponentRef(compType, entity) GetComponentRef<ECS::compType>(entity, ECS::compType::type())
 }

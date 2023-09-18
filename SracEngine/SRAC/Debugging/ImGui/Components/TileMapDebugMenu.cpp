@@ -19,7 +19,7 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
     {
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-            ECS::TileMap& tile_map = ecs->GetComponent(TileMap, entity);
+            ECS::TileMap& tile_map = ecs->GetComponentRef(TileMap, entity);
 
 			ImGui::Checkbox("Display Grid Lines", &s_displaygridLines);
 			if (s_displaygridLines && tile_map.tileMap.tileLayers.size() > 0)

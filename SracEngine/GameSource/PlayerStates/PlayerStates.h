@@ -4,23 +4,31 @@
 #include "Core/Stack.h"
 #include "Animations/CharacterStates.h"
 
-#define DECLARE_CONSTRUCTOR(type) \
- type##State(ActionStack<PlayerState>* _actionState, ActionState _state) : PlayerState(_actionState,_state) { }
+#include "Core/ObjectPool.h"
+
+namespace ECS { struct PlayerController; }
 
 struct PlayerState : public State
 {
-	PlayerState() : entity(ECS::EntityInvalid), action(ActionState::None), actionStack(nullptr)  { }
-
-	PlayerState(ActionStack<PlayerState>* _actionState, ActionState _state) :
-		actionStack(_actionState), action(_state) { }
+	PlayerState() : action(ActionState::None), playerController(nullptr)  { }
 
 	inline PlayerState& operator = (const PlayerState& state) { 
-		entity = state.entity; actionStack = state.actionStack; action = state.action; return *this; 
+		playerController = state.playerController; action = state.action; return *this; 
 	}
 
-	ActionStack<PlayerState>* actionStack;
-	ECS::Entity entity;
+	void SetBaseParameters(ECS::PlayerController* _playerController, ActionState _state) { playerController = _playerController; action = _state;  }
+	
+	void Push(ActionState action);
+	void PopSelf(ActionState action);
+
+
+	ECS::PlayerController* playerController;
 	ActionState action;
+};
+
+struct PlayerStatePool : public ObjectPool<PlayerState, ActionState>
+{
+	PlayerState* createNewObjects(ActionState type, int count, int& outSize) const override;
 };
 
 struct IdleState : public PlayerState
@@ -30,28 +38,21 @@ struct IdleState : public PlayerState
 
 struct RunState : public PlayerState
 {
-	DECLARE_CONSTRUCTOR(Run);
 	void Update(float dt) override;
 };
 
 struct JumpState : public PlayerState
 {
-	DECLARE_CONSTRUCTOR(Jump);
-
 	void init() override;
 	void Update(float dt) override;
 };
 
 struct FallState : public PlayerState
 {
-	DECLARE_CONSTRUCTOR(Fall);
-
 	void Update(float dt) override;
 };
 
 struct LightAttackState : public PlayerState
 {
-	DECLARE_CONSTRUCTOR(LightAttack);
-
 	void Update(float dt) override;
 };

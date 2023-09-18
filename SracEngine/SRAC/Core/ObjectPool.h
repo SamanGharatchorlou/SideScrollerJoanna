@@ -29,7 +29,7 @@ protected:
 	std::vector<K*> mBlockHeads;
 };
 
-
+ 
 template<class K, typename T>
 void ObjectPool<K, T>::load(const std::vector<T>& types, int count)
 {

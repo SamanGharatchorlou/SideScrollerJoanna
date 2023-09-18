@@ -4,7 +4,7 @@
 
 class InputManager;
 
-class Physics
+class Fisics
 {
 public:
 	struct Data
@@ -24,7 +24,7 @@ public:
 	};
 
 public:
-	Physics() : mForce(0), mMaxVelocity(0), mDragFactor(0), mMass(1.0f) { };
+	Fisics() : mForce(0), mMaxVelocity(0), mDragFactor(0), mMass(1.0f) { };
 
 	void init(float force, float maxVelocity);
 	void handleInput(const InputManager* input);

@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Physics.h"
+#include "Fisics.h"
 
 #include "Input/InputManager.h"
 
 
-void Physics::init(float force, float maxVelocity)
+void Fisics::init(float force, float maxVelocity)
 {
 	mForce = force;
 	mMaxVelocity = maxVelocity;
@@ -12,7 +12,7 @@ void Physics::init(float force, float maxVelocity)
 }
 
 
-void Physics::handleInput(const InputManager* input)
+void Fisics::handleInput(const InputManager* input)
 {
 	mAcceleration.zero();
 	mHasForce.zero();
@@ -47,7 +47,7 @@ void Physics::handleInput(const InputManager* input)
 
 
 
-void Physics::fastUpdate(float dt)
+void Fisics::fastUpdate(float dt)
 {
 	mVelocity += mAcceleration * dt;
 	mVelocity = mVelocity.clamp( -mMaxVelocity, mMaxVelocity);
@@ -55,17 +55,17 @@ void Physics::fastUpdate(float dt)
 }
 
 
-void Physics::move(VectorF velocity, float dt)
+void Fisics::move(VectorF velocity, float dt)
 {
 	mRect = mRect.Translate(velocity * dt);
 }
 
-void Physics::move(float dt)
+void Fisics::move(float dt)
 {
 	mRect = mRect.Translate(mVelocity * dt);
 }
 
-void Physics::move(VectorF movement)
+void Fisics::move(VectorF movement)
 {
 	mRect = mRect.Translate(movement);
 }
@@ -73,7 +73,7 @@ void Physics::move(VectorF movement)
 
 // TODO: I think because the force is huge, i.e. instanct accel the normalisation is essentially not doing anything...
 // fix me!
-void Physics::accellerate(VectorF acceleration)
+void Fisics::accellerate(VectorF acceleration)
 {
 	if (acceleration.x != 0.0f)
 	{
@@ -91,19 +91,19 @@ void Physics::accellerate(VectorF acceleration)
 }
 
 
-VectorF Physics::direction() const
+VectorF Fisics::direction() const
 {
 	return mVelocity.clamp(- 1.0f, +1.0f);
 }
 
 
-float Physics::relativeSpeed() const
+float Fisics::relativeSpeed() const
 { 
 	return mVelocity.lengthSquared() / (mMaxVelocity * mMaxVelocity); 
 }
 
 
-void Physics::reset()
+void Fisics::reset()
 {
 	mRect.SetTopLeft(VectorF());
 	mVelocity = VectorF();
@@ -115,7 +115,7 @@ void Physics::reset()
 
 
 // --- Private Functions --- //
-void Physics::applyDrag()
+void Fisics::applyDrag()
 {
 	// No movement
 	if (!mHasForce.x)
@@ -150,7 +150,7 @@ void Physics::applyDrag()
 }
 
 
-VectorF Physics::applyDrag(VectorF velocity, VectorF maxVelocity, VectorF acceleration, float drag)
+VectorF Fisics::applyDrag(VectorF velocity, VectorF maxVelocity, VectorF acceleration, float drag)
 {
 	const float dragFractor = 1.0f - drag;
 
@@ -191,7 +191,7 @@ VectorF Physics::applyDrag(VectorF velocity, VectorF maxVelocity, VectorF accele
 }
 
 
-void Physics::facePoint(VectorF point)
+void Fisics::facePoint(VectorF point)
 {
 	if (point.x > mRect.Center().x)		// -->
 		mFlip = SDL_FLIP_NONE;

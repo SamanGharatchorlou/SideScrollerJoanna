@@ -7,7 +7,6 @@
 static void ReadAnimationNode(XMLNode rootNode, XMLNode node, Texture* texture, Animation& out_animation)
 {
 	out_animation.startIndex = toInt(node.attribute("index")->value());
-	//out_animation.mapIndex.y = toInt(node.attribute("column")->value()) - 1;
 	out_animation.frameCount = toInt(node.value());
 
 	out_animation.frameTime = toFloat(rootNode.child("FrameTime").value());
@@ -63,36 +62,5 @@ void AnimationConfig::Read(XMLParser& parser)
 		animations.push_back(animation);
 
 		animationNode = animationNode.next();
-	}
-
-	XMLNode transitionParentNode = node.child("Transitions");
-	XMLNode transitionNode = transitionParentNode.child();
-	while (transitionNode)
-	{
-		Transition transition;
-
-		Animation& animation = transition.animation;
-		ReadAnimationNode(node, transitionNode, texture, animation);
-
-		const char* fromAction = transitionNode.name();
-		ActionState fromState = stringToAction(fromAction);
-
-		const char* toAction = transitionNode.attribute("to")->value();
-		ActionState toState = stringToAction(toAction);
-
-		char buffer[64];
-		snprintf(buffer, 64, "%sTo%s", fromAction, toAction);
-		ActionState actionState = stringToAction(buffer);
-		animation.action = actionState;
-
-		animation.spriteSheet.sprite = texture;
-
-		transition.transition.to = toState;
-		transition.transition.from = fromState;
-		transition.transition.transitionAction = actionState;
-
-		transitions.push_back(transition);
-
-		transitionNode = transitionNode.next();
 	}
 }

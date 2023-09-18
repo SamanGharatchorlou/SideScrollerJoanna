@@ -18,7 +18,7 @@ public:
 
 	T& Top() const { return *states.back(); }
 	T& getActiveState() const { return *states.back(); }
-	node<T*>* getActiveStateNode() const { states.get_tail(); }
+	node<T*>* getActiveStateNode() const { return states.get_tail(); }
 
 	size_t size() const { return states.size(); }
 

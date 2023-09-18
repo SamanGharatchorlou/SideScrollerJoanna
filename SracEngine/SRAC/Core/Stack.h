@@ -4,9 +4,14 @@ template<class T>
 class ActionStack
 {
 public:
-	static const u32 Capacity() { return 7; }
+	ActionStack()
+	{
+		memset(stack, Capacity(), Capacity() * sizeof(T*));
+	}
 
-	void Push(const T& item)
+	static const u32 Capacity() { return 8; }
+
+	void Push(T* item)
 	{
 		if ( (idx + 1) < Capacity() )
 		{
@@ -21,14 +26,14 @@ public:
 			pop = true;
 	}
 
-	void Replace(const T& item)
+	void Replace(T* item)
 	{
 		Pop();
 		add(item);
 	}
 
-	T& Top() { return stack[idx]; }
-	const T& Top() const { return stack[idx]; }
+	T& Top() { return *stack[idx]; }
+	const T& Top() const { return *stack[idx]; }
 
 	const T& Previous() const { 
 		if(idx > 0)
@@ -65,14 +70,17 @@ public:
 			stack[idx] = stateToAdd;
 			stateFrames = 0;
 		}
+
+		pop = false;
+		add = false;
 	}
 
 
-	T stack[7];
-	T stateToAdd;
+	T* stack[8];
+	T* stateToAdd = nullptr;
 
-	u32 stateFrames;
-	int idx;
-	bool pop;
-	bool add;
+	u32 stateFrames = 0;
+	u32 idx = -1;
+	bool pop = false;
+	bool add = false;
 };

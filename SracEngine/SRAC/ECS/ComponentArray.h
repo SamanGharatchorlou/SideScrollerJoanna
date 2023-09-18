@@ -21,14 +21,16 @@ namespace ECS
 			components.reserve(reserve_size);
 		}
 
-		void InsertComponent(Entity entity, const T& component)
+		T& InsertComponent(Entity entity)
 		{
 			u32 index = components.size();
 
-			components.push_back(component);
+			components.emplace_back(T());
 
 			entityToComponent[entity] = index;
 			componentToEntity[index] = entity;
+
+			return components.back();
 		}
 
 		void RemoveComponent(Entity entity)
@@ -53,12 +55,6 @@ namespace ECS
 
 		T& GetComponent(Entity entity)
 		{
-			if(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity]) {
-                        
-			} else {
-            int a = 4;            
-			}
-
 			ASSERT(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity], "Entity %d does not have an entry in this component list", entity);
 
 			u32 index = entityToComponent[entity];
@@ -71,7 +67,7 @@ namespace ECS
 			return entityToComponent[entity];
 		}
 
-		// mapping from an entity id to a compoenents array index;
+		// mapping from an entity id to a components array index;
 		std::unordered_map<Entity, u32> entityToComponent;
 		std::unordered_map<u32, Entity> componentToEntity;
 

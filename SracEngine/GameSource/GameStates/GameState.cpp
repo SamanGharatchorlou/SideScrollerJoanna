@@ -27,9 +27,8 @@ void GameState::init()
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Entity entity = ecs->CreateEntity("Map");
 
-	ECS::TileMap tile_map;
+	ECS::TileMap& tile_map = ecs->AddComponent(TileMap, entity, tile_map);
 	SceneBuilder::BuildTileMap("test_project_export.xml", tile_map.tileMap);
-	ecs->AddComponent(TileMap, entity, tile_map);
 
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->replaceScreen(UIScreen::Type::Game);

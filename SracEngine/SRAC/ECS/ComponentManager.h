@@ -19,9 +19,9 @@ namespace ECS
 		}
 
 		template<class T>
-		void AddComponent(Entity entity, const T& component, Component::Type type)
+		T& AddComponent(Entity entity, Component::Type type)
 		{
-			((ComponentArray<T>*)componentArrays[type])->InsertComponent(entity, component);
+			return ((ComponentArray<T>*)componentArrays[type])->InsertComponent(entity);
 		}
 
 		template<class T>

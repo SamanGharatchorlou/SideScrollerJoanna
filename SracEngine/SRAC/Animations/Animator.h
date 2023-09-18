@@ -35,16 +35,13 @@ public:
 	float frameTime() const { return mAnimations[mAnimationIndex].frameTime; }
 	VectorF frameSize() const { return mAnimations[mAnimationIndex].spriteSheet.frameSize; }
 
-	StateTransition activeTransition() const { return mTransitions[mTransitionIndex]; }
 	ActionState activeAction() const { return mAnimations[mAnimationIndex].action; }
 	Texture* activeSpriteSheet() const { return mAnimations[mAnimationIndex].spriteSheet.sprite; }
 	bool lastFrame() const { return mFrameIndex == mAnimations[mAnimationIndex].frameCount - 1; }
-	bool inTransition() const { return mTransitionIndex != -1; }
 	bool canChange() const { return mLoops >= mAnimations[mAnimationIndex].minLoops; }
 
 
 	std::vector<Animation> mAnimations;
-	std::vector<StateTransition> mTransitions;
 
 #if FRAME_CAPTURING
 	Queue<ActionState> mActions;
@@ -53,22 +50,11 @@ public:
 #endif
 
 	VectorF mBaseSize;
-	// make this const then make public?
-	//VectorF mFrameSize;
-
 	u32 mAnimationIndex;
-	u32 mTransitionIndex;
-
 	u32 mFrameIndex;
-
-
-
-	//float mFrameTime;
-	int mLoops;
-
+	
 	TimeState mState;
+
+	int mLoops;
 	float mTime;
-
-	bool transitionComplete;
-
 };

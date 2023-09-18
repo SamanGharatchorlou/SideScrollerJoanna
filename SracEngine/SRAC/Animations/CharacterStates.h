@@ -25,25 +25,7 @@ enum class ActionState
 	Hurt,
 	Dead,
 
-	TRANSITIONS,
-
-	IdleToWalk,
-	WalkToIdle,
-
-	IdleToRun,
-	WalkToRun,
-	RunToIdle,
-
 	Count
-};
-
-
-// move this to common / no gamelib stuff?
-struct StateTransition
-{
-	ActionState from = ActionState::None;
-	ActionState to = ActionState::None;
-	ActionState transitionAction = ActionState::None;
 };
 
 static std::unordered_map<StringBuffer32, ActionState> s_actionMap;
@@ -69,13 +51,6 @@ static void initActionMap()
 	s_actionMap["Alert"] = ActionState::Alert;
 	s_actionMap["Hurt"] = ActionState::Hurt;
 	s_actionMap["Dead"] = ActionState::Dead;
-
-	s_actionMap["IdleToWalk"] = ActionState::IdleToWalk;
-	s_actionMap["WalkToIdle"] = ActionState::WalkToIdle;
-
-	s_actionMap["IdleToRun"] = ActionState::IdleToRun;
-	s_actionMap["WalkToRun"] = ActionState::WalkToRun;
-	s_actionMap["RunToIdle"] = ActionState::RunToIdle;
 }
 
 static ActionState stringToAction(const char* action)

@@ -1,29 +1,20 @@
 #include "pch.h"
 #include "Animator.h"
 
-#include "Graphics/Texture.h"
 #include "GameSource/Configs.h"
-
-#include "Input/InputManager.h"
-
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
-
 
 Animator::Animator() :
 	mAnimationIndex(0), mFrameIndex(0),
 	mTime(0.0f),
 	mState(TimeState::Stopped) { }
 
-
 Animator::Animator(AnimationConfig* config)
 {
 	mFrameIndex = 0;
 	mAnimationIndex = 0;
 	mTime = 0.0f;
-	mTransitionIndex = -1;
 	mLoops = 0;
-	transitionComplete = true;
-
 	mState = TimeState::Running;
 
 	AddAnimations(config);
@@ -32,21 +23,13 @@ Animator::Animator(AnimationConfig* config)
 void Animator::AddAnimations(AnimationConfig* config)
 {
 	const u32 animation_count = config->animations.size();
-	const u32 transition_count = config->transitions.size();
 
-	mAnimations.reserve(mAnimations.size() + animation_count + transition_count);
-	mTransitions.reserve(mTransitions.size() + transition_count);
+	mAnimations.reserve(mAnimations.size() + animation_count);
 
 	for (u32 i = 0; i < animation_count; i++)
 	{
 		const Animation& anim = config->animations[i];
 		mAnimations.push_back(config->animations[i]);
-	}
-
-	for (u32 i = 0; i < transition_count; i++)
-	{
-		mAnimations.push_back(config->transitions[i].animation);
-		mTransitions.push_back(config->transitions[i].transition);
 	}
 
 	if (config->baseSize)
@@ -68,8 +51,7 @@ VectorF Animator::getAnimationSubRect() const
 	const Animation& animation = mAnimations[mAnimationIndex];
 
 	int index = animation.startIndex + mFrameIndex;
-
-	VectorI bounaries = (animation.spriteSheet.sprite->originalDimentions / animation.spriteSheet.frameSize).toInt();
+	VectorI bounaries = animation.spriteSheet.boundaries;
 
 	int y = 0;
 	int x = 0;
@@ -128,7 +110,6 @@ void Animator::stop()
 	mState = TimeState::Stopped;
 }
 
-
 bool Animator::RunActive(float dt)
 {
 	if (mState == TimeState::Running)
@@ -158,39 +139,5 @@ void Animator::Update(float dt)
 	if (DebugMenu::UsingPlaylist())
 		return;
 
-	//if (mState == TimeState::Running)
-	//	mTime += dt;
-
-	//const Animation& animation = mAnimations[mAnimationIndex];
-	//bool progress_frame = mTime >= animation.frameTime;
-	//int next_frame = mFrameIndex + 1;
-
-	//if (progress_frame)
-	//{
-	//	mFrameIndex = next_frame % animation.frameCount;
-	//	mTime = 0.0f;
-	//	
-	//	if (mFrameIndex == 0)
-	//		mLoops++;
-
-	//	if (inTransition() && canChange())
-	//	{
-	//		ActionState toAction = mTransitions[mTransitionIndex].to;
-	//		mTransitionIndex = -1;
-
-	//		selectAnimation(toAction);
-	//	}
-	//}
-
-	if (RunActive(dt))
-	{
-		if (inTransition() && canChange())
-		{
-			ActionState toAction = mTransitions[mTransitionIndex].to;
-			mTransitionIndex = -1;
-
-			selectAnimation(toAction);
-		}
-	}
-
+	RunActive(dt);
 }

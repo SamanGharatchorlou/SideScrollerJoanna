@@ -18,7 +18,7 @@ ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
     {
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-			ECS::Transform& transform = ecs->GetComponent(Transform, entity);
+			ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				ImGui::DisplayRect(transform.baseRect);

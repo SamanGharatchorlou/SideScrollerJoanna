@@ -7,8 +7,8 @@
 
 #include "ECS/SystemManager.h"
 #include "EntSystems/RenderSystem.h"
-#include "EntSystems/PlayerInputSystem.h"
-#include "EntSystems/MovementSystem.h"
+#include "EntSystems/PlayerControllerSystem.h"
+#include "EntSystems/PhysicsSystem.h"
 #include "EntSystems/AnimationSystem.h"
 #include "EntSystems/TileMapSystem.h"
 #include "EntSystems/CollisionSystem.h"
@@ -19,10 +19,10 @@ void ECS::RegisterAllComponents()
 
 	ecs->RegisterComponent(Transform, 32);
 	ecs->RegisterComponent(Sprite, 32);
-	ecs->RegisterComponent(PlayerInput, 1);
-	ecs->RegisterComponent(CharacterState, 1);
 	ecs->RegisterComponent(Velocity, 32);
-	ecs->RegisterComponent(MovementPhysics, 32);
+	ecs->RegisterComponent(CharacterState, 1);
+	ecs->RegisterComponent(PlayerController, 32);
+	ecs->RegisterComponent(Physics, 32);
 	ecs->RegisterComponent(Animation, 8);
 	ecs->RegisterComponent(TileMap, 4);
 	ecs->RegisterComponent(Collider, 32);
@@ -37,12 +37,12 @@ void ECS::RegisterAllSystems()
 	ecs->RegisterSystem<RenderSystem>(renderSignature);
 
 	// PlayerInputSystem
-	Signature playerInputSignature = ArcheBit(PlayerInput) | ArcheBit(CharacterState) | ArcheBit(Velocity);
-	ecs->RegisterSystem<PlayerInputSystem>(playerInputSignature);
+	Signature playerInputSignature = ArcheBit(PlayerController) | ArcheBit(CharacterState) | ArcheBit(Transform) | ArcheBit(Velocity);
+	ecs->RegisterSystem<PlayerControllerSystem>(playerInputSignature);
 
-	// MovementSystem
-	Signature movementSignature = ArcheBit(Transform) | ArcheBit(Velocity) | ArcheBit(CharacterState) | ArcheBit(MovementPhysics);
-	ecs->RegisterSystem<MovementSystem>(movementSignature);
+	// PhysicsSystem
+	Signature physicsSignature = ArcheBit(Transform) | ArcheBit(Velocity) | ArcheBit(CharacterState) | ArcheBit(Physics);
+	ecs->RegisterSystem<PhysicsSystem>(physicsSignature);
 
 	// AnimationSystem
 	Signature animationSignature = ArcheBit(Sprite) | ArcheBit(Animation) | ArcheBit(CharacterState) | ArcheBit(Transform);

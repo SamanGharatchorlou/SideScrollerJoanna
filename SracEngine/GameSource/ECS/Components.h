@@ -5,7 +5,7 @@
 #include "Core/Rect.h"
 
 #include "ECS/EntityCommon.h"
-#include "Physics/Physics.h"
+#include "Core/Physics/Fisics.h"
 #include "Animations/Animator.h"
 #include "Scene/SceneParsing/SceneBuilder.h"
 
@@ -43,37 +43,44 @@ namespace ECS
 		VectorF speed;
 		VectorF maxSpeed;	// config
 
-		//VectorF currAcceleration;
 		VectorF acceleration;
 		VectorF maxAcceleration; // config
+
+		static ECS::Component::Type type() { return ECS::Component::Velocity; }
 	};
 
 	struct PlayerController
 	{
-		Velocity velocity;
+		PlayerStatePool statePool;
+
 		ActionStack<PlayerState> actions;
 
 		VectorF movementDirection;
 		VectorF facingDirection;
 
-		// true on the frame the jump started
-		//bool jumpped = false;
-		bool onFloor = false;
+		Entity entity;
 
 		ActionState Action() const { return actions.Top().action; }
-		bool IsJumping() const { return !onFloor && Action() != ActionState::Fall; }
 
 		static ECS::Component::Type type() { return ECS::Component::PlayerController; }
 	};
 
 	struct CharacterState
 	{
-		bool onFloor = false;
+		enum Direction { Left, Right, Up, Down, Count };
+
+		ActionState action;
+		bool canChange = true;
+
+		bool restrictMovement[Direction::Count] { false, false, false, false };
+
+		bool OnFloor() const { return restrictMovement[Direction::Down]; }
+
+		static ECS::Component::Type type() { return ECS::Component::CharacterState; }
 	};
 
-	struct MovementPhysics
+	struct Physics
 	{
-		Physics physics;
 		bool applyGravity;
 
 		static ECS::Component::Type type() { return ECS::Component::Physics; }
@@ -83,10 +90,6 @@ namespace ECS
 	{
 		Animator animator;
 		std::vector<Texture*> spriteSheets;
-
-		ActionState action;
-		bool inTransition = false;
-		bool canChange = true;
 
 		static ECS::Component::Type type() { return ECS::Component::Animation; }
 	};

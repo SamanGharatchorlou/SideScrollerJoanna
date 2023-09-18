@@ -18,15 +18,12 @@ ECS::Component::Type DebugMenu::DoCharacterStateDebugMenu(ECS::Entity& entity)
 			ECS::CharacterState& cs = ecs->GetComponentRef(CharacterState, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
-				ImGui::Text("Current State: %s", actionToString(cs.Action()).c_str());
-				ImGui::Text("Previous State: %s", actionToString(cs.actions.Previous().action).c_str());
+				ImGui::Text("Current State: %s", actionToString(cs.action).c_str());
 
-				ImGui::VectorText("Movement Direction", cs.movementDirection);
-				ImGui::VectorText("Facing Direction", cs.facingDirection);
-
-				ImGui::Checkbox("In Transition", &cs.inTransition);
 				ImGui::Checkbox("Can Change", &cs.canChange);
-				ImGui::Checkbox("On Floor", &cs.onFloor);
+
+				bool on_floor = cs.OnFloor();
+				ImGui::Checkbox("On Floor", &on_floor);
 
 				ImGui::TreePop();
 			}

@@ -21,11 +21,13 @@ namespace ECS
 		{
 			Transform,
 			Sprite,
+			CharacterState,
 			PlayerController,
 			Physics,
 			Animation,
 			TileMap,
 			Collider,
+			Velocity,
 
 			Count
 		};
@@ -35,11 +37,13 @@ namespace ECS
 	{
 		"Transform", 
 		"Sprite",
+		"CharacterState", 
 		"PlayerController", 
 		"Physics", 
 		"Animation", 
 		"TileMap",
 		"Collider",
+		"Velocity"
 	};
 
 	// lock - system signature

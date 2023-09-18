@@ -151,7 +151,7 @@
     <ClCompile Include="GameSource\Configs.cpp" />
     <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\AnimationSystem.cpp" />
-    <ClCompile Include="GameSource\ECS\EntSystems\MovementSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\PhysicsSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SRAC\Animations\Animation.cpp" />
@@ -161,9 +161,10 @@
     <ClCompile Include="SRAC\Audio\AudioManager.cpp" />
     <ClCompile Include="SRAC\Audio\Channel.cpp" />
     <ClCompile Include="SRAC\Audio\SoundController.cpp" />
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\PlayerControllerDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\VelocityDebugMenu.cpp" />
     <ClCompile Include="SRAC\ECS\Components\Collider.cpp" />
-    <ClCompile Include="SRAC\Physics\QuadCollider.cpp" />
+    <ClCompile Include="SRAC\Core\Physics\QuadCollider.cpp" />
     <ClCompile Include="SRAC\Core\Maths.cpp" />
     <ClCompile Include="SRAC\Debugging\DebugDraw.cpp" />
     <ClCompile Include="SRAC\Debugging\FrameRateController.cpp" />
@@ -178,7 +179,7 @@
     <ClCompile Include="SRAC\Debugging\PerformanceProfiler.cpp" />
     <ClCompile Include="SRAC\Debugging\UIEditor.cpp" />
     <ClCompile Include="SRAC\ECS\EntityManager.cpp" />
-    <ClCompile Include="GameSource\ECS\EntSystems\PlayerInputSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\PlayerControllerSystem.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\RenderSystem.cpp" />
     <ClCompile Include="SRAC\Events\Dispatcher.cpp" />
     <ClCompile Include="SRAC\Game\Camera\Camera.cpp" />
@@ -204,7 +205,7 @@
     <ClCompile Include="SRAC\Input\Button.cpp" />
     <ClCompile Include="SRAC\Input\Cursor.cpp" />
     <ClCompile Include="SRAC\Input\InputManager.cpp" />
-    <ClCompile Include="SRAC\Physics\Physics.cpp" />
+    <ClCompile Include="SRAC\Core\Physics\Fisics.cpp" />
     <ClCompile Include="SRAC\Scene\SceneParsing\SceneBuilder.cpp" />
     <ClCompile Include="SRAC\System\Files\Config.cpp" />
     <ClCompile Include="SRAC\System\Files\ConfigManager.cpp" />
@@ -264,7 +265,7 @@
     <ClInclude Include="SRAC\Animations\CharacterStates.h" />
     <ClInclude Include="GameSource\Configs.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h" />
-    <ClInclude Include="GameSource\ECS\EntSystems\MovementSystem.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\PhysicsSystem.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SRAC\Animations\Animation.h" />
     <ClInclude Include="SRAC\Animations\AnimationReader.h" />
@@ -276,7 +277,7 @@
     <ClInclude Include="SRAC\Core\Stack.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\Components\ComponentDebugMenu.h" />
     <ClInclude Include="SRAC\ECS\Components\Collider.h" />
-    <ClInclude Include="SRAC\Physics\QuadCollider.h" />
+    <ClInclude Include="SRAC\Core\Physics\QuadCollider.h" />
     <ClInclude Include="SRAC\Core\Maths.h" />
     <ClInclude Include="SRAC\Debugging\DebugDraw.h" />
     <ClInclude Include="SRAC\Debugging\DebugSettings.h" />
@@ -295,7 +296,7 @@
     <ClInclude Include="SRAC\ECS\EntityCommon.h" />
     <ClInclude Include="SRAC\ECS\EntityCoordinator.h" />
     <ClInclude Include="SRAC\ECS\EntityManager.h" />
-    <ClInclude Include="GameSource\ECS\EntSystems\PlayerInputSystem.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\PlayerControllerSystem.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\RenderSystem.h" />
     <ClInclude Include="SRAC\ECS\SystemManager.h" />
     <ClInclude Include="SRAC\Events\Dispatcher.h" />
@@ -327,7 +328,7 @@
     <ClInclude Include="SRAC\Input\Button.h" />
     <ClInclude Include="SRAC\Input\Cursor.h" />
     <ClInclude Include="SRAC\Input\InputManager.h" />
-    <ClInclude Include="SRAC\Physics\Physics.h" />
+    <ClInclude Include="SRAC\Core\Physics\Fisics.h" />
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml.hpp" />
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml_iterators.hpp" />
     <ClInclude Include="SRAC\rapidxml\Include\rapidxml_print.hpp" />

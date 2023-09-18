@@ -14,7 +14,7 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
-			//CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+			CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
 			Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
@@ -22,9 +22,7 @@ namespace ECS
 
 			Animator& animator = animation.animator;
 			animator.Update(dt);
-
-			animation.inTransition = animator.inTransition();
-			animation.canChange = animator.canChange();
+			state.canChange = animator.canChange();
 
 			VectorF pos = animator.getAnimationSubRect();
 			sprite.subRect = RectF(pos, animator.frameSize());
@@ -33,31 +31,13 @@ namespace ECS
 			if (!DebugMenu::UsingPlaylist())
 			{
 				// select the next action
-				if (animation.action != animator.activeAction())
+				ActionState action = state.action;
+				if (action != animator.activeAction())
 				{
-					if (animator.inTransition() && animator.activeTransition().to == animation.action)
-						continue;
-
 					if (!animator.canChange())
 						continue;
 
-					// if this a transition action change the action to the transition action
-					StateTransition transition;
-					transition.from = animator.activeAction();
-					transition.to = animation.action;
-
-					const std::vector<StateTransition>& transitions = animator.mTransitions;
-					for (u32 i = 0; i < transitions.size(); i++)
-					{
-						if (transitions[i].from == transition.from && transitions[i].to == transition.to)
-						{
-							animation.action = transitions[i].transitionAction;
-							animator.mTransitionIndex = i;
-							break;
-						}
-					}
-
-					animator.selectAnimation(animation.action);
+					animator.selectAnimation(action);
 				}
 			}
 

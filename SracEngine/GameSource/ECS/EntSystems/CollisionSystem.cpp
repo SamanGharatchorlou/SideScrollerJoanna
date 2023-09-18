@@ -22,32 +22,26 @@ namespace ECS
 		for (Entity entity : entities)
 		{
 			Collider& collider = ecs->GetComponentRef(Collider, entity);
-			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
 			// ignore static colliders, they dont move
 			if(HasFlag(collider.mFlags, Collider::Flags::Static))
 				continue;
-
-			if (ecs->HasComponent(entity, ECS::Component::CharacterState))
-			{
-				CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-				state.onFloor = false;
-			}
-
+			
+			Transform& transform = ecs->GetComponentRef(Transform, entity);
 			collider.mRect.SetCenter(transform.targetCenterPosition);
 		}
 
 		for (Entity entity : entities)
 		{
 			Collider& this_collider = ecs->GetComponentRef(Collider, entity);
-			Transform& transform = ecs->GetComponentRef(Transform, entity);
-			
-			Velocity* velocityy = ecs->GetComponent(Velocity, entity);
+
 			// ignore static colliders, we check against them, but not from them
 			if(HasFlag(this_collider.mFlags, Collider::Flags::Static))
 				continue;
 
 			u32 index = colliders.GetComponentIndex(entity);
+			Transform& transform = ecs->GetComponentRef(Transform, entity);
+			CharacterState* character_state = ecs->GetComponent(CharacterState, entity);
 
 			for (u32 i = 0; i < count; i++) 
 			{
@@ -71,25 +65,23 @@ namespace ECS
 					 const bool can_move_vertically = !that_collider.intersects(vertical_rect);
 					 if (can_move_vertically)
 						 allowed_velocity.y = velocity.y;
-
-					 if (ecs->HasComponent(entity, ECS::Component::CharacterState))
-					 {
-						 CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-						 state.onFloor = !can_move_vertically;
-					 }
-
-					 if (!can_move_vertically)
-						 int a = 4;
-
+					 
 					 transform.targetCenterPosition = transform.baseRect.Center() + allowed_velocity;
 
-					 if (velocityy)
+					 if (character_state)
 					 {
 						 // set the velocity here
 						 if (!can_move_horizontally)
-							 velocityy->speed.x = 0.0f;
+						 {
+							 character_state->restrictMovement[CharacterState::Left] = true;
+							 character_state->restrictMovement[CharacterState::Right] = true;
+						 }
+
 						 if (!can_move_vertically)
-							 velocityy->speed.y = 0.0f;
+						 {
+							 character_state->restrictMovement[CharacterState::Up] = true;
+							 character_state->restrictMovement[CharacterState::Down] = true;
+						 }
 
 						 // also need to set acceleraton
 						 // make a velcity reset function matey

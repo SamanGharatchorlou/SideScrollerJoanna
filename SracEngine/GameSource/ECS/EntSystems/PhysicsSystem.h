@@ -4,10 +4,10 @@
 
 namespace ECS
 {
-	class MovementSystem : public EntitySystem
+	class PhysicsSystem : public EntitySystem
 	{
 	public:
-		MovementSystem(Archetype type) : EntitySystem(type) { }
+		PhysicsSystem(Archetype type) : EntitySystem(type) { }
 
 		void Update(float dt) override;
 	};

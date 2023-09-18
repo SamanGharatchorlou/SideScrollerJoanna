@@ -152,17 +152,14 @@ void SceneBuilder::BuildTileMap(const char* mapName, SceneTileMapping& tile_mapp
 				ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 				ECS::Entity ent = ecs->CreateNewEntity();
 
-				ECS::Collider collider;
+				ECS::Collider& collider = ecs->AddComponent(Collider, ent);
 				collider.mRect = rect;
 				SetFlag<u32>(collider.mFlags, (u32)ECS::Collider::Static);
-				ecs->AddComponent(Collider, ent, collider);
-
-				ECS::Transform transform;
+				
+				ECS::Transform& transform = ecs->AddComponent(Transform, ent);
 				transform.baseRect = rect;
-				ecs->AddComponent(Transform, ent, transform);
 
 				tile_mapping.colliderEntities.push_back(ent);
-
 				tile_mapping.objectLayers.push_back(object_layer);
 
 				object_node = object_node.next();
