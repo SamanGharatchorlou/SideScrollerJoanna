@@ -81,10 +81,10 @@ void InputManager::resetInputEvents()
 		button.setPressed(false);
 		button.setReleased(false);
 
-		//if (button.isHeld())
-		//	button.incrementHeldFrames();
-		//else
-		//	button.setHeldFrames(0);
+		if (button.isHeld())
+			button.incrementHeldFrames();
+		else
+			button.setHeldFrames(0);
 	}
 }
 

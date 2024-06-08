@@ -9,6 +9,8 @@
 #include "Configs.h"
 #include "System/Files/ConfigManager.h"
 #include "PlayerStates/PlayerStates.h"
+#include "ECS/Components/PlayerController.h"
+#include "ECS/Components/Physics.h"
 
 void Player::Init()
 {
@@ -18,28 +20,37 @@ void Player::Init()
 
 	// Transform
 	ECS::Transform& transform = ecs->AddComponent(Transform, entity);
-	transform.baseRect = RectF(VectorF(200, 300), VectorF(100, 100));
-	transform.targetCenterPosition = transform.baseRect.Center();
-	
-	// Sprite
-	ECS::Sprite& sprite = ecs->AddComponent(Sprite, entity);
-	sprite.texture = TextureManager::Get()->getTexture("PlayerMovementSheet", FileManager::Image_Animations);
-	sprite.renderLayer = 5;
+	transform.rect = RectF(VectorF(300, 300), VectorF(64, 64));
+	transform.targetCenterPosition = transform.rect.Center();
 	
 	// MovementPhysics
 	ECS::Physics& physics = ecs->AddComponent(Physics, entity);
-	physics.applyGravity = true;
+	physics.applyGravity = false;	
+	physics.acceleration = VectorF(100.0f, 100.0f);
+	physics.maxSpeed = VectorF(5.0f, 5.0f);
 
 	// Animation
 	ECS::Animation& animation = ecs->AddComponent(Animation, entity);
-	AnimationConfig* movement = ConfigManager::Get()->addAndLoad<AnimationConfig>("PlayerMovementAnimations");
-	AnimationConfig* attacks = ConfigManager::Get()->addAndLoad<AnimationConfig>("PlayerAttackAnimations");
-	animation.animator = Animator(movement);
-	animation.animator.AddAnimations(attacks);
+	AnimationConfig* up = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroUpMovementAnimations");
+	AnimationConfig* down = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroMovementAnimations");
+	
+	animation.animator.AddAnimations(up);
+	animation.animator.AddAnimations(down);
+	animation.animator.start();
+
+	// Sprite
+	ECS::Sprite& sprite = ecs->AddComponent(Sprite, entity);
+	sprite.texture = TextureManager::Get()->getTexture("blood_hero", FileManager::Image_Animations);
+	sprite.renderLayer = 9;
+
+	const SpriteSheet& ss = up->animations.front().spriteSheet;
+	VectorF pos = ss.objectPos / ss.frameSize;
+	VectorF size = ss.frameSize / ss.objectSize;
+	sprite.relativeRenderRect = RectF(pos, size);
 	
 	// Collider
 	ECS::Collider& collider = ecs->AddComponent(Collider, entity);
-	collider.mRect = transform.baseRect;
+	collider.mRect = transform.rect;
 	
 	// PlayerController
 	ECS::PlayerController& player_controller = ecs->AddComponent(PlayerController, entity);
@@ -51,16 +62,6 @@ void Player::Init()
 		actions.push_back((ActionState)i);
 	}
 	player_controller.statePool.load(actions, 4);
-
-	PlayerState* idle_state = player_controller.statePool.getObject(ActionState::Idle);
-	idle_state->SetBaseParameters(&player_controller, ActionState::Idle);
-	player_controller.actions.Push(idle_state);
-
-	// Velocity
-	ECS::Velocity& velocity = ecs->AddComponent(Velocity, entity);
-	velocity.acceleration = VectorF(40.0f, 40.0f);
-	velocity.maxSpeed = VectorF(20.0f, 20.0f);
-	velocity.maxAcceleration = VectorF(200.0f, 200.0f);
 	
 	// CharacterState
 	ECS::CharacterState character_state = ecs->AddComponent(CharacterState, entity);

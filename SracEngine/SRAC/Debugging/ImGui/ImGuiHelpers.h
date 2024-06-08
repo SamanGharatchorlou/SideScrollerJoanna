@@ -45,6 +45,8 @@ namespace ImGui
 
 	static void DisplayRect(RectF& rect)
 	{
+		ImGui::PushID(rect.x1 + rect.x2 + rect.y1 + rect.y2);
+
 		static float rectxy1[2] = { rect.x1, rect.y1 };
 		if (ImGui::InputFloat2("XY1", rectxy1))
 		{
@@ -69,6 +71,8 @@ namespace ImGui
 			rect.SetSize(VectorF(rect_size[0], rect_size[1]));
 			rect.SetCenter(center);
 		}
+
+		ImGui::PopID();
 	}
 
 	static void DoDebugRenderTypeDropDown(DebugDrawType& type) 

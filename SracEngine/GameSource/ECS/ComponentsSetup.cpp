@@ -12,6 +12,8 @@
 #include "EntSystems/AnimationSystem.h"
 #include "EntSystems/TileMapSystem.h"
 #include "EntSystems/CollisionSystem.h"
+#include "ECS/Components/PlayerController.h"
+#include "ECS/Components/Physics.h"
 
 void ECS::RegisterAllComponents()
 {
@@ -19,7 +21,6 @@ void ECS::RegisterAllComponents()
 
 	ecs->RegisterComponent(Transform, 32);
 	ecs->RegisterComponent(Sprite, 32);
-	ecs->RegisterComponent(Velocity, 32);
 	ecs->RegisterComponent(CharacterState, 1);
 	ecs->RegisterComponent(PlayerController, 32);
 	ecs->RegisterComponent(Physics, 32);
@@ -33,15 +34,15 @@ void ECS::RegisterAllSystems()
 	EntityCoordinator* ecs = GameData::Get().ecs;
 
 	// RenderSystem
-	Signature renderSignature = ArcheBit(Transform) | ArcheBit(Sprite);
+	Signature renderSignature = /*ArcheBit(Transform) |*/ ArcheBit(Sprite);
 	ecs->RegisterSystem<RenderSystem>(renderSignature);
 
 	// PlayerInputSystem
-	Signature playerInputSignature = ArcheBit(PlayerController) | ArcheBit(CharacterState) | ArcheBit(Transform) | ArcheBit(Velocity);
+	Signature playerInputSignature = ArcheBit(PlayerController) | ArcheBit(CharacterState) | ArcheBit(Transform) | ArcheBit(Physics);
 	ecs->RegisterSystem<PlayerControllerSystem>(playerInputSignature);
 
 	// PhysicsSystem
-	Signature physicsSignature = ArcheBit(Transform) | ArcheBit(Velocity) | ArcheBit(CharacterState) | ArcheBit(Physics);
+	Signature physicsSignature = ArcheBit(Transform) | ArcheBit(CharacterState) | ArcheBit(Physics);
 	ecs->RegisterSystem<PhysicsSystem>(physicsSignature);
 
 	// AnimationSystem

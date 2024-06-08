@@ -11,18 +11,14 @@ namespace ECS
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
 
-		for (Entity entity : entities)
+ 		for (Entity entity : entities)
 		{
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 			Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
 
-			RectF renderRect = transform.baseRect;
-			if (!transform.sizeFactor.isZero())
-			{
-				VectorF center = renderRect.Center();
-				renderRect.SetSize(renderRect.Size() * transform.sizeFactor);
-				renderRect.SetCenter(center);
-			}
+			VectorF size = transform.rect.Size() * sprite.relativeRenderRect.Size();
+			VectorF pos = transform.rect.TopLeft() - sprite.relativeRenderRect.TopLeft() * size;
+			RectF renderRect(pos, size);
 
 			RenderPack pack(sprite.texture, renderRect, sprite.renderLayer);
 			pack.subRect = sprite.subRect;

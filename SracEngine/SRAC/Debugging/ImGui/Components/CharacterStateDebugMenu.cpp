@@ -18,6 +18,8 @@ ECS::Component::Type DebugMenu::DoCharacterStateDebugMenu(ECS::Entity& entity)
 			ECS::CharacterState& cs = ecs->GetComponentRef(CharacterState, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
+				ImGui::VectorText("Facing Direction", cs.facingDirection);
+
 				ImGui::Text("Current State: %s", actionToString(cs.action).c_str());
 
 				ImGui::Checkbox("Can Change", &cs.canChange);

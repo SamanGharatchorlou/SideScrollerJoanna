@@ -153,26 +153,25 @@ void Fisics::applyDrag()
 VectorF Fisics::applyDrag(VectorF velocity, VectorF maxVelocity, VectorF acceleration, float drag)
 {
 	const float dragFractor = 1.0f - drag;
+	const float minSpeedMultiple = 0.1f;
 
-	// No movement
+	// No movement, apply drag then halt at min speed
 	if (!acceleration.x)
 	{
 		velocity.x = velocity.x * dragFractor;
 
-		const float min_speed = maxVelocity.x * 0.15f;
+		const float min_speed = maxVelocity.x * minSpeedMultiple;
 		if (velocity.x < min_speed && velocity.x > -min_speed)
 			velocity.x = 0;
 	}
-
 	if (!acceleration.y)
 	{
 		velocity.y = velocity.y * dragFractor;
 
-		const float min_speed = maxVelocity.y * 0.15f;
+		const float min_speed = maxVelocity.y * minSpeedMultiple;
 		if (velocity.y < min_speed && velocity.y > -min_speed)
 			velocity.y = 0;
 	}
-
 
 	// Changing direction
 	if (velocity.x > 0.0f && acceleration.x < 0.0f ||

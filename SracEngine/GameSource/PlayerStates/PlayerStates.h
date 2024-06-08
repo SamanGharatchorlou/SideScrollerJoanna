@@ -19,8 +19,7 @@ struct PlayerState : public State
 	void SetBaseParameters(ECS::PlayerController* _playerController, ActionState _state) { playerController = _playerController; action = _state;  }
 	
 	void Push(ActionState action);
-	void PopSelf(ActionState action);
-
+	void PopSelf();
 
 	ECS::PlayerController* playerController;
 	ActionState action;
@@ -36,18 +35,12 @@ struct IdleState : public PlayerState
 	void Update(float dt) override;
 };
 
+struct WalkState : public PlayerState
+{
+	void Update(float dt) override;
+};
+
 struct RunState : public PlayerState
-{
-	void Update(float dt) override;
-};
-
-struct JumpState : public PlayerState
-{
-	void init() override;
-	void Update(float dt) override;
-};
-
-struct FallState : public PlayerState
 {
 	void Update(float dt) override;
 };

@@ -2,23 +2,25 @@
 
 class Texture;
 
-struct TileSet
+namespace Map
 {
-	Texture* texture;
+	struct TileSet
+	{
+		Texture* texture;
 
-	VectorF mapSize;
-	VectorF tileSize;
-	VectorI tileCount;
-};
+		VectorF mapSize;
+		VectorF tileSize;
+		VectorI tileCount;
 
-struct SceneTileMapping
-{
+		u32 startingIndex;
+	};
+
 	struct TileLayer
 	{
-		u32 render_layer;
+		u32 renderLayer;
 		VectorI tileCount;
-		TileSet tileset;
-		std::vector<VectorI> tileMapping;
+		StringBuffer32 name;
+		std::vector<u32> ids;
 	};
 
 	struct ObjectLayer
@@ -28,24 +30,27 @@ struct SceneTileMapping
 		std::vector<RectF> rects;
 	};
 
-	VectorF mapSize;
-	VectorF tileSize;
-	VectorI tileCount;
+	struct SceneTileMapping
+	{
+		VectorF mapSize;
+		VectorF tileSize;
+		VectorI tileCount;
 
-	std::vector<TileLayer> tileLayers;
-	std::vector<ObjectLayer> objectLayers;
+		std::vector<TileSet> tilesets;
+		std::vector<TileLayer> tileLayers;
+		std::vector<ObjectLayer> objectLayers;
+		std::vector<u32> colliderEntities;
+	};
 
-	std::vector<u32> colliderEntities;
-};
+	static VectorI IndexToMapIndex(u32 index, Vector2D<int> size)
+	{
+		int row = index / size.x;
+		int column = index % size.x;
+		return VectorI(column, row);
+	}
 
-static VectorI IndexToMapIndex(u32 index, Vector2D<int> size)
-{
-	int row = index / size.x;
-	int column = index % size.x;
-	return VectorI(column, row);
+	namespace SceneBuilder
+	{
+		void BuildTileMap(const char* mapName, SceneTileMapping& map_layers);
+	};
 }
-
-namespace SceneBuilder
-{
-	void BuildTileMap(const char* mapName, SceneTileMapping& map_layers);
-};

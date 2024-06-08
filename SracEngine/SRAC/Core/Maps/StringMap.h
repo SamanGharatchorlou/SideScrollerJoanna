@@ -15,6 +15,7 @@ public:
 	StringBuffer32 at(const char* key) const { return mData.at(key); }
 	bool contains(const char* key) const { return mData.count(key) > 0; }
 
+	const char* getString(const char* key) const;
 	bool getBool(const char* key) const;
 	float getFloat(const char* key) const;
 	int getInt(const char* key) const;

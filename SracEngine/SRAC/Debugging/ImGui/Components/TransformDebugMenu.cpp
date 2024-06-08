@@ -19,11 +19,10 @@ ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
+
 			if (ImGui::TreeNode("Component Data"))
 			{
-				ImGui::DisplayRect(transform.baseRect);
-
-				ImGui::VectorText("Trans Size Factor", transform.sizeFactor);
+				ImGui::DisplayRect(transform.rect);
 
 				if (ImGui::Button("Vertical Flip"))
 				{
@@ -35,24 +34,10 @@ ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 
 			if (ImGui::TreeNode("Display"))
 			{
-				ImGui::Checkbox("Display Base Rect", &s_displayRect);
+				ImGui::Checkbox("Display Object Rect", &s_displayRect);
 				if (s_displayRect)
 				{
-					DebugDraw::RectOutline(transform.baseRect, Colour::Green);
-				}
-
-				ImGui::Checkbox("Display Size Factored Rect", &s_displaySizedRect);
-				if (s_displaySizedRect)
-				{
-					RectF renderRect = transform.baseRect;
-					if (!transform.sizeFactor.isZero())
-					{
-						VectorF center = renderRect.Center();
-						renderRect.SetSize(renderRect.Size() * transform.sizeFactor);
-						renderRect.SetCenter(center);
-					}
-
-					DebugDraw::RectOutline(renderRect, Colour::Red);
+					DebugDraw::RectOutline(transform.rect, Colour::Green);
 				}
 
 				ImGui::TreePop();

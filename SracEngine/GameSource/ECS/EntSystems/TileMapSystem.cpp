@@ -8,6 +8,8 @@
 
 namespace ECS
 {
+	using namespace Map;
+
 	void TileMapSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
@@ -25,28 +27,39 @@ namespace ECS
 
 			for (u32 l = 0; l < tile_map.tileMap.tileLayers.size(); l++)
 			{
-				const SceneTileMapping::TileLayer& layer = tile_map.tileMap.tileLayers[l];
-				const TileSet& tile_set = layer.tileset;
+				const TileLayer& layer = tile_map.tileMap.tileLayers[l];
 
-				for (u32 idx = 0; idx < layer.tileMapping.size(); idx++)
+				for (u32 idx = 0; idx < layer.ids.size(); idx++)
 				{
-					VectorI index = layer.tileMapping[idx];
-					if (index.isZero())
+					const u32 index = layer.ids[idx];
+					if (index == 0) // change to constexpr and give name
 						continue;
-									
-					// Rect for on screen size and position
-					VectorI map_index = IndexToMapIndex(idx, map.tileCount);
-					VectorF pos = map_index.toFloat() * tile_size;
-					RectF rect(pos, tile_size);
+					
+					// find the correct tileindex given the layer index and starting tile indexes
+					for (u32 i = 0; i < map.tilesets.size(); i++)
+					{
+						const TileSet& ts = map.tilesets[i];
+						if (index >= ts.startingIndex)
+						{
+							// Rect for on screen size and position
+							VectorI map_index = IndexToMapIndex(idx, map.tileCount);
+							VectorF pos = map_index.toFloat() * tile_size;
+							RectF rect(pos, tile_size);
 
-					// SubRect for tile map entry so we know what bit of texture to draw
-					VectorF top_left = index.toFloat() * tile_set.tileSize;
-					RectF subRect(top_left, tile_set.tileSize);
+							const u32 local_tileset_index = index - ts.startingIndex;
+							VectorI tileset_index = IndexToMapIndex(local_tileset_index, ts.tileCount.toInt());
 
-					RenderPack pack(tile_set.texture, rect, layer.render_layer);
-					pack.subRect = subRect;
+							// SubRect for tile map entry so we know what bit of texture to draw
+							VectorF top_left = tileset_index.toFloat() * ts.tileSize;
+							RectF subRect(top_left, ts.tileSize);
 
-					GameData::Get().renderManager->AddRenderPacket(pack);
+							RenderPack pack(ts.texture, rect, 5);
+							pack.subRect = subRect;
+
+							GameData::Get().renderManager->AddRenderPacket(pack);
+							break;
+						}
+					}
 				}
 			}
 		}

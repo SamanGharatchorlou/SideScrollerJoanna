@@ -3,19 +3,25 @@
 class Texture;
 enum class ActionState;
 
+
 struct SpriteSheet
 {
 	Texture* sprite;
 	VectorF frameSize;
-	VectorF sizeFactor;
+	VectorF objectSize;
+	VectorF objectPos;
 	VectorI boundaries;
 };
 
 struct Animation
 {
+	// todo: pull this out of each animation, can hold a seperate list
 	SpriteSheet spriteSheet;
 
 	ActionState action = (ActionState)0;
+
+	VectorI direction;
+
 	int startIndex = 0;
 	int frameCount = 0;
 

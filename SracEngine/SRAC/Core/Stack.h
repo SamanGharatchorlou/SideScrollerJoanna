@@ -10,6 +10,7 @@ public:
 	}
 
 	static const u32 Capacity() { return 8; }
+	bool HasAction() const { return idx != -1; }
 
 	void Push(T* item)
 	{
@@ -17,6 +18,10 @@ public:
 		{
 			add = true;
 			stateToAdd = item;
+		}
+		else
+		{
+			DebugPrint(PriorityLevel::Error, "Action stack full, cannot push another action");
 		}
 	}
 

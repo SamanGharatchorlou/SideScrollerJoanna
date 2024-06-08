@@ -19,6 +19,11 @@ void StringMap32::fillAtributes(const XMLNode& node)
 	}
 }
 
+const char* StringMap32::getString(const char* key) const
+{
+	return mData.at(key).c_str();
+}
+
 bool StringMap32::getBool(const char* key) const
 {
 	return toBool(mData.at(key).c_str());

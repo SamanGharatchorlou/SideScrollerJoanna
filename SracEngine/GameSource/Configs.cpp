@@ -21,12 +21,27 @@ static void ReadAnimationNode(XMLNode rootNode, XMLNode node, Texture* texture, 
 	}
 
 	XMLNode frameSizeNode = rootNode.child("FrameSize");
-	float x = toFloat(frameSizeNode.attribute("x")->value());
-	float y = toFloat(frameSizeNode.attribute("y")->value());
+	const float frame_x = toFloat(frameSizeNode.attribute("x")->value());
+	const float frame_y = toFloat(frameSizeNode.attribute("y")->value());
+
+	XMLNode objectSizeNode = rootNode.child("ObjectSize");
+	const float object_sx = toFloat(objectSizeNode.attribute("x")->value());
+	const float object_sy = toFloat(objectSizeNode.attribute("y")->value());
+
+	XMLNode objectPosNode = rootNode.child("ObjectPosition");
+	const float object_px = toFloat(objectPosNode.attribute("x")->value());
+	const float object_py = toFloat(objectPosNode.attribute("y")->value());
+
+	XMLNode directionNode = rootNode.child("Direction");
+	const int dir_x = toInt(directionNode.attribute("x")->value());
+	const int dir_y = toInt(directionNode.attribute("y")->value());
 
 	out_animation.spriteSheet.sprite = texture;
-	out_animation.spriteSheet.frameSize = VectorF(x, y);
+	out_animation.spriteSheet.frameSize = VectorF(frame_x, frame_y);
+	out_animation.spriteSheet.objectSize = VectorF(object_sx, object_sy);
+	out_animation.spriteSheet.objectPos = VectorF(object_px, object_py);
 	out_animation.spriteSheet.boundaries = (texture->originalDimentions / out_animation.spriteSheet.frameSize).toInt();
+	out_animation.direction = VectorI(dir_x, dir_y);
 }
 
 void AnimationConfig::Read(XMLParser& parser)
@@ -41,11 +56,6 @@ void AnimationConfig::Read(XMLParser& parser)
 	if (!texture)
 	{
 		DebugPrint(Error, "No Sprite sheet found for this animation");
-	}
-
-	if (XMLNode baseSizeNode = node.child("BaseSize"))
-	{
-		baseSize = true;
 	}
 
 	XMLNode animationsParentNode = node.child("Animations");

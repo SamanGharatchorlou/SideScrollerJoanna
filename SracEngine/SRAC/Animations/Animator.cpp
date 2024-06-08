@@ -5,8 +5,10 @@
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
 Animator::Animator() :
-	mAnimationIndex(0), mFrameIndex(0),
+	mAnimationIndex(0), 
+	mFrameIndex(0),
 	mTime(0.0f),
+	mLoops(0),
 	mState(TimeState::Stopped) { }
 
 Animator::Animator(AnimationConfig* config)
@@ -31,19 +33,6 @@ void Animator::AddAnimations(AnimationConfig* config)
 		const Animation& anim = config->animations[i];
 		mAnimations.push_back(config->animations[i]);
 	}
-
-	if (config->baseSize)
-	{
-		mBaseSize = config->animations.front().spriteSheet.frameSize;
-	}
-
-	if(!mBaseSize.isZero())
-	{
-		for (u32 i = 0; i < mAnimations.size(); i++)
-		{
-			mAnimations[i].spriteSheet.sizeFactor = mAnimations[i].spriteSheet.frameSize / mBaseSize;
-		}
-	}
 }
 
 VectorF Animator::getAnimationSubRect() const
@@ -65,10 +54,10 @@ VectorF Animator::getAnimationSubRect() const
 	return animation.spriteSheet.frameSize * Vector2D<int>(x, y).toFloat();
 }
 
-void Animator::selectAnimation(ActionState action)
+bool Animator::selectAnimation(ActionState action)
 {
 	if (DebugMenu::UsingPlaylist())
-		return;
+		return false;
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
@@ -83,11 +72,37 @@ void Animator::selectAnimation(ActionState action)
 			mAnimationIndex = i;
 			mFrameIndex = 0;
 			mLoops = 0;
-			return;
+			return true;
 		}
 	}
 
 	DebugPrint(Warning, "Animation state %d not present in animator", (int)action);
+	return false;
+}
+
+bool Animator::selectAnimation(ActionState action, VectorI direction)
+{
+	if (DebugMenu::UsingPlaylist())
+		return false;
+
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		if (mAnimations[i].action == action && mAnimations[i].direction == direction)
+		{
+#if FRAME_CAPTURING
+			mActions.push(action);
+			if (mActions.size() > maxActionLength)
+				mActions.popFront();
+#endif
+
+			mAnimationIndex = i;
+			mFrameIndex = 0;
+			mLoops = 0;
+			return true;
+		}
+	}
+
+	return selectAnimation(action);
 }
 
 const Animation* Animator::getAnimation(ActionState action) const
@@ -102,6 +117,21 @@ const Animation* Animator::getAnimation(ActionState action) const
 
 	DebugPrint(Warning, "No animation with action %d", action);
 	return nullptr;	
+}
+
+
+const Animation* Animator::getAnimation(ActionState action, VectorI direction) const
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		if (mAnimations[i].action == action && mAnimations[i].direction == direction)
+		{
+			return &mAnimations[i];
+		}
+	}
+
+	DebugPrint(Warning, "No animation with action %d and direction %f,%f", action, direction.x, direction.y);
+	return nullptr;
 }
 
 void Animator::stop()

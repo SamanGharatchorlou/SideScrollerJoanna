@@ -5,6 +5,7 @@
 #include "GameSource/ECS/Components.h"
 #include "ECS/EntityCoordinator.h"
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
+#include "ECS/Components/PlayerController.h"
 
 namespace ECS
 {
@@ -22,26 +23,24 @@ namespace ECS
 
 			Animator& animator = animation.animator;
 			animator.Update(dt);
-			state.canChange = animator.canChange();
 
 			VectorF pos = animator.getAnimationSubRect();
 			sprite.subRect = RectF(pos, animator.frameSize());
 			sprite.texture = animator.activeSpriteSheet();
 
-			if (!DebugMenu::UsingPlaylist())
+			if (DebugMenu::UsingPlaylist())
+				return;
+
+			// select the next action
+			ActionState action = state.action;
+			// todo: perhaps rename this or put it into a namespace?
+			const ::Animation* anim = animator.getAnimation(action, state.facingDirection);
+			const ::Animation& active_anim = animator.activeAnimation();
+
+			if (anim != &active_anim)
 			{
-				// select the next action
-				ActionState action = state.action;
-				if (action != animator.activeAction())
-				{
-					if (!animator.canChange())
-						continue;
-
-					animator.selectAnimation(action);
-				}
+				animator.selectAnimation(action, state.facingDirection);
 			}
-
-			transform.sizeFactor = animator.activeAnimation().spriteSheet.sizeFactor;
 		}
 	}
 }

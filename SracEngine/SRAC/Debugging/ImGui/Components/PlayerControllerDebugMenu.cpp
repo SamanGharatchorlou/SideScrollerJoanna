@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ComponentDebugMenu.h"
 
+#include "ECS/Components/PlayerController.h"
 #include "ECS/EntityCoordinator.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
 
@@ -16,10 +17,12 @@ ECS::Component::Type DebugMenu::DoPlayerControllerDebugMenu(ECS::Entity& entity)
 			ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
-				ImGui::Text("Current State: %s", actionToString(pc.actions.Top().action).c_str());
-
 				ImGui::VectorText("Movement Direction", pc.movementDirection);
 				ImGui::VectorText("Facing Direction", pc.facingDirection);
+
+				ImGui::Text("State count: %d", pc.actions.idx);
+				ImGui::Text("Current State: %s", actionToString(pc.actions.Top().action).c_str());
+
 
 				ImGui::TreePop();
 			}

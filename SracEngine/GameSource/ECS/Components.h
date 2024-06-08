@@ -9,11 +9,8 @@
 #include "Animations/Animator.h"
 #include "Scene/SceneParsing/SceneBuilder.h"
 
-#include "SRAC/Game/GameStates/StateMachine.h"
-#include "SRAC/Game/GameStates/State.h"
-
-#include "Core/Stack.h"
-#include "PlayerStates/PlayerStates.h"
+//#include "SRAC/Game/GameStates/StateMachine.h"
+//#include "SRAC/Game/GameStates/State.h"
 
 class Texture;
 enum class ActionState;
@@ -22,52 +19,29 @@ namespace ECS
 {
 	struct Transform
 	{
-		RectF baseRect;
+		// rect of the actual object
+		RectF rect;
 		VectorF targetCenterPosition;
 
-		VectorF sizeFactor;
 		SDL_RendererFlip flip;
 		static ECS::Component::Type type() { return ECS::Component::Transform; }
 	};
 
 	struct Sprite
 	{
+		// used to derive the render rect from the transform rect
+		RectF relativeRenderRect;
 		RectF subRect;
 		Texture* texture;
 		u32 renderLayer;
 		static ECS::Component::Type type() { return ECS::Component::Sprite; }
 	};
 
-	struct Velocity
-	{
-		VectorF speed;
-		VectorF maxSpeed;	// config
-
-		VectorF acceleration;
-		VectorF maxAcceleration; // config
-
-		static ECS::Component::Type type() { return ECS::Component::Velocity; }
-	};
-
-	struct PlayerController
-	{
-		PlayerStatePool statePool;
-
-		ActionStack<PlayerState> actions;
-
-		VectorF movementDirection;
-		VectorF facingDirection;
-
-		Entity entity;
-
-		ActionState Action() const { return actions.Top().action; }
-
-		static ECS::Component::Type type() { return ECS::Component::PlayerController; }
-	};
-
 	struct CharacterState
 	{
 		enum Direction { Left, Right, Up, Down, Count };
+
+		VectorI facingDirection;
 
 		ActionState action;
 		bool canChange = true;
@@ -77,13 +51,6 @@ namespace ECS
 		bool OnFloor() const { return restrictMovement[Direction::Down]; }
 
 		static ECS::Component::Type type() { return ECS::Component::CharacterState; }
-	};
-
-	struct Physics
-	{
-		bool applyGravity;
-
-		static ECS::Component::Type type() { return ECS::Component::Physics; }
 	};
 
 	struct Animation
@@ -96,7 +63,7 @@ namespace ECS
 
 	struct TileMap
 	{
-		SceneTileMapping tileMap;
+		Map::SceneTileMapping tileMap;
 
 		static ECS::Component::Type type() { return ECS::Component::TileMap; }
 	};

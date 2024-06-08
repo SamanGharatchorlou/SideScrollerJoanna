@@ -13,15 +13,8 @@ enum class ActionState
 	Walk,
 	Run,
 
-	Jump,
-	Fall,
+	Attack,
 
-	AirAttack,
-	LightAttack,
-	UpLightAttack,
-	HeavyAttack,
-
-	Alert,
 	Hurt,
 	Dead,
 
@@ -39,18 +32,19 @@ static void initActionMap()
 	s_actionMap["Idle"] = ActionState::Idle;
 	s_actionMap["Walk"] = ActionState::Walk;
 	s_actionMap["Run"] = ActionState::Run;
+	s_actionMap["Attack"] = ActionState::Attack;
 
-	s_actionMap["Jump"] = ActionState::Jump;
-	s_actionMap["Fall"] = ActionState::Fall;
+	//s_actionMap["Jump"] = ActionState::Jump;
+	//s_actionMap["Fall"] = ActionState::Fall;
 
-	s_actionMap["AirAttack"] = ActionState::AirAttack;
-	s_actionMap["LightAttack"] = ActionState::LightAttack;
-	s_actionMap["UpLightAttack"] = ActionState::UpLightAttack;
-	s_actionMap["HeavyAttack"] = ActionState::HeavyAttack;
+	//s_actionMap["AirAttack"] = ActionState::AirAttack;
+	//s_actionMap["LightAttack"] = ActionState::LightAttack;
+	//s_actionMap["UpLightAttack"] = ActionState::UpLightAttack;
+	//s_actionMap["HeavyAttack"] = ActionState::HeavyAttack;
 
-	s_actionMap["Alert"] = ActionState::Alert;
-	s_actionMap["Hurt"] = ActionState::Hurt;
-	s_actionMap["Dead"] = ActionState::Dead;
+	//s_actionMap["Alert"] = ActionState::Alert;
+	//s_actionMap["Hurt"] = ActionState::Hurt;
+	//s_actionMap["Dead"] = ActionState::Dead;
 }
 
 static ActionState stringToAction(const char* action)

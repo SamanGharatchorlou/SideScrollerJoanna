@@ -28,7 +28,7 @@ void GameState::init()
 	ECS::Entity entity = ecs->CreateEntity("Map");
 
 	ECS::TileMap& tile_map = ecs->AddComponent(TileMap, entity, tile_map);
-	SceneBuilder::BuildTileMap("test_project_export.xml", tile_map.tileMap);
+	Map::SceneBuilder::BuildTileMap("blood_test_export.xml", tile_map.tileMap);
 
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->replaceScreen(UIScreen::Type::Game);

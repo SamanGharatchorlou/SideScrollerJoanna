@@ -62,15 +62,9 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 
 				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(animation.spriteSheet.sprite);
 				ImGui::Text("SpriteSheet: %s", spriteName.c_str());
-
-				//ImGui::InputFloat("FrameSize: x", &animation.spriteSheet.frameSize.x, 0.1f, 1.0f, "%.3f");
-				//ImGui::InputFloat("FrameSize: y", &animation.spriteSheet.frameSize.y, 0.1f, 1.0f, "%.3f");
 				ImGui::InputVectorF("Frame Size", animation.spriteSheet.frameSize);
-				ImGui::InputVectorF("Size Factor", animation.spriteSheet.sizeFactor);
-
+				ImGui::InputVectorF("Object Size", animation.spriteSheet.objectSize);
 				ImGui::VectorText("Boundaries", animation.spriteSheet.boundaries);
-
-
 
 				std::vector<StringBuffer32> animations;
 				for (u32 i = 0; i < animator.mAnimations.size(); i++)
@@ -230,6 +224,64 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 
 				ImGui::TreePop();
 			}
+		}
+	}
+
+	return type;
+}
+
+
+bool s_displayRenderRect = false;
+
+ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::Component::Type type = ECS::Component::Sprite;
+
+	if (ecs->HasComponent(entity, type))
+	{
+		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
+		{
+			ECS::Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
+
+			RectF renderRect;
+			if (ecs->HasComponent(entity, ECS::Component::Transform))
+			{
+				ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
+				VectorF size = transform.rect.Size() * sprite.relativeRenderRect.Size();
+				VectorF pos = transform.rect.TopLeft() - sprite.relativeRenderRect.TopLeft() * size;
+				renderRect = RectF(pos, size);
+			}
+
+			if (ImGui::TreeNode("Component Data"))
+			{
+				if (ecs->HasComponent(entity, ECS::Component::Transform))
+				{
+					ImGui::DisplayRect(renderRect);
+				}
+
+				ImGui::DisplayRect(sprite.subRect);
+
+				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(sprite.texture);
+				ImGui::Text("SpriteSheet: %s", spriteName.c_str());
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Display"))
+			{
+				if (ecs->HasComponent(entity, ECS::Component::Transform))
+				{
+					ImGui::Checkbox("Display Render Rect", &s_displayRenderRect);
+					if (s_displayRenderRect)
+					{
+						DebugDraw::RectOutline(renderRect, Colour::Red);
+					}
+				}
+
+				ImGui::TreePop();
+			}
+
 		}
 	}
 

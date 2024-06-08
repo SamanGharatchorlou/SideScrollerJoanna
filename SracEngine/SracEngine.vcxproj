@@ -143,6 +143,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameSource\ECS\Components\Physics.cpp" />
+    <ClCompile Include="GameSource\ECS\Components\PlayerController.cpp" />
     <ClCompile Include="GameSource\PlayerStates\PlayerStates.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
@@ -257,9 +259,11 @@
     <ClCompile Include="GameSource\ECS\EntSystems\TileMapSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSource\ECS\Components\Physics.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h" />
     <ClInclude Include="GameSource\Character\Player.h" />
     <ClInclude Include="GameSource\ECS\ComponentsSetup.h" />
+    <ClInclude Include="GameSource\ECS\Components\PlayerController.h" />
     <ClInclude Include="GameSource\PlayerStates\PlayerState.h" />
     <ClInclude Include="GameSource\PlayerStates\PlayerStates.h" />
     <ClInclude Include="SRAC\Animations\CharacterStates.h" />

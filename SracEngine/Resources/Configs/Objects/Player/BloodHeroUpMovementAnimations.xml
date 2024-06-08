@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Player>
+	<Animator>
+		<ID>BloodHero</ID>
+		<FrameTime>0.1</FrameTime>
+		<FrameSize x = "64" y ="65"></FrameSize>
+		<ObjectSize x = "32" y ="32"></ObjectSize>
+		<ObjectPosition x = "0" y ="16"></ObjectSize>
+		<Direction x = "0" y ="-1"></Direction>
+		<SpriteSheet>BloodHero_Up</SpriteSheet>
+		<Animations>
+			<Idle index = "12" minLoops = "1">12</Idle>
+			<Walk index = "24" minLoops = "1">8</Walk>
+			<Run index = "48" minLoops = "1">8</Run>
+			<Attack index = "52" minLoops = "1">7</Attack>
+		</Animations>
+	</Animator>
+</Player>

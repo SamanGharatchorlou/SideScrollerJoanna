@@ -18,10 +18,12 @@ public:
 	void Update(float dt);
 
 	const Animation* getAnimation(ActionState action) const;
+	const Animation* getAnimation(ActionState action, VectorI direction) const;
 	const Animation& activeAnimation() const { return mAnimations[mAnimationIndex]; }
 	VectorF getAnimationSubRect() const;
 
-	void selectAnimation(ActionState state);
+	bool selectAnimation(ActionState state);
+	bool selectAnimation(ActionState state, VectorI direction);
 
 	void start() { mState = TimeState::Running; }
 	void pause() { mState = TimeState::Paused; }
@@ -49,7 +51,7 @@ public:
 	u32 frameCaptureIndex = 0;
 #endif
 
-	VectorF mBaseSize;
+	//VectorF mBaseSize;
 	u32 mAnimationIndex;
 	u32 mFrameIndex;
 	

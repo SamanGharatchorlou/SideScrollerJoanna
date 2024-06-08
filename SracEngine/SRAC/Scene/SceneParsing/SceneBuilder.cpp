@@ -11,58 +11,109 @@
 #include "ECS/Components.h"
 #include "ECS/Components/Collider.h"
 
-int fast_atoi(const char* str)
+using namespace Map;
+
+static void PopulateTileSet(XMLNode& tileset_node, TileSet& tile_set)
 {
-	int val = 0;
-	while (*str) {
-		val = val * 10 + (*str++ - '0');
-	}
-	return val;
-}
-
-struct TileMapConfig
-{
-	struct TileLayer
-	{
-		std::vector<u32> tildIds;
-		StringMap32 attributes;
-	};
-
-	struct ObjectLayer 
-	{
-		StringMap32 groupAttributes;
-		std::vector<StringMap32> objectAttributes;
-	};
-
 	StringMap32 attributes;
+	attributes.fillAtributes(tileset_node);
 
-	StringMap32 tilesetAttributes;
-	//StringMap32 tilesetImage;
+	tile_set.startingIndex = attributes.getInt("firstgid");
 
-	ObjectLayer objectLayer;
-
-	std::vector<TileLayer> tileLayers;
-};
-
-static void FillTileSet(TileSet& tile_set, const char* tileset_name) 
-{
-	BasicString tileset_config = FileManager::Get()->findFileEtx(FileManager::Maps, tileset_name);
+	const char* tileset_source = attributes.getString("source");
+	BasicString tileset_config = FileManager::Get()->findFileEtx(FileManager::Maps, tileset_source);
 	
 	XMLParser* tilseset_parser = new XMLParser;
 	tilseset_parser->parseXML(tileset_config.c_str());
 
-	StringMap32 tilsetAttributes;
-	tilsetAttributes.fillAtributes(tilseset_parser->rootNode());
-	tilsetAttributes.fillAtributes(tilseset_parser->rootChild("image"));
+	StringMap32 tilset_attr;
+	tilset_attr.fillAtributes(tilseset_parser->rootNode());
+	tilset_attr.fillAtributes(tilseset_parser->rootChild("image"));
 
-	tile_set.texture = TextureManager::Get()->getTexture(tilsetAttributes.at("source"), FileManager::Maps);;
-	tile_set.mapSize = tilsetAttributes.getVectorF("width", "height");
-	tile_set.tileSize = tilsetAttributes.getVectorF("tilewidth", "tileheight");
+	tile_set.texture = TextureManager::Get()->getTexture(tilset_attr.getString("source"), FileManager::Maps);
+	tile_set.mapSize = tilset_attr.getVectorF("width", "height");
+	tile_set.tileSize = tilset_attr.getVectorF("tilewidth", "tileheight");
 
 	VectorF tile_count = (tile_set.mapSize / tile_set.tileSize) + VectorF(0.5f, 0.5f);
 	tile_set.tileCount = tile_count.toInt();
-	
+
 	delete tilseset_parser;
+}
+
+static void PopulateLayerData(TileLayer& layer, XMLNode layer_node)
+{
+	StringMap32 attributes;
+	attributes.fillAtributes(layer_node);
+
+	layer.name = attributes.getString("name");
+	layer.tileCount = attributes.getVectorI("width", "height");
+	// todo: render layer
+
+	const char* data_string = layer_node.child("data").value();
+
+	u32 value = 0;
+	bool is_value = false;
+	while (*data_string != '\0')
+	{
+		// we dont know what we might find so make sure it just valid numbers
+		if (*data_string < '0' || *data_string > '9')
+		{
+			data_string++;
+
+			if (is_value)
+			{
+				layer.ids.push_back(value);
+			}
+
+			is_value = false;
+			value = 0;
+			continue;
+		}
+
+		is_value = true;
+		value = value * 10 + (*data_string++ - '0');
+	}
+}
+
+static void PopulateObjectLayerData(const XMLNode& object_layer_node, SceneTileMapping& tile_mapping, VectorF size_ratio)
+{
+	StringMap32 attributes;
+	attributes.fillAtributes(object_layer_node);
+
+	tile_mapping.objectLayers.push_back(ObjectLayer());
+	ObjectLayer& object_layer = tile_mapping.objectLayers.back();
+	object_layer.id = attributes.getInt("id");
+	object_layer.name = attributes.at("name");
+
+	XMLNode object_node = object_layer_node.child("object");
+	while (object_node)
+	{
+		StringMap32 objectAttributes;
+		objectAttributes.fillAtributes(object_node);
+
+		// create the rect
+		VectorF pos = objectAttributes.getVectorF("x", "y");
+		VectorF size = objectAttributes.getVectorF("width", "height");
+		RectF rect(pos, size);
+		rect.Scale(size_ratio);
+		object_layer.rects.push_back(rect);
+
+		// create a static collider entity
+		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+		ECS::Entity ent = ecs->CreateNewEntity();
+
+		ECS::Collider& collider = ecs->AddComponent(Collider, ent);
+		collider.mRect = rect;
+		SetFlag<u32>(collider.mFlags, (u32)ECS::Collider::Static);
+
+		ECS::Transform& transform = ecs->AddComponent(Transform, ent);
+		transform.rect = rect;
+
+		tile_mapping.colliderEntities.push_back(ent);
+
+		// next object
+		object_node = object_node.next();
+	}
 }
 
 void SceneBuilder::BuildTileMap(const char* mapName, SceneTileMapping& tile_mapping)
@@ -75,137 +126,47 @@ void SceneBuilder::BuildTileMap(const char* mapName, SceneTileMapping& tile_mapp
 
 	XMLParser* parser = new XMLParser;
 	parser->parseXML(full_path.c_str());
-	
-	TileMapConfig config;
+
+	// Fill Base Map Data
 	const XMLNode map_node = parser->rootNode();
-	
-	config.attributes.fillAtributes(map_node);
+	StringMap32 map_attributes;
+	map_attributes.fillAtributes(map_node);
 
-	const XMLNode tileset_node = map_node.child("tileset");
-	config.tilesetAttributes.fillAtributes(tileset_node);
-
-	// base map data - sizes and counts
-	tile_mapping.tileCount = config.attributes.getVectorI("width", "height");
-	tile_mapping.tileSize = config.attributes.getVectorF("tilewidth", "tileheight");
+	tile_mapping.tileCount = map_attributes.getVectorI("width", "height");
+	tile_mapping.tileSize = map_attributes.getVectorF("tilewidth", "tileheight");
 	tile_mapping.mapSize = tile_mapping.tileCount.toFloat() * tile_mapping.tileSize;
 
 	const VectorF window_size = GameData::Get().window->size();
 	const VectorF size_ratio = window_size / tile_mapping.mapSize;
 
-	XMLNode layer_node = map_node.child();
+	// Fill Layer Data
+	XMLNode layer_node = map_node.child("layer");
 	while (layer_node)
 	{
-		if (StringCompare(layer_node.name(), "layer"))
-		{
-			TileMapConfig::TileLayer layer;
-			layer.attributes.fillAtributes(layer_node);
-
-			const char* data_string = layer_node.child("data").value();
-
-			u32 value = 0;
-			bool is_value = false;
-			while (*data_string != '\0')
-			{
-				// we dont know what we might find so make sure it just valid numbers
-				if (*data_string < '0' || *data_string > '9')
-				{
-					data_string++;
-
-					if (is_value)
-					{
-						layer.tildIds.push_back(value);
-					}
-
-					is_value = false;
-					value = 0;
-					continue;
-				}
-
-				is_value = true;
-				value = value * 10 + (*data_string++ - '0');
-			}
-
-			config.tileLayers.push_back(layer);
-		}
-		else if(StringCompare(layer_node.name(), "objectgroup")) 
-		{
-			StringMap32 attributes;
-			attributes.fillAtributes(layer_node);
-
-			SceneTileMapping::ObjectLayer object_layer;
-			object_layer.id = attributes.getInt("id");
-			object_layer.name = attributes.at("name");
-
-			XMLNode object_node = layer_node.child("object");
-			while(object_node) 
-			{
-				StringMap32 objectAttributes;
-				objectAttributes.fillAtributes(object_node);
-
-				VectorF pos = objectAttributes.getVectorF("x", "y");
-				VectorF size = objectAttributes.getVectorF("width", "height");
-				RectF rect(pos, size);
-				rect.Scale(size_ratio);
-
-				object_layer.rects.push_back(rect);
-				
-				ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-				ECS::Entity ent = ecs->CreateNewEntity();
-
-				ECS::Collider& collider = ecs->AddComponent(Collider, ent);
-				collider.mRect = rect;
-				SetFlag<u32>(collider.mFlags, (u32)ECS::Collider::Static);
-				
-				ECS::Transform& transform = ecs->AddComponent(Transform, ent);
-				transform.baseRect = rect;
-
-				tile_mapping.colliderEntities.push_back(ent);
-				tile_mapping.objectLayers.push_back(object_layer);
-
-				object_node = object_node.next();
-			}
-		}
-
-		layer_node = layer_node.next();
+		tile_mapping.tileLayers.push_back(TileLayer());
+		PopulateLayerData(tile_mapping.tileLayers.back(), layer_node);
+		layer_node = layer_node.next("layer");
 	}
 
-	// tilset set data - texture, 
-	const char* tileset_source = config.tilesetAttributes.at("source").c_str();
-	TileSet tile_set;
-	FillTileSet(tile_set, tileset_source);
-
-
-	// convert a map index into a tilset index
-	for (u32 l = 0; l < config.tileLayers.size(); l++)
+	// Populate Tile Set Data
+	XMLNode tileset_node = map_node.child("tileset");
+	while (tileset_node)
 	{
-		TileMapConfig::TileLayer& layer_config = config.tileLayers[l];
-		const u32 tile_count = layer_config.tildIds.size();
+		tile_mapping.tilesets.push_back(TileSet());
+		PopulateTileSet(tileset_node, tile_mapping.tilesets.back());
 
-		SceneTileMapping::TileLayer map_layer;
-		map_layer.tileset = tile_set;
-		map_layer.tileMapping.reserve(tile_count);
-		map_layer.render_layer = layer_config.attributes.getInt("name");
-		map_layer.tileCount = layer_config.attributes.getVectorI("width", "height");
+		tileset_node = tileset_node.next("tileset");
+	}
 
-		for (u32 i = 0; i < tile_count; i++)
-		{
-			VectorI index(-1, -1);
-			if(layer_config.tildIds[i] > 0)
-			{
-				// provides a tile id, so -1 to turn that bad boi into an index
-				int idx = layer_config.tildIds[i] - 1;
+	std::sort(tile_mapping.tilesets.begin(), tile_mapping.tilesets.end(),
+		[](TileSet& a, TileSet& b) { return a.startingIndex > b.startingIndex; });
 
-				// int divide to floor the value
-				int row = idx / tile_set.tileCount.x;
-				int column = idx % tile_set.tileCount.x;
-
-				index = VectorI(column, row);
-			}
-			
-			map_layer.tileMapping.push_back(index);
-		}
-
-		tile_mapping.tileLayers.push_back(map_layer);
+	// Populate Object Data
+	XMLNode object_layer_node = map_node.child("objectgroup");
+	while (object_layer_node)
+	{
+		PopulateObjectLayerData(object_layer_node, tile_mapping, size_ratio);
+		object_layer_node = object_layer_node.next("objectgroup");
 	}
 
 	delete parser;

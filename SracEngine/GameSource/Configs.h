@@ -10,6 +10,5 @@ struct AnimationConfig : public Config
 	void Read(XMLParser& parser) override;
 
 	std::vector<Animation> animations;
-	bool baseSize = false;
 	StringBuffer32 id;
 };

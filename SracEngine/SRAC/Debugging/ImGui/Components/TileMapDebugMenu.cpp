@@ -7,6 +7,8 @@
 #include "ThirdParty/imgui-master/imgui.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
 
+using namespace Map;
+
 static bool s_displaygridLines = true;
 StringBuffer32 s_selectedMap = "";
 
@@ -30,10 +32,10 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 				VectorF map_size = map.mapSize;
 				VectorF size_ratio = window_size / map_size;
 
-				const SceneTileMapping::TileLayer& layer = map.tileLayers.front();
+				const TileLayer& layer = map.tileLayers.front();
 				VectorF tile_size = map.tileSize * size_ratio;
 
-				for (u32 i = 0; i < layer.tileMapping.size(); i++)
+				for (u32 i = 0; i < layer.ids.size(); i++)
 				{
 					VectorI map_index = IndexToMapIndex(i, map.tileCount);
 					VectorF pos = map_index.toFloat() * tile_size;

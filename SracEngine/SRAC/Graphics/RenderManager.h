@@ -41,7 +41,7 @@ public:
 
 	void render();
 
-	void AddRenderPacket(RenderPack renderPacket) { mRenderPackets[renderPacket.layer].push_back(renderPacket); }
+	void AddRenderPacket(RenderPack renderPacket);
 	//void AddRenderPacketList(RenderPack renderPacket) { mRenderPackets[renderPacket.layer].push_back(renderPacket); }
 
 	void AddDebugRenderPacker(const DebugRenderPack& renderPack);

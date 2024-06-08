@@ -39,6 +39,14 @@ void RenderManager::AddDebugRenderPacker(const DebugRenderPack& renderPack)
 	mDebugRenders.push_back(renderPack);
 }
 
+
+void RenderManager::AddRenderPacket(RenderPack renderPacket) 
+{ 
+
+	ASSERT(renderPacket.texture != nullptr, "RenderPacket has no texture");
+	mRenderPackets[renderPacket.layer].push_back(renderPacket); 
+}
+
 void RenderManager::render()
 {
 	SDL_Renderer* renderer = Renderer::Get()->sdlRenderer();
@@ -80,7 +88,7 @@ void RenderManager::render()
 
 			const RectF& rect = mDebugRenders[i].rect;
 			const Vector2D<int> A = rect.TopLeft().toInt();
-			const Vector2D<int> B = rect.BotRight().toInt();
+			const Vector2D<int> B = rect.Size().toInt();
 
 			SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), A.x, A.y, B.x, B.y);
 			break;

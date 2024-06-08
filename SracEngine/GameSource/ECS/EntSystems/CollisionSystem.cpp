@@ -52,21 +52,21 @@ namespace ECS
 				 Collider& that_collider = collider_list[i];
 				 if(this_collider.intersects(that_collider)) 
 				 {
-					 VectorF velocity = transform.targetCenterPosition - transform.baseRect.Center();
+					 VectorF velocity = transform.targetCenterPosition - transform.rect.Center();
 
 					 VectorF allowed_velocity;
 
-					 const RectF horizontal_rect = transform.baseRect.Translate(VectorF(velocity.x, 0.0f));
+					 const RectF horizontal_rect = transform.rect.Translate(VectorF(velocity.x, 0.0f));
 					 const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
 					 if (can_move_horizontally)
 						 allowed_velocity.x = velocity.x;
 
-					 const RectF vertical_rect = transform.baseRect.Translate(VectorF(0.0f, velocity.y));
+					 const RectF vertical_rect = transform.rect.Translate(VectorF(0.0f, velocity.y));
 					 const bool can_move_vertically = !that_collider.intersects(vertical_rect);
 					 if (can_move_vertically)
 						 allowed_velocity.y = velocity.y;
 					 
-					 transform.targetCenterPosition = transform.baseRect.Center() + allowed_velocity;
+					 transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
 
 					 if (character_state)
 					 {
