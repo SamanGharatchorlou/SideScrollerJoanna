@@ -33,7 +33,7 @@ public:
 	void stop();
 	void restart();
 
-	bool RunActive(float dt);
+	bool RunActive(float dt, bool force_loop = false);
 
 	bool isRunning() const { return mState == TimeState::Running; }
 	bool isStarted() const { return mState == TimeState::Running || mState == TimeState::Paused; }

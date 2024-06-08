@@ -20,7 +20,7 @@ ECS::Component::Type DebugMenu::DoPlayerControllerDebugMenu(ECS::Entity& entity)
 				ImGui::VectorText("Movement Direction", pc.movementDirection);
 				ImGui::VectorText("Facing Direction", pc.facingDirection);
 
-				ImGui::Text("State count: %d", pc.actions.idx);
+				ImGui::Text("State count: %d", pc.actions.stack.size());
 				ImGui::Text("Current State: %s", actionToString(pc.actions.Top().action).c_str());
 
 

@@ -16,6 +16,7 @@ static bool s_usingPlaylist = false;
 static bool s_playingPlaylist = false;
 static bool s_playSingleAnimation = false;
 static bool s_displayRenderRect = false;
+static bool s_forceLooping = true;
 
 static ECS::Entity s_activeEnt;
 
@@ -125,7 +126,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 						}
 
 						FrameRateController& frc = FrameRateController::Get();
-						if (animator.RunActive(frc.delta()))
+						if (animator.RunActive(frc.delta(), s_forceLooping))
 						{
 							if (s_playingPlaylist)
 							{
@@ -136,6 +137,8 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 							s_playSingleAnimation = false;
 						}
 					}
+
+					ImGui::Checkbox("Force Looping", &s_forceLooping);
 
 					if (running_animation)
 						ImGui::BeginDisabled();

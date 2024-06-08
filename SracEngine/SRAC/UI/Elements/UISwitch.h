@@ -20,8 +20,7 @@ public:
 	void setTextures(Texture* off, Texture* on);
 
 	void reset() { }
-	bool handleInput(const InputManager* input) override;
-
+	bool handleInput(InputManager* input) override;
 
 	void setState(State state);
 	void switchState();

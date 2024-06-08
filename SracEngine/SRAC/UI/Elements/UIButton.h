@@ -24,15 +24,15 @@ public:
 
 	void reset();
 
-	bool handleInput(const InputManager* input) override;
+	bool handleInput(InputManager* input) override;
 
 	void setState(State state);
 	void setHeld(bool isHeld);
 	void setPressed(bool isPressed);
 	void setReleased(bool isReleased);
 
-	inline bool isPressed() const { return mButton.isPressed(); }
-	inline bool isReleased() const { return mButton.isReleased(); }
+	bool isPressed() const;
+	bool isReleased() const;
 	inline bool isHeld() const { return mButton.isHeld(); }
 	inline int holdCount() const { return mButton.getHeldFrames(); }
 

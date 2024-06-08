@@ -8,12 +8,7 @@ static void ReadAnimationNode(XMLNode rootNode, XMLNode node, Texture* texture, 
 {
 	out_animation.startIndex = toInt(node.attribute("index")->value());
 	out_animation.frameCount = toInt(node.value());
-
 	out_animation.frameTime = toFloat(rootNode.child("FrameTime").value());
-	if (XMLNode::Attribute attributeNode = node.attribute("speedfactor"))
-	{
-		out_animation.frameTime /= toFloat(attributeNode->value());
-	}
 
 	if (XMLNode::Attribute attributeNode = node.attribute("minLoops"))
 	{
@@ -23,6 +18,19 @@ static void ReadAnimationNode(XMLNode rootNode, XMLNode node, Texture* texture, 
 	if (XMLNode::Attribute attributeNode = node.attribute("looping"))
 	{
 		out_animation.looping = toBool(attributeNode->value());
+	}
+
+	if (XMLNode::Attribute attributeNode = node.attribute("frameTime"))
+	{
+		out_animation.frameTime = toFloat(attributeNode->value());
+	}
+
+	// extend the frame time so as to match an animation with targetFrames number of frames in it
+	if (XMLNode::Attribute attributeNode = node.attribute("targetFrames"))
+	{
+		float target_frames = toFloat(attributeNode->value());
+		float time_ratio = target_frames / (float)out_animation.frameCount;
+		out_animation.frameTime *= time_ratio;
 	}
 
 	XMLNode frameSizeNode = rootNode.child("FrameSize");

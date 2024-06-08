@@ -25,7 +25,7 @@ public:
 	void initCursor(Cursor* cursor);
 	void setCursorTexture(Texture* texture);
 
-	void handleInput(const InputManager* input);
+	void handleInput(InputManager* input);
 	void update();
 	void render() override;
 

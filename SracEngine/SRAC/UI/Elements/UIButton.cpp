@@ -2,6 +2,7 @@
 #include "UIButton.h"
 
 #include "Input/InputManager.h"
+#include "Game/FrameRateController.h"
 
 UIButton::UIButton(const StringMap32& attributes) :
 	UIBox(attributes), mIsActive(false),
@@ -20,7 +21,7 @@ void UIButton::setTextures(Texture* defaultTexture, Texture* selected, Texture* 
 }
 
 
-bool UIButton::handleInput(const InputManager* input)
+bool UIButton::handleInput(InputManager* input)
 {
 	bool hasPressed = false;
 	if (isPointInBounds(input->cursorPosition()))
@@ -103,3 +104,18 @@ void UIButton::setReleased(bool isReleased)
 		setState(State::Active);
 }
 
+bool UIButton::isPressed() const 
+{ 
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	return mButton.isPressed(frame_count); 
+}
+
+bool UIButton::isReleased() const 
+{ 	
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	return mButton.isReleased(frame_count); 
+}

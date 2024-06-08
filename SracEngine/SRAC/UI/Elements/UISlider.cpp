@@ -51,7 +51,7 @@ void UISlider::setComponents(Texture* container, UIButton* slider, UIBox* bar)
 
 
 
-bool UISlider::handleInput(const InputManager* input)
+bool UISlider::handleInput(InputManager* input)
 {
 	bool hasPressed = false;
 

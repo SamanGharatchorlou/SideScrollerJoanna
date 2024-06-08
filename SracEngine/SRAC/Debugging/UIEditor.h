@@ -10,7 +10,7 @@ class InputManager;
 class UIEditor
 {
 public:
-	void handleInput(const InputManager* input);
+	void handleInput(InputManager* input);
 
 	BasicString selectElement(const InputManager* input);
 	VectorF moveElement(const InputManager* input, Button::Key key, VectorF direction);

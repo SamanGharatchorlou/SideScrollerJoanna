@@ -19,7 +19,7 @@ void PopupScreen::build(const char* title, const char* body)
 }
 
 
-void PopupScreen::HandleInput(const InputManager* input)
+void PopupScreen::HandleInput(InputManager* input)
 {
 	if (input->isReleased(Button::Enter) || input->isReleased(Button::Esc))
 	{

@@ -12,7 +12,7 @@ namespace ECS
 	void PlayerControllerSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
-		const InputManager* input = InputManager::Get();
+		InputManager* input = InputManager::Get();
 ;
 		for (Entity entity : entities)
 		{

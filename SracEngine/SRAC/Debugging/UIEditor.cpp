@@ -15,7 +15,7 @@
 #include "UI/UIEventHandler.h"
 
 
-void UIEditor::handleInput(const InputManager* input)
+void UIEditor::handleInput(InputManager* input)
 {
 	VectorF movement;
 

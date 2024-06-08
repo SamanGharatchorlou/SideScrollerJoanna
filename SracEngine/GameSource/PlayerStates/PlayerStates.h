@@ -46,6 +46,12 @@ struct RunState : public PlayerState
 	void Update(float dt) override;
 };
 
+struct DodgeState : public PlayerState
+{
+	void Init() override;
+	void Update(float dt) override;
+};
+
 struct SlashAttackState : public PlayerState
 {
 	void Init() override;

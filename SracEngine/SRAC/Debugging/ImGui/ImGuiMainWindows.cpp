@@ -8,6 +8,7 @@
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
+#include "Game/FrameRateController.h"
 
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
@@ -127,17 +128,20 @@ void DebugMenu::DoInputWindow()
             ImGui::Text("Cursor %s Moving: ", im->mCursor.isMoving() ? "is" : "is not");
             ImGui::Text("Cursor: %s", cursorState.c_str());
 
+            const FrameRateController& frc = FrameRateController::Get();
+	        const int frame_count = frc.frameCount();
+
             for (u32 i = 0; i < im->mButtons.size(); i++)
             {
                 Button& button = im->mButtons[i];
 
                 StringBuffer32 state;
 
-                if (button.isPressed())
+                if (button.isPressed(frame_count))
                     state = "Pressed, ";
                 if (button.isHeld())
                     state = state + "Held, ";
-                if (button.isReleased())
+                if (button.isReleased(frame_count))
                     state = state + "Released";
 
                 ImGui::PushID(i);

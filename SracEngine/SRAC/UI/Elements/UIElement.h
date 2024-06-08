@@ -24,7 +24,7 @@ public:
 	UIElement(const StringMap32& attributes);
 	virtual ~UIElement() { };
 
-	virtual bool handleInput(const InputManager* input) { return false; };
+	virtual bool handleInput(InputManager* input) { return false; };
 	virtual void render() { };
 
 	void fill(const StringMap32& attributes);

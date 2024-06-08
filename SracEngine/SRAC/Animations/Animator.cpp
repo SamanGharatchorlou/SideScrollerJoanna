@@ -186,7 +186,7 @@ void Animator::restart()
 	ResetOnNewAnimation();
 }
 
-bool Animator::RunActive(float dt)
+bool Animator::RunActive(float dt, bool force_loop)
 {
 	if (mState == TimeState::Running)
 		mTime += dt;
@@ -198,7 +198,7 @@ bool Animator::RunActive(float dt)
 	if (progress_frame)
 	{	
 		// cant pass last frame if we can loop
-		if(!animation.looping && lastFrame())
+		if(!animation.looping && lastFrame() && !force_loop)
 		{
 			mFinished = true;
 			return false;

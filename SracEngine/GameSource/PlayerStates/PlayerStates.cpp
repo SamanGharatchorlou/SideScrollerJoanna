@@ -47,7 +47,7 @@ void IdleState::Update(float dt)
 	}
 
 	// Slash Attack
-	const InputManager* input = InputManager::Get();
+	InputManager* input = InputManager::Get();
 	if (input->isCursorPressed(Cursor::ButtonType::Left))
 	{
 		Push(ActionState::SlashAttack);
@@ -81,10 +81,16 @@ void WalkState::Update(float dt)
 	}
 
 	// Slash Attack
-	const InputManager* input = InputManager::Get();
+	InputManager* input = InputManager::Get();
 	if (input->isCursorPressed(Cursor::ButtonType::Left))
 	{
 		Push(ActionState::SlashAttack);
+	}
+
+	// Dodge
+	if (input->isPressed(Button::Space, c_inputBuffer))
+	{
+		Push(ActionState::Dodge);
 	}
 }
 
@@ -106,12 +112,51 @@ void RunState::Update(float dt)
 	}
 
 	// Slash Attack
-	const InputManager* input = InputManager::Get();
-	if (input->isCursorPressed(Cursor::ButtonType::Left))
+	InputManager* input = InputManager::Get();
+	if (input->isCursorPressed(Cursor::ButtonType::Left, c_inputBuffer))
 	{
 		Push(ActionState::SlashAttack);
 	}
+
+	// Dodge
+	if (input->isPressed(Button::Space, c_inputBuffer))
+	{
+		Push(ActionState::Dodge);
+	}
 }
+
+// DodgeState
+// ---------------------------------------------------------
+void DodgeState::Init()
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	
+	if (ECS::Physics* physics = ecs->GetComponent(Physics, playerController->entity))
+	{
+		float amplitude = 10.0f;
+		physics->speed = playerController->movementDirection.toFloat() * amplitude;
+	}
+}
+
+void DodgeState::Update(float dt)
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::Animation& animation = ecs->GetComponentRef(Animation, playerController->entity);
+
+	ActionState action = animation.animator.activeAction();
+	ASSERT(action == ActionState::Dodge, "Not the Slash Attack State");
+
+	if (ECS::Physics* physics = ecs->GetComponent(Physics, playerController->entity))
+	{
+		physics->ApplyDrag(VectorF::zero(), 0.08f);
+	}
+
+	if(animation.animator.finished())
+	{
+		PopSelf();
+	}
+}
+
 
 // LightAttack
 // ---------------------------------------------------------
@@ -121,7 +166,7 @@ void SlashAttackState::Init()
 	
 	if (ECS::Physics* physics = ecs->GetComponent(Physics, playerController->entity))
 	{
-		float amplitude = 0.5f;
+		float amplitude = 1.0f;
 		physics->speed = playerController->movementDirection.toFloat() * amplitude;
 	}
 }
@@ -147,7 +192,7 @@ void SlashAttackState::Update(float dt)
 	if(animation.animator.lastFrame())
 	{
 		// input buffer
-		const InputManager* input = InputManager::Get();
+		InputManager* input = InputManager::Get();
 		if (input->isCursorPressed(Cursor::ButtonType::Left))
 		{
 			animation.animator.restart();
@@ -176,10 +221,8 @@ PlayerState* PlayerStatePool::createNewObjects(ActionState type, int count, int&
 	ActionStateCase(Idle)
 	ActionStateCase(Walk)
 	ActionStateCase(Run)
+	ActionStateCase(Dodge)
 	ActionStateCase(SlashAttack)
-	//ActionStateCase(Fall)
-	//ActionStateCase(Jump)
-
 	case ActionState::Count:
 	case ActionState::None:
 	default:

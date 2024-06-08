@@ -1,6 +1,5 @@
 #pragma once
 
-
 class Button
 {
 public:
@@ -67,14 +66,13 @@ public:
 	State state(int frame_number) const;
 
 	bool isHeld() const { return mHeldFrames > 0; }
-	bool isPressed() const { return mPressedFrame; }
-	bool isReleased() const { return mReleasedFrame; }
+	bool isPressed(int frame) const { return mPressedFrame >= frame; }
+	bool isReleased(int frame) const { return mReleasedFrame >= frame; }
 
 	const Key key() const { return mKeyBinding; }
 	bool isKey(SDL_Keycode key) const { return mKeyBinding == key; }
 	bool isKey(Key key) const { return mKeyBinding == key; }
 
-	//void setHeld(bool isHeld) { mHeld = isHeld; }
 	void setPressed(int frame) { mPressedFrame = frame; }
 	void setReleased(int frame) { mReleasedFrame = frame; }
 
@@ -82,17 +80,11 @@ public:
 	void setHeldFrames(int frames) { mHeldFrames = frames; }
 	void incrementHeldFrames() { mHeldFrames++; }
 
-	//bool mIsHeld = false;;
 	int mHeldFrames = 0;
 	
 	// frame it was activated
 	int mPressedFrame = 0;
 	int mReleasedFrame = 0;
-
-	// update everytime we get a press down input, can be trused for held inputs
-	// because the events aren't consistent but used to prevent release off screen
-	// incorrectly maintaining hold events, say an event 20 frame ago means we can reset
-	int mlastPressFrame = 0;
 
 	Key mKeyBinding = None;
 };

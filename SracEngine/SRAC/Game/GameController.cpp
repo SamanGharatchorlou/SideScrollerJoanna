@@ -103,8 +103,7 @@ void GameController::handleInput(SDL_Event& event)
 	SystemStateManager* sm = mGameData.systemStateManager;
 
 	// handle input events
-	mGameData.inputManager->resetInputEvents();
-
+	mGameData.inputManager->consumeBufferedInputs();
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)

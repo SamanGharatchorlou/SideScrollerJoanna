@@ -1,10 +1,16 @@
 #include "pch.h"
 #include "InputManager.h"
 
-//#include "Button.h"
 #include "Game/Camera/Camera.h"
 #include "Debugging/ImGui/ImGuiMenu.h"
 #include "Game/FrameRateController.h"
+
+static void InitButton(Button& button)
+{
+	button.mPressedFrame = 0;
+	button.mReleasedFrame = 1;
+	button.mHeldFrames = 0;
+}
 
 void InputManager::init()
 {
@@ -12,11 +18,11 @@ void InputManager::init()
 
 	for (Button& button : mButtons)
 	{
-		button.mlastPressFrame = 0;
-		button.mPressedFrame = 0;
-		button.mReleasedFrame = 1;
-		button.mHeldFrames = 0;
+		InitButton(button);
 	}
+	
+	InitButton(mCursor.getButton(Cursor::ButtonType::Left));
+	InitButton(mCursor.getButton(Cursor::ButtonType::Right));
 }
 
 InputManager* InputManager::Get()
@@ -24,6 +30,22 @@ InputManager* InputManager::Get()
 	GameData& gd = GameData::Get();
 	ASSERT(gd.inputManager != nullptr, "Audio manager has no been set up yet");
 	return gd.inputManager;
+}
+
+void InputManager::consumeBufferedInputs()
+{	
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	for( u32 i = 0; i < mPressedButtons.size(); i++ )
+	{
+		mPressedButtons[i].mPressedFrame = frame_count - (c_inputBuffer + 1);
+	}
+
+	for( u32 i = 0; i < mReleaseButtons.size(); i++ )
+	{
+		mReleaseButtons[i].mReleasedFrame = frame_count - (c_inputBuffer + 1);
+	}
 }
 
 void InputManager::processInputEvent(SDL_Event& event)
@@ -43,7 +65,7 @@ void InputManager::processInputEvent(SDL_Event& event)
 }
 
 
-const Button& InputManager::getButton(Button::Key key) const
+Button& InputManager::getButton(Button::Key key)
 {
 	for (unsigned int i = 0; i < mButtons.size(); i++)
 	{
@@ -55,48 +77,70 @@ const Button& InputManager::getButton(Button::Key key) const
 	return mButtons[0];
 }
 
+bool InputManager::isHeld(Button::Key key, int frame_buffer) 
+{ 
+	return getButton(key).isHeld(); 
+}
+
+bool InputManager::HandlePressedButton(Button& button, int frame_buffer)
+{
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	const bool is_pressed = button.isPressed(frame_count - frame_buffer);
+
+	// set the pressed frame for this button to be older, so it cant be triggered multiple times
+	if(is_pressed)
+	{
+		//button.mPressedFrame = frame_count - (frame_buffer + 1);
+		mPressedButtons.push_back(button);
+	}
+
+	return is_pressed;
+}
+
+bool InputManager::HandleReleaseButton(Button& button, int frame_buffer)
+{
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	const bool is_released = button.isReleased(frame_count - frame_buffer);
+
+	// set the released frame for this button to be older, so it cant be triggered multiple times
+	if(is_released)
+	{
+		//button.mReleasedFrame = frame_count - (frame_buffer + 1);
+		mReleaseButtons.push_back(button);
+	}
+
+	return is_released;
+}
+
+bool InputManager::isPressed(Button::Key key, int frame_buffer) 
+{ 
+	Button& button = getButton(key);
+	return HandlePressedButton(button, frame_buffer);
+}
+
+bool InputManager::isReleased(Button::Key key, int frame_buffer) 
+{ 	
+	Button& button = getButton(key);
+	return HandleReleaseButton(button, frame_buffer);
+}
 
 // Cursor
 void InputManager::setCursorSize(VectorF size) { mCursor.setSize(size); }
-bool InputManager::isCursorPressed(Cursor::ButtonType button) const { return mCursor.isPressed(button); }
-bool InputManager::isCursorReleased(Cursor::ButtonType button) const { return mCursor.isReleased(button); }
 bool InputManager::isCursorHeld(Cursor::ButtonType button) const { return mCursor.isHeld(button); }
-
-
-// Must run before processInputEvent
-void InputManager::resetInputEvents()
-{
-	// Reset cursor states
-#if DEBUG_CHECK
-	if (((mCursor.isHeld(Cursor::Left) || mCursor.isPressed(Cursor::Left)) && mCursor.isReleased(Cursor::Left)) ||
-		((mCursor.isHeld(Cursor::Right) || mCursor.isPressed(Cursor::Right)) && mCursor.isReleased(Cursor::Right)))
-	{
-		DebugPrint(Warning, "Cursor is being pressed and released at the same time");
-	}
-#endif
-
-	mCursor.clearInputs();
-
-//	// Reset button states
-//	for (Button& button : mButtons)
-//	{
-//#if DEBUG_CHECK
-//		if ((button.isHeld() || button.isPressed()) && button.isReleased())
-//		{
-//			DebugPrint(Warning, "Button key %d is being pressed and released at the same time", button.key());
-//		}
-//#endif
-//	}
+bool InputManager::isCursorPressed(Cursor::ButtonType cursor_button, int frame_buffer) 
+{ 
+	Button& button = mCursor.getButton(cursor_button);
+	return HandlePressedButton(button, frame_buffer);
 }
-
-InputManager createManager(const InputPacket& inputData)
-{
-	InputManager manager;
-	manager.init();
-	manager.resetInputEvents();
-	return manager;
+bool InputManager::isCursorReleased(Cursor::ButtonType cursor_button, int frame_buffer) 
+{ 
+	Button& button = mCursor.getButton(cursor_button);
+	return HandleReleaseButton(button, frame_buffer);
 }
-
 
 // --- Private Functions --- //
 void InputManager::processMouseMovementEvent()
@@ -113,13 +157,12 @@ void InputManager::processMouseMovementEvent()
 
 void InputManager::processMouseButtonEvent(SDL_Event& event)
 {
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
 	SDL_MouseButtonEvent buttonEvent = event.button;
 
-	Cursor::ButtonType buttonType;
-	bool isHeld = false;
-	bool isPressed = false;
-	bool isReleased = false;
-
+	Cursor::ButtonType buttonType = Cursor::ButtonType::Count;
 	if (buttonEvent.button == Button::LeftClick)
 		buttonType = Cursor::Left;
 	else if (buttonEvent.button == Button::rightClick)
@@ -128,29 +171,24 @@ void InputManager::processMouseButtonEvent(SDL_Event& event)
 		DebugPrint(Warning, "Mouse button type %d not left or right", buttonEvent.button);
 
 	// Get input data
-	Button cursorButton = mCursor.getButton(buttonType);
+	Button& cursorButton = mCursor.getButton(buttonType);
 
-	if (!cursorButton.isHeld())
-		isPressed = (event.type == SDL_MOUSEBUTTONDOWN);
+	if(event.type == SDL_MOUSEBUTTONUP)
+	{
+		cursorButton.setReleased(frame_count);
+	}
 
-	isHeld = (event.type == SDL_MOUSEBUTTONDOWN);
-	isReleased = (event.type == SDL_MOUSEBUTTONUP);
-
-	// Set input data
-	//cursorButton.setHeld(isHeld);
-	cursorButton.setPressed(isPressed);
-	cursorButton.setReleased(isReleased);
-
-	if (isPressed)
-		cursorButton.mHeldFrames++;
-	if (isReleased)
-		cursorButton.mHeldFrames = 0;
-
-	mCursor.setButton(buttonType, cursorButton);
+	if( event.type == SDL_MOUSEBUTTONDOWN )
+	{
+		if(cursorButton.mReleasedFrame > cursorButton.mPressedFrame)
+		{
+			cursorButton.setPressed(frame_count);
+		}
+	}
 }
 
 void InputManager::processButtonEvent(SDL_Event& event)
-{
+{ 
 	const FrameRateController& frc = FrameRateController::Get();
 	const int frame_count = frc.frameCount();
 
@@ -174,6 +212,15 @@ void InputManager::processButtonEvent(SDL_Event& event)
 	}
 }
 
+static void HandleButtonHoldFrameCounter(Button& button)
+{
+	const bool is_held = button.mPressedFrame > button.mReleasedFrame;
+	if(!is_held)
+		button.setHeldFrames(0);
+	else
+		button.incrementHeldFrames();
+}
+
 void InputManager::updateHeldFrame()
 {
 	const FrameRateController& frc = FrameRateController::Get();
@@ -181,17 +228,11 @@ void InputManager::updateHeldFrame()
 
 	for (Button& button : mButtons)
 	{
-		bool is_held = button.mPressedFrame > button.mReleasedFrame;
-
-		if(!is_held)
-		{
-			button.setHeldFrames(0);
-		}
-		else
-		{
-			button.incrementHeldFrames();
-		}
+		HandleButtonHoldFrameCounter(button);
 	}
+
+	HandleButtonHoldFrameCounter(mCursor.getButton(Cursor::ButtonType::Left));
+	HandleButtonHoldFrameCounter(mCursor.getButton(Cursor::ButtonType::Right));
 }
 
 void InputManager::bindDefaultButtons()

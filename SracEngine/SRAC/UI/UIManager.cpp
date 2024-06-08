@@ -84,7 +84,7 @@ void UIManager::clearScreens()
 }
 
 
-void UIManager::handleInput(const InputManager* input)
+void UIManager::handleInput(InputManager* input)
 {
 #if UI_EDITOR
 	mEditor.handleInput(input);

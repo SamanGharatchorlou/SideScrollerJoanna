@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Cursor.h"
 #include "Graphics/Texture.h"
+#include "Game/FrameRateController.h"
 
 #if DEBUG_CURSOR
 #include "Debugging/DebugDraw.h"
@@ -29,16 +30,6 @@ void Cursor::setButton(ButtonType type, Button button)
 	mButtons[type] = button;
 }
 
-void Cursor::clearInputs()
-{
-	mButtons[Cursor::Left].setPressed(false);
-	mButtons[Cursor::Right].setPressed(false);
-
-	mButtons[Cursor::Left].setReleased(false);
-	mButtons[Cursor::Right].setReleased(false);
-}
-
-
 void Cursor::setCursorOffsetPoint(VectorF offset)
 {
 	mCursorOffsetPoint = offset;
@@ -51,12 +42,18 @@ bool Cursor::isHeld(ButtonType type) const
 	return mButtons[type].isHeld();
 }
 
-bool Cursor::isPressed(ButtonType type) const
-{
-	return mButtons[type].isPressed();
+bool Cursor::isPressed(ButtonType type, int frame_buffer) const
+{	
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	return mButtons[type].isPressed(frame_count - frame_buffer);
 }
 
-bool Cursor::isReleased(ButtonType type) const
-{
-	return mButtons[type].isReleased();
+bool Cursor::isReleased(ButtonType type, int frame_buffer) const
+{	
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	return mButtons[type].isReleased(frame_count - frame_buffer);
 }

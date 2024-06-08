@@ -11,8 +11,7 @@ public:
 
 	void Init() override;
 
-	//void updateInputs(const InputManager* input) override;
-	void HandleInput(const InputManager* input) { };
+	void HandleInput(InputManager* input) { };
 	void Update() override;
 
 	//void resume() override;

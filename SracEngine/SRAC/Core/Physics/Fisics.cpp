@@ -12,37 +12,37 @@ void Fisics::init(float force, float maxVelocity)
 }
 
 
-void Fisics::handleInput(const InputManager* input)
+void Fisics::handleInput(InputManager* input)
 {
-	mAcceleration.zero();
-	mHasForce.zero();
+	//mAcceleration.zero();
+	//mHasForce.zero();
 
-	// Movement
-	if (input->isHeld(Button::Up))
-	{
-		mAcceleration.y -= 1.0f;
-		mHasForce.y = true;
-	}
+	//// Movement
+	//if (input->isHeld(Button::Up))
+	//{
+	//	mAcceleration.y -= 1.0f;
+	//	mHasForce.y = true;
+	//}
 
-	if (input->isHeld(Button::Down))
-	{
-		mAcceleration.y += 1.0f;
-		mHasForce.y = true;
-	}
+	//if (input->isHeld(Button::Down))
+	//{
+	//	mAcceleration.y += 1.0f;
+	//	mHasForce.y = true;
+	//}
 
-	if (input->isHeld(Button::Left))
-	{
-		mAcceleration.x -= 1.0f;
-		mHasForce.x = true;
-	}
+	//if (input->isHeld(Button::Left))
+	//{
+	//	mAcceleration.x -= 1.0f;
+	//	mHasForce.x = true;
+	//}
 
-	if (input->isHeld(Button::Right))
-	{
-		mAcceleration.x += 1.0f;
-		mHasForce.x = true;
-	}
+	//if (input->isHeld(Button::Right))
+	//{
+	//	mAcceleration.x += 1.0f;
+	//	mHasForce.x = true;
+	//}
 
-	mAcceleration = mAcceleration.normalise() * mForce;
+	//mAcceleration = mAcceleration.normalise() * mForce;
 }
 
 

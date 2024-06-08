@@ -44,7 +44,7 @@ void GameScreen::Init()
 #endif
 }
 
-void GameScreen::HandleInput(const InputManager* input)
+void GameScreen::HandleInput(InputManager* input)
 {
 	if (input->isReleased(Button::Pause) || input->isReleased(Button::Esc))
 	{

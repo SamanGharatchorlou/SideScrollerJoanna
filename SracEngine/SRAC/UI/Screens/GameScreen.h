@@ -10,7 +10,7 @@ public:
 	GameScreen();
 
 	void Init() override;
-	void HandleInput(const InputManager* input);
+	void HandleInput(InputManager* input);
 	void Update() override;
 	void Exit() override;
 

@@ -31,8 +31,8 @@ public:
 	ScreenLayers& layers() { return mScreenLayers; }
 	std::unordered_map<StringBuffer32, UIElement*>& iteractables() { return mInteractables; }
 
-	virtual void updateInputs(const InputManager* input);
-	virtual void handleInput(const InputManager* input) { };
+	virtual void updateInputs(InputManager* input);
+	virtual void handleInput(InputManager* input) { };
 	virtual void Update() { };
 	void render();
 

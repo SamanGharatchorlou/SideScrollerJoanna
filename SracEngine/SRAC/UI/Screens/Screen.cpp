@@ -41,7 +41,7 @@ void Screen::add(const ScreenLayers& layers)
 	}
 }
 
-void Screen::updateInputs(const InputManager* input)
+void Screen::updateInputs(InputManager* input)
 {
 	bool hasPressed = false;
 	std::unordered_map<StringBuffer32, UIElement*>::iterator iter;

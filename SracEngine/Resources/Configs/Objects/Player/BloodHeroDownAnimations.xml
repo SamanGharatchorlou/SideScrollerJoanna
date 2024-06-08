@@ -12,7 +12,8 @@
 			<Idle index = "12">12</Idle>
 			<Walk index = "24">8</Walk>
 			<Run index = "48">8</Run>
-			<SlashAttack index = "60" looping = "false">7</SlashAttack>
+			<Dodge index = "36" looping = "false" frameTime = "0.05">8</Dodge>
+			<SlashAttack index = "60" looping = "false" frameTime = "0.04">7</SlashAttack>
 		</Animations>
 	</Animator>
 </Player>
