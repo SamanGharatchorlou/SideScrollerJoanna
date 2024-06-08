@@ -9,15 +9,15 @@ class MainMenuScreen : public Screen
 public:
 	MainMenuScreen() { };
 
-	void init() override;
+	void Init() override;
 
 	//void updateInputs(const InputManager* input) override;
-	void handleInput(const InputManager* input) { };
+	void HandleInput(const InputManager* input) { };
 	void Update() override;
 
 	//void resume() override;
 	//void pause() override;
-	void exit() override { };
+	void Exit() override { };
 
 	UIScreen::Type type() override { return UIScreen::Type::MainMenu; }
 

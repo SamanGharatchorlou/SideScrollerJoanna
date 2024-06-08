@@ -9,9 +9,9 @@ class SettingsScreen : public Screen
 public:
 	SettingsScreen() { }
 
-	void init() override;
+	void Init() override;
 	void Update() override;
-	void exit() override { };
+	void Exit() override { };
 
 	UIScreen::Type type() override { return UIScreen::Type::Settings; }
 };

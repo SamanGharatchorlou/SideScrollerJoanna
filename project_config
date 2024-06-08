@@ -6,7 +6,7 @@ $(SolutionDir)SDL2\SDL2_main\lib\x86;
 
 
 VC directories: include directories
-$(SolutionDir)SDL2\SDL2_image-2.0.4\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\include;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\include;$(SolutionDir)SDL2\SDL2_main\include;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui_sdl-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src;$(IncludePath)
+$(SolutionDir)SDL2\SDL2_image-2.0.4\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\include;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\include;$(SolutionDir)SDL2\SDL2_main\include;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui_sdl-master;$(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);
 
 $(SolutionDir)SDL2\SDL2_image-2.0.4\include
 $(SolutionDir)SDL2\SDL2_mixer-2.0.4\include
@@ -18,7 +18,7 @@ $(SolutionDir)SracEngine\SRAC\ThirdParty\imgui-master\src
 
 
 VC directories: library directories
-$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(SolutionDir)SDL2\SDL2_main\lib\x86;$(LibraryPath)
+$(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(SolutionDir)SDL2\SDL2_main\lib\x86;$(LibraryPath);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)
 
 $(SolutionDir)SDL2\SDL2_image-2.0.4\lib\x86
 $(SolutionDir)SDL2\SDL2_mixer-2.0.4\lib\x86

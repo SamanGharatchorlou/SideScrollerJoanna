@@ -54,7 +54,7 @@ void StateMachine<T>::shallowClear()
 	// Keep the NULL state at index 0
 	while (states.size() > 1)
 	{
-		states.back()->exit();
+		states.back()->Exit();
 
 		if(mOwnsStates)
 			delete states.back();
@@ -67,10 +67,10 @@ void StateMachine<T>::shallowClear()
 template<class T>
 void StateMachine<T>::addState(T* state)
 {
-	states.back()->pause();
+	states.back()->Pause();
 
 	states.insert_back(state);
-	states.back()->init();
+	states.back()->Init();
 }
 
 
@@ -80,10 +80,10 @@ void StateMachine<T>::popState()
 	if (states.size() > 1)
 	{
 		T* popped_state = states.back();
-		popped_state->exit();
+		popped_state->Exit();
 		states.pop_back();
 
-		states.back()->resume();
+		states.back()->Resume();
 
 		if(mOwnsStates)
 			delete popped_state;
@@ -101,11 +101,11 @@ void StateMachine<T>::replaceState(T* state)
 	if (states.size() > 1)
 	{
 		T* popped_state = states.back();
-		popped_state->exit();
+		popped_state->Exit();
 		states.pop_back();
 
 		states.insert_back(state);
-		states.back()->init();
+		states.back()->Init();
 
 		if (mOwnsStates)
 			delete popped_state;

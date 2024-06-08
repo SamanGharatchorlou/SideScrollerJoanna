@@ -8,9 +8,9 @@ class GameOverScreen : public Screen
 public:
 	GameOverScreen() { }
 
-	void init() override;
+	void Init() override;
 	void Update() override;
-	void exit() override { };
+	void Exit() override { };
 
 	UIScreen::Type type() override { return UIScreen::Type::GameOver; }
 

@@ -31,11 +31,13 @@ void Player::Init()
 
 	// Animation
 	ECS::Animation& animation = ecs->AddComponent(Animation, entity);
-	AnimationConfig* up = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroUpMovementAnimations");
-	AnimationConfig* down = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroMovementAnimations");
+	AnimationConfig* up = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroUpAnimations");
+	AnimationConfig* down = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroDownAnimations");
+	AnimationConfig* rl = ConfigManager::Get()->addAndLoad<AnimationConfig>("BloodHeroRLAnimations");
 	
 	animation.animator.AddAnimations(up);
 	animation.animator.AddAnimations(down);
+	animation.animator.AddAnimations(rl);
 	animation.animator.start();
 
 	// Sprite
@@ -64,5 +66,6 @@ void Player::Init()
 	player_controller.statePool.load(actions, 4);
 	
 	// CharacterState
-	ECS::CharacterState character_state = ecs->AddComponent(CharacterState, entity);
+	ECS::CharacterState& character_state = ecs->AddComponent(CharacterState, entity);
+	character_state.facingDirection = VectorI(0,1); // facing down
 }

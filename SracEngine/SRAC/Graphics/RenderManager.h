@@ -7,10 +7,17 @@ constexpr u32 c_RenderLayers = 10;
 
 struct RenderPack
 {
-	RenderPack(Texture* tex, RectF box, u32 renderLayer) : texture(tex), rect(box), layer(renderLayer) { }
+	RenderPack(Texture* tex, RectF box, u32 renderLayer) : texture(tex), rect(box), layer(renderLayer) 
+	{
+		// override if required
+		flipPoint = box.Size() * 0.5f;
+	}
+
 	Texture* texture = nullptr;
 	RectF rect;
 	RectF subRect = InvalidRectF;
+	VectorF flipPoint;
+	double rotation = 0.0;
 	u32 layer = c_RenderLayers;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 };

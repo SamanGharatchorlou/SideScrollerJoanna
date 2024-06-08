@@ -14,6 +14,7 @@ enum class ActionState
 	Run,
 
 	Attack,
+	SlashAttack,
 
 	Hurt,
 	Dead,
@@ -33,6 +34,7 @@ static void initActionMap()
 	s_actionMap["Walk"] = ActionState::Walk;
 	s_actionMap["Run"] = ActionState::Run;
 	s_actionMap["Attack"] = ActionState::Attack;
+	s_actionMap["SlashAttack"] = ActionState::SlashAttack;
 
 	//s_actionMap["Jump"] = ActionState::Jump;
 	//s_actionMap["Fall"] = ActionState::Fall;

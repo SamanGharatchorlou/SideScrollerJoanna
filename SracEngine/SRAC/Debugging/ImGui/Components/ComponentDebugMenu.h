@@ -6,6 +6,7 @@
 namespace DebugMenu 
 {
 	bool UsingPlaylist();
+	bool DisplayRenderRect(ECS::Entity& entity);
 
 	ECS::Component::Type DoTransformDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoSpriteDebugMenu(ECS::Entity& entity);

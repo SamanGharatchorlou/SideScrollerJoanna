@@ -4,7 +4,7 @@
 #include "Game/SystemStateManager.h"
 #include "UI/Elements/UITextBox.h"
 
-void GameOverScreen::init()
+void GameOverScreen::Init()
 {
 	setTextBox("Kills", mKills);
 	setTextBox("Score", mScore);

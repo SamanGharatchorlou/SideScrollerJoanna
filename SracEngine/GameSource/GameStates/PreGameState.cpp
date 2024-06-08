@@ -18,7 +18,7 @@
 #include "GameSource/Configs.h"
 #include "System/Files/ConfigManager.h"
 
-void PreGameState::init()
+void PreGameState::Init()
 {	
 	UIManager* UI = GameData::Get().uiManager;
 
@@ -39,7 +39,7 @@ void PreGameState::Update(float dt)
 	ecs->UpdateSystems(dt);
 }
 
-void PreGameState::exit()
+void PreGameState::Exit()
 {
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeOut, "Menu", nullptr, 150));
 

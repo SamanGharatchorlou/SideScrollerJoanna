@@ -16,7 +16,7 @@
 
 #include "Configs.h"
 
-void GameState::init()
+void GameState::Init()
 {
 	ECS::RegisterAllComponents();
 	ECS::RegisterAllSystems();
@@ -27,7 +27,7 @@ void GameState::init()
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Entity entity = ecs->CreateEntity("Map");
 
-	ECS::TileMap& tile_map = ecs->AddComponent(TileMap, entity, tile_map);
+	ECS::TileMap& tile_map = ecs->AddComponent(TileMap, entity);
 	Map::SceneBuilder::BuildTileMap("blood_test_export.xml", tile_map.tileMap);
 
 	UIManager* ui = GameData::Get().uiManager;
@@ -41,13 +41,13 @@ void GameState::init()
 }
 
 
-void GameState::handleInput()
+void GameState::HandleInput()
 {
 
 }
 
 
-void GameState::fastUpdate(float dt)
+void GameState::FastUpdate(float dt)
 {
 	Camera::Get()->fastUpdate(dt);
 }
@@ -64,20 +64,20 @@ void GameState::Update(float dt)
 	cursor->mode();
 }
 
-void GameState::resume() 
+void GameState::Resume() 
 {
 	//mGameData->environment->resume();
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeInMusic, "Game", nullptr, 750));
 }
 
-void GameState::pause()
+void GameState::Pause()
 {
 	//mGameData->environment->pause();
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeOut, "Game", nullptr, 150));
 }
 
 
-void GameState::exit()
+void GameState::Exit()
 {
 	//mGameData->environment->clear();
 	//mGameData->scoreManager->reset();

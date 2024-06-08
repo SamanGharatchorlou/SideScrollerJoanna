@@ -25,7 +25,7 @@ GameScreen::GameScreen()
 
 }
 
-void GameScreen::init()
+void GameScreen::Init()
 {
 	ScreenLayer layer("HotKeys");
 	add(layer);
@@ -44,7 +44,7 @@ void GameScreen::init()
 #endif
 }
 
-void GameScreen::handleInput(const InputManager* input)
+void GameScreen::HandleInput(const InputManager* input)
 {
 	if (input->isReleased(Button::Pause) || input->isReleased(Button::Esc))
 	{
@@ -78,7 +78,7 @@ void GameScreen::setCursorTexture(Texture* texture)
 }
 
 
-void GameScreen::resume()
+void GameScreen::Resume()
 {
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->setPersistingScreen(nullptr);
@@ -86,12 +86,12 @@ void GameScreen::resume()
 }
 
 
-void GameScreen::pause()
+void GameScreen::Pause()
 {
-	exit();
+	Exit();
 }
 
-void GameScreen::exit()
+void GameScreen::Exit()
 {
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->setPersistingScreen(this);

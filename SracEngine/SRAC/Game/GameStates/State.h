@@ -6,31 +6,31 @@ struct State
 	virtual ~State() { }
 
 	// pure virtual functions - require override
-	virtual void init() { } ;
-	virtual void handleInput() { };
+	virtual void Init() { } ;
+	virtual void HandleInput() { };
 
 	// State changes etc.
 	virtual void Update(float dt) { };
 
 	// Movement, collisions etc 
-	virtual void fastUpdate(float dt) { };
+	virtual void FastUpdate(float dt) { };
 
-	virtual void exit() { };
+	virtual void Exit() { };
 
 	// optional functions
-	virtual void pause() {  }
-	virtual void resume() {  }
+	virtual void Pause() {  }
+	virtual void Resume() {  }
 };
 
 
 // The null state does nothing
 struct NullState : public State
 {
-	void init() override {}
-	void handleInput() override {}
+	void Init() override {}
+	void HandleInput() override {}
 	void Update(float /*dt*/) override { /* do nothing */ }
-	void fastUpdate(float /*dt*/) override { /* do nothing */ }
-	void exit() override { 
+	void FastUpdate(float /*dt*/) override { /* do nothing */ }
+	void Exit() override { 
 		DebugPrint(Warning, "Removing the null state"); 
 	}
 };

@@ -35,39 +35,36 @@ namespace ECS
 			state.action = player_controller.actions.Top().action;
 
 			// Movement Direction
-			player_controller.hasMovementInput =
-				input->isHeld(Button::Right) || input->isHeld(Button::Left) ||
+			player_controller.hasMovementInput = input->isHeld(Button::Right) || input->isHeld(Button::Left) || 
 				input->isHeld(Button::Up) || input->isHeld(Button::Down);
 
 			int horizontal_direction = input->isHeld(Button::Right) - input->isHeld(Button::Left);
 			int vertical_direction = input->isHeld(Button::Down) - input->isHeld(Button::Up);
+
 			player_controller.movementDirection = VectorI(horizontal_direction, vertical_direction);
 
-			if (!player_controller.movementDirection.isZero())
+			// if we're moving use the speed so we always face the direction we're moving
+			if(!physics.speed.isZero())
 			{
-				state.facingDirection.y = player_controller.movementDirection.y;
+				float x_mag = physics.speed.x * physics.speed.x;
+				float y_mag = physics.speed.y * physics.speed.y;
+
+				if(x_mag > y_mag)
+				{
+					state.facingDirection.x = physics.speed.x > 0.0f ? 1 : -1;
+					state.facingDirection.y = 0;
+				}
+				else if(x_mag < y_mag)
+				{
+					state.facingDirection.y = physics.speed.y > 0.0f ? 1 : -1;
+					state.facingDirection.x = 0;
+				}
 			}
 
 			// Running
 			player_controller.isRunning = input->isHeld(Button::Shift);
 
-			// Facing Direction
-			//VectorF cursor_pos = input->getCursor()->position();
-			//bool cursor_on_left = transform.baseRect.Center().x >= cursor_pos.x;
-			//player_controller.facingDirection = cursor_on_left ? VectorF(-1.0f, 0.0f) : VectorF(1.0f, 0.0f);
-
-			//if (player_controller.facingDirection.x < 0)
-			//{
-			//	transform.flip = SDL_FLIP_HORIZONTAL;
-			//}
-			//else if(player_controller.facingDirection.x > 0)
-			{
-				transform.flip = SDL_FLIP_NONE;
-			}
-
-			// set a new speed, we can set this again next frame
-			//physics.speed = physics.applyDrag(velocity.speed, maxSpeed, velocity.acceleration, drag);
-			//VectorF speed = physics.speed.normalise();
+			// where we're trying to move to
 			transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
 		}
 	} 

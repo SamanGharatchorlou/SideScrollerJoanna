@@ -26,6 +26,17 @@ namespace ImGui
 		ImGui::PopID();
 	}
 
+	static void InputVectorI(const char* label, VectorI& vector)
+	{
+		ImGui::PushID(label);
+		int vec[2] = { vector.x, vector.y };
+		if (ImGui::InputInt2(label, vec))
+		{
+			vector = VectorI(vec[0], vec[1]);
+		}
+		ImGui::PopID();
+	}
+
 	static bool ActiveButton(const char* label, bool isActive)
 	{
 		if (!isActive)
@@ -45,7 +56,7 @@ namespace ImGui
 
 	static void DisplayRect(RectF& rect)
 	{
-		ImGui::PushID(rect.x1 + rect.x2 + rect.y1 + rect.y2);
+		ImGui::PushID((int)(rect.x1 + rect.x2 + rect.y1 + rect.y2));
 
 		static float rectxy1[2] = { rect.x1, rect.y1 };
 		if (ImGui::InputFloat2("XY1", rectxy1))

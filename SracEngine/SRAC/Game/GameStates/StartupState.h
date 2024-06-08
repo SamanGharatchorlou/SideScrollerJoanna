@@ -11,13 +11,13 @@ class StartupState : public State
 {
 public:
 	StartupState(GameData& gd);
-	void init() override;
+	void Init() override;
 	void Update(float dt) override;
-	void exit() override;
+	void Exit() override;
 
 private:
-	void handleInput() override { };
-	void fastUpdate(float dt) override { };
+	void HandleInput() override { };
+	void FastUpdate(float dt) override { };
 
 	TimerF timer;
 };

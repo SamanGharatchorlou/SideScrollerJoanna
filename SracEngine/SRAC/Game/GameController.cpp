@@ -13,7 +13,7 @@
 #include "Input/inputManager.h"
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
-#include "Debugging/FrameRateController.h"
+#include "Game/FrameRateController.h"
 
 #include "GameStates/StartupState.h"
 
@@ -112,9 +112,10 @@ void GameController::handleInput(SDL_Event& event)
 
 		mGameData.inputManager->processInputEvent(event);
 	}
+	mGameData.inputManager->updateHeldFrame();
 
 	mGameData.uiManager->handleInput(mGameData.inputManager);
-	sm->mStates.getActiveState().handleInput();
+	sm->mStates.getActiveState().HandleInput();
 
 #if DEBUG_CURSOR // show mouse position in screen title
 	VectorF pos = mGameData.inputManager->cursorPosition();
@@ -132,7 +133,7 @@ void GameController::updateLoops(float dt)
 	// Fast update runs updateLoopRepeats number of times per frame
 	float updateLoopRepeats = 10;
 	for (int i = 0; i < updateLoopRepeats; i++)
-		sm->mStates.getActiveState().fastUpdate(dt / updateLoopRepeats);
+		sm->mStates.getActiveState().FastUpdate(dt / updateLoopRepeats);
 
 	sm->mStates.getActiveState().Update(dt);
 

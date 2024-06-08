@@ -6,31 +6,33 @@
 
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/TextureManager.h"
-#include "Debugging/FrameRateController.h"
+#include "Game/FrameRateController.h"
 
-static std::vector<ActionState> s_animationPlaylist;
+//static std::vector<ActionState> s_animationPlaylist;
+static std::vector<Animation> s_animationPlaylist;
 static int s_playlistIndex = 0;
 static bool s_usingPlaylist = false;
 
 static bool s_playingPlaylist = false;
 static bool s_playSingleAnimation = false;
+static bool s_displayRenderRect = false;
 
+static ECS::Entity s_activeEnt;
 
 bool DebugMenu::UsingPlaylist() { return s_usingPlaylist; }
+bool DebugMenu::DisplayRenderRect(ECS::Entity& entity) { return s_displayRenderRect && s_activeEnt == entity; }
 
 static Animation* SetAnimation(Animator& animator)
 {
 	if (s_animationPlaylist.size() > s_playlistIndex)
 	{
-		ActionState action = s_animationPlaylist[s_playlistIndex];
+		Animation& anim = s_animationPlaylist[s_playlistIndex];
 
-		for (int i = 0; i < animator.mAnimations.size(); i++)
+		u32 anim_index = animator.getAnimationIndex(anim);
+		if(anim_index != -1)
 		{
-			if (animator.mAnimations[i].action == action)
-			{
-				animator.mAnimationIndex = i;
-				return &animator.mAnimations[i];
-			}
+			animator.mAnimationIndex = anim_index;
+			return &animator.mAnimations[anim_index];
 		}
 	}
 
@@ -43,10 +45,14 @@ static Animation* SetAnimation(Animator& animator)
 	return nullptr;
 }
 
+VectorI facing_direction;
+
 ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Component::Type type = ECS::Component::Animation;
+
+	s_activeEnt = entity;
 
     if (ecs->HasComponent(entity, type))
     {
@@ -63,7 +69,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(animation.spriteSheet.sprite);
 				ImGui::Text("SpriteSheet: %s", spriteName.c_str());
 				ImGui::InputVectorF("Frame Size", animation.spriteSheet.frameSize);
-				ImGui::InputVectorF("Object Size", animation.spriteSheet.objectSize);
+				ImGui::VectorText("Object Size", animation.spriteSheet.objectSize);
 				ImGui::VectorText("Boundaries", animation.spriteSheet.boundaries);
 
 				std::vector<StringBuffer32> animations;
@@ -188,7 +194,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 						}
 						ImGui::SameLine();
 
-						ActionState action = s_animationPlaylist[i];
+						ActionState action = s_animationPlaylist[i].action;
 
 						// select this animation
 						if (ImGui::Button(actionToString(action).c_str()))
@@ -205,6 +211,12 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 						ImGui::PopID();
 					}
 
+					std::vector<ActionState> actions;
+					for (u32 i = 0; i < animator.mAnimations.size(); i++)
+					{
+						ActionState action = animator.mAnimations[i].action;
+					}
+
 					if (ImGui::BeginCombo("Add animation to playlist", "", 0))
 					{
 						for (u32 i = 0; i < animator.mAnimations.size(); i++)
@@ -212,9 +224,42 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 							ActionState action = animator.mAnimations[i].action;
 							//const bool is_selected = action == activeAnim->action;
 
-							if (ImGui::Selectable(actionToString(action).c_str(), false))
+							char symbol;
+							char dir;
+
+							VectorI direction = animator.mAnimations[i].direction;
+							bool flipable = animator.mAnimations[i].canFlip;
+							if(direction.x != 0)
 							{
-								s_animationPlaylist.push_back(action);
+								dir = 'x';
+								if(flipable)
+								{
+									symbol = '*';
+								}
+								else
+								{
+									symbol = direction.x > 0 ? '+' : '-';
+								}
+							}
+							else if(direction.y != 0)
+							{
+								dir = 'y';
+								if(flipable)
+								{
+									symbol = '*';
+								}
+								else
+								{
+									symbol = direction.y > 0 ? '+' : '-';
+								}
+							}
+
+							StringBuffer64 buffer;
+							sprintf(buffer.buffer(), "%c%c: %s", symbol, dir, actionToString(action).c_str());
+
+							if (ImGui::Selectable(buffer.c_str(), false))
+							{
+								s_animationPlaylist.push_back(animator.mAnimations[i]);
 							}
 						}
 
@@ -229,9 +274,6 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 
 	return type;
 }
-
-
-bool s_displayRenderRect = false;
 
 ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 {
@@ -275,9 +317,11 @@ ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 					ImGui::Checkbox("Display Render Rect", &s_displayRenderRect);
 					if (s_displayRenderRect)
 					{
-						DebugDraw::RectOutline(renderRect, Colour::Red);
+						//DebugDraw::RectOutline(renderRect, Colour::Red);
 					}
 				}
+
+
 
 				ImGui::TreePop();
 			}

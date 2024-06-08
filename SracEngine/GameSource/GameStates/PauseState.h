@@ -5,10 +5,10 @@
 class PauseState : public State
 {
 public:
-	void init() override;
+	void Init() override;
 	void Update(float dt) override;
-	void fastUpdate(float dt) override { };
-	void handleInput() override;
+	void FastUpdate(float dt) override { };
+	void HandleInput() override;
 
-	void exit() override;
+	void Exit() override;
 };

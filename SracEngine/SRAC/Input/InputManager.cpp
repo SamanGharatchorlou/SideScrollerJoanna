@@ -4,10 +4,19 @@
 //#include "Button.h"
 #include "Game/Camera/Camera.h"
 #include "Debugging/ImGui/ImGuiMenu.h"
+#include "Game/FrameRateController.h"
 
 void InputManager::init()
 {
 	bindDefaultButtons();
+
+	for (Button& button : mButtons)
+	{
+		button.mlastPressFrame = 0;
+		button.mPressedFrame = 0;
+		button.mReleasedFrame = 1;
+		button.mHeldFrames = 0;
+	}
 }
 
 InputManager* InputManager::Get()
@@ -68,26 +77,17 @@ void InputManager::resetInputEvents()
 
 	mCursor.clearInputs();
 
-	// Reset button states
-	for (Button& button : mButtons)
-	{
-#if DEBUG_CHECK
-		if ((button.isHeld() || button.isPressed()) && button.isReleased())
-		{
-			DebugPrint(Warning, "Button key %d is being pressed and released at the same time", button.key());
-		}
-#endif
-
-		button.setPressed(false);
-		button.setReleased(false);
-
-		if (button.isHeld())
-			button.incrementHeldFrames();
-		else
-			button.setHeldFrames(0);
-	}
+//	// Reset button states
+//	for (Button& button : mButtons)
+//	{
+//#if DEBUG_CHECK
+//		if ((button.isHeld() || button.isPressed()) && button.isReleased())
+//		{
+//			DebugPrint(Warning, "Button key %d is being pressed and released at the same time", button.key());
+//		}
+//#endif
+//	}
 }
-
 
 InputManager createManager(const InputPacket& inputData)
 {
@@ -99,7 +99,6 @@ InputManager createManager(const InputPacket& inputData)
 
 
 // --- Private Functions --- //
-
 void InputManager::processMouseMovementEvent()
 {
 	int x, y;
@@ -111,7 +110,6 @@ void InputManager::processMouseMovementEvent()
 	mCursor.setPosition(cursorPostion);
 	mCursor.setMotion(true);
 }
-
 
 void InputManager::processMouseButtonEvent(SDL_Event& event)
 {
@@ -151,30 +149,50 @@ void InputManager::processMouseButtonEvent(SDL_Event& event)
 	mCursor.setButton(buttonType, cursorButton);
 }
 
-
 void InputManager::processButtonEvent(SDL_Event& event)
 {
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
 	for (Button& button : mButtons)
 	{
 		if (button.isKey(event.key.keysym.sym))
 		{
-			if (!button.isHeld())
-				button.setPressed(event.type == SDL_KEYDOWN);
+			if(event.type == SDL_KEYUP)
+			{
+				button.setReleased(frame_count);
+			}
 
-			button.setReleased(event.type == SDL_KEYUP);
+			if(event.type == SDL_KEYDOWN)
+			{
+				if(button.mReleasedFrame > button.mPressedFrame)
+				{
+					button.setPressed(frame_count);
+				}
+			}
 		}
-
-		// todo: move this up into the if(b.iskey) scope
-		if (button.mHeldFrames > 0)
-			button.mHeldFrames++;
-		else if (button.isPressed())
-			button.mHeldFrames = 1;
-
-		if (button.isReleased())
-			button.mHeldFrames = 0;
 	}
 }
 
+void InputManager::updateHeldFrame()
+{
+	const FrameRateController& frc = FrameRateController::Get();
+	const int frame_count = frc.frameCount();
+
+	for (Button& button : mButtons)
+	{
+		bool is_held = button.mPressedFrame > button.mReleasedFrame;
+
+		if(!is_held)
+		{
+			button.setHeldFrames(0);
+		}
+		else
+		{
+			button.incrementHeldFrames();
+		}
+	}
+}
 
 void InputManager::bindDefaultButtons()
 {

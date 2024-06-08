@@ -60,8 +60,8 @@ public:
 
 	// Unused state override functions
 private:
-	void handleInput() override { }
-	void fastUpdate(float dt) override { }
+	void HandleInput() override { }
+	void FastUpdate(float dt) override { }
 	void Update(float dt) { };
 };
 

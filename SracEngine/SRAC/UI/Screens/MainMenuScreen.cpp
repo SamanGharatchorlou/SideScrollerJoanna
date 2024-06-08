@@ -4,7 +4,7 @@
 #include "UI/UIManager.h"
 
 
-void MainMenuScreen::init()
+void MainMenuScreen::Init()
 {
 	//GameData::Get().uiManager->controller()->openPopup("IntroductionPopup");
 };

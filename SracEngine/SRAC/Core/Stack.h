@@ -34,7 +34,7 @@ public:
 	void Replace(T* item)
 	{
 		Pop();
-		add(item);
+		Push(item);
 	}
 
 	T& Top() { return *stack[idx]; }
@@ -58,14 +58,14 @@ public:
 
 		if (pop && add) // replace
 		{
-			stack[idx]->init();
+			stack[idx]->Init();
 			stack[idx] = stateToAdd;
-			stack[idx]->exit();
+			stack[idx]->Exit();
 			stateFrames = 0;
 		}
 		else if (pop)
 		{
-			stack[idx]->init();
+			stack[idx]->Init();
 			idx--;
 			stateFrames = 0;
 		}

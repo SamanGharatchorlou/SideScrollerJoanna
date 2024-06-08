@@ -16,18 +16,22 @@ public:
 	void AddAnimations(AnimationConfig* config);
 
 	void Update(float dt);
+	void ResetOnNewAnimation();
 
 	const Animation* getAnimation(ActionState action) const;
-	const Animation* getAnimation(ActionState action, VectorI direction) const;
+	const Animation* getAnimation(ActionState action, VectorI direction, bool& flipped_direction) const;
 	const Animation& activeAnimation() const { return mAnimations[mAnimationIndex]; }
 	VectorF getAnimationSubRect() const;
 
 	bool selectAnimation(ActionState state);
-	bool selectAnimation(ActionState state, VectorI direction);
+	bool selectAnimation(const Animation& anim);
+
+	u32 getAnimationIndex(const Animation& anim);
 
 	void start() { mState = TimeState::Running; }
 	void pause() { mState = TimeState::Paused; }
 	void stop();
+	void restart();
 
 	bool RunActive(float dt);
 
@@ -41,6 +45,7 @@ public:
 	Texture* activeSpriteSheet() const { return mAnimations[mAnimationIndex].spriteSheet.sprite; }
 	bool lastFrame() const { return mFrameIndex == mAnimations[mAnimationIndex].frameCount - 1; }
 	bool canChange() const { return mLoops >= mAnimations[mAnimationIndex].minLoops; }
+	bool finished() const { return mFinished; }
 
 
 	std::vector<Animation> mAnimations;
@@ -59,4 +64,6 @@ public:
 
 	int mLoops;
 	float mTime;
+	bool mFlipped;
+	bool mFinished; // only applies to non-looping animations
 };

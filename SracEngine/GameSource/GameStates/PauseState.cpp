@@ -8,7 +8,7 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 
-void PauseState::init() 
+void PauseState::Init() 
 {
 	GameData::Get().uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 
@@ -17,7 +17,7 @@ void PauseState::init()
 }
 
 
-void PauseState::handleInput()
+void PauseState::HandleInput()
 {
 
 }
@@ -27,7 +27,7 @@ void PauseState::Update(float dt)
 
 }
 
-void PauseState::exit()
+void PauseState::Exit()
 {
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeOut, "Menu", nullptr, 150));
 }

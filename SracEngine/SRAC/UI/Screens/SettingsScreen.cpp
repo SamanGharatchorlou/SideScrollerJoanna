@@ -6,7 +6,7 @@
 #include "UI/UIManager.h"
 
 
-void SettingsScreen::init()
+void SettingsScreen::Init()
 {
 	AudioManager* audio = AudioManager::Get();
 

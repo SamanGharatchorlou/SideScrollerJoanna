@@ -68,7 +68,16 @@ void RenderManager::render()
 		for (u32 i = 0; i < render_packs.size(); i++)
 		{
 			if (render_packs[i].subRect.isValid())
-				render_packs[i].texture->renderSubTexture(render_packs[i].rect, render_packs[i].subRect, render_packs[i].flip);
+			{
+				if(render_packs[i].flip == SDL_FLIP_HORIZONTAL)
+				{
+					// same distance but flipped over to the other side, so x2 the diff between rect center and the flip point
+					VectorF diff = render_packs[i].rect.Size() - (render_packs[i].flipPoint * 2.0f);
+					render_packs[i].rect = render_packs[i].rect.Translate(diff * -1);
+				}
+
+				render_packs[i].texture->renderSubTexture(render_packs[i].rect, render_packs[i].subRect, render_packs[i].rotation, render_packs[i].flipPoint, render_packs[i].flip);
+			}
 			else
 				render_packs[i].texture->render(render_packs[i].rect, render_packs[i].flip);
 		}

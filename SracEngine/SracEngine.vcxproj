@@ -169,7 +169,7 @@
     <ClCompile Include="SRAC\Core\Physics\QuadCollider.cpp" />
     <ClCompile Include="SRAC\Core\Maths.cpp" />
     <ClCompile Include="SRAC\Debugging\DebugDraw.cpp" />
-    <ClCompile Include="SRAC\Debugging\FrameRateController.cpp" />
+    <ClCompile Include="SRAC\Game\FrameRateController.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\AnimationDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\TileMapDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\TransformDebugMenu.cpp" />
@@ -285,7 +285,7 @@
     <ClInclude Include="SRAC\Core\Maths.h" />
     <ClInclude Include="SRAC\Debugging\DebugDraw.h" />
     <ClInclude Include="SRAC\Debugging\DebugSettings.h" />
-    <ClInclude Include="SRAC\Debugging\FrameRateController.h" />
+    <ClInclude Include="SRAC\Game\FrameRateController.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMainWindows.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiHelpers.h" />
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiMenu.h" />

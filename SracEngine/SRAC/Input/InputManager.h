@@ -17,11 +17,12 @@ public:
 
 	void resetInputEvents();
 	void processInputEvent(SDL_Event& event);
+	void updateHeldFrame();
 
 	// Buttons
 	const Button& getButton(Button::Key key) const;
 
-	Button::State state(Button::Key key) const { return getButton(key).state(); }
+	Button::State state(Button::Key key, int frame_number) const { return getButton(key).state(frame_number); }
 	bool isHeld(Button::Key key) const { return getButton(key).isHeld(); }
 	bool isPressed(Button::Key key) const { return getButton(key).isPressed(); }
 	bool isReleased(Button::Key key) const { return getButton(key).isReleased(); }

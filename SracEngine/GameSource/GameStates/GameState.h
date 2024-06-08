@@ -7,14 +7,14 @@ struct Player;
 class GameState : public State
 {
 public:
-	void init() override;
+	void Init() override;
 	void Update(float dt) override;
-	void fastUpdate(float dt) override;
-	void handleInput() override;
+	void FastUpdate(float dt) override;
+	void HandleInput() override;
 	
-	void pause() override;
-	void resume() override;
-	void exit() override;
+	void Pause() override;
+	void Resume() override;
+	void Exit() override;
 
 
 private:

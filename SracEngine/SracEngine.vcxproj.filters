@@ -51,7 +51,7 @@
     <ClCompile Include="SRAC\Debugging\DebugDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRAC\Debugging\FrameRateController.cpp">
+    <ClCompile Include="SRAC\Game\FrameRateController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Debugging\Logging.cpp">
@@ -395,7 +395,7 @@
     <ClInclude Include="SRAC\Debugging\DebugSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SRAC\Debugging\FrameRateController.h">
+    <ClInclude Include="SRAC\Game\FrameRateController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Debugging\Logging.h">

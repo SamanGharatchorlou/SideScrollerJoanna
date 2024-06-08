@@ -28,24 +28,30 @@ void PlayerState::Push(ActionState action)
 	playerController->actions.Push(state);
 }
 
+void PlayerState::Replace(ActionState action)
+{
+	DebugPrint(PriorityLevel::Log, "replacing player action state: %s | %d states left", actionToString(action).c_str(), playerController->statePool.size(action));
+	PopSelf();
+	Push(action);
+}
+
 
 // Idle
 // ---------------------------------------------------------
 void IdleState::Update(float dt)
 {
-	const InputManager* input = InputManager::Get();
-
 	// Walk
 	if(playerController->hasMovementInput)
 	{
 		playerController->PushState(ActionState::Walk);
 	}
 
-	// Light Attack
-	//if (input->isCursorPressed(Cursor::ButtonType::Left))
-	//{
-	//	Push(ActionState::LightAttack);
-	//}
+	// Slash Attack
+	const InputManager* input = InputManager::Get();
+	if (input->isCursorPressed(Cursor::ButtonType::Left))
+	{
+		Push(ActionState::SlashAttack);
+	}
 
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	if(ECS::Physics* physics = ecs->GetComponent(Physics, playerController->entity))
@@ -73,6 +79,13 @@ void WalkState::Update(float dt)
 		physics->ApplyMovement(playerController->movementDirection.toFloat(), dt);
 		physics->ApplyDrag(playerController->movementDirection.toFloat(), 0.9f);
 	}
+
+	// Slash Attack
+	const InputManager* input = InputManager::Get();
+	if (input->isCursorPressed(Cursor::ButtonType::Left))
+	{
+		Push(ActionState::SlashAttack);
+	}
 }
 
 // Run
@@ -92,14 +105,55 @@ void RunState::Update(float dt)
 		physics->ApplyDrag(playerController->movementDirection.toFloat(), 0.9f);
 	}
 
+	// Slash Attack
+	const InputManager* input = InputManager::Get();
+	if (input->isCursorPressed(Cursor::ButtonType::Left))
+	{
+		Push(ActionState::SlashAttack);
+	}
 }
 
 // LightAttack
 // ---------------------------------------------------------
-void LightAttackState::Update(float dt)
+void SlashAttackState::Init()
+{	
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	
+	if (ECS::Physics* physics = ecs->GetComponent(Physics, playerController->entity))
+	{
+		float amplitude = 0.5f;
+		physics->speed = playerController->movementDirection.toFloat() * amplitude;
+	}
+}
+
+void SlashAttackState::Update(float dt)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-	ECS::CharacterState* cs = ecs->GetComponent(CharacterState, playerController->entity);
+	
+	if (ECS::Physics* physics = ecs->GetComponent(Physics, playerController->entity))
+	{
+		physics->ApplyDrag(VectorF::zero(), 0.1f);
+	}
+	
+	ECS::Animation& animation = ecs->GetComponentRef(Animation, playerController->entity);
+	ActionState action = animation.animator.activeAction();
+	ASSERT(action == ActionState::SlashAttack, "Not the Slash Attack State");
+
+	if(animation.animator.finished())
+	{
+		PopSelf();
+	}
+
+	if(animation.animator.lastFrame())
+	{
+		// input buffer
+		const InputManager* input = InputManager::Get();
+		if (input->isCursorPressed(Cursor::ButtonType::Left))
+		{
+			animation.animator.restart();
+			Replace(action);
+		}
+	}
 }
 
 template<class T>
@@ -122,7 +176,7 @@ PlayerState* PlayerStatePool::createNewObjects(ActionState type, int count, int&
 	ActionStateCase(Idle)
 	ActionStateCase(Walk)
 	ActionStateCase(Run)
-	//ActionStateCase(LightAttack)
+	ActionStateCase(SlashAttack)
 	//ActionStateCase(Fall)
 	//ActionStateCase(Jump)
 

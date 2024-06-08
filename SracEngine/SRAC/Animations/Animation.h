@@ -21,10 +21,13 @@ struct Animation
 	ActionState action = (ActionState)0;
 
 	VectorI direction;
+	bool canFlip = false;
 
 	int startIndex = 0;
 	int frameCount = 0;
 
 	int minLoops = 0;
+	bool looping = true;
+
 	float frameTime = 0.0f;
 };

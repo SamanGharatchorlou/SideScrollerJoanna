@@ -5,13 +5,13 @@
 class PreGameState : public State
 {
 public:
-	void init() override;
+	void Init() override;
 	void Update(float dt) override;
-	void fastUpdate(float dt) override { };
-	void handleInput() override { };
-	void exit() override;
+	void FastUpdate(float dt) override { };
+	void HandleInput() override { };
+	void Exit() override;
 
-	void resume() { };
+	void Resume() { };
 
 private:
 	BasicString mSelectedCharacter;

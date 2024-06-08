@@ -47,7 +47,7 @@ void renderLoadingBar(LoadingManager* loading)
 	}
 }
 
-void StartupState::init()
+void StartupState::Init()
 {
 	DebugPrint(Log, " -------------------------- starting loader thread -------------------------- ");
 	timer.start();
@@ -90,7 +90,7 @@ void StartupState::Update(float dt)
 	//GameData::Get().systemStateManager->proce;
 }
 
-void StartupState::exit()
+void StartupState::Exit()
 {
 	DebugPrint(Log, "\n\nloading time taken: %fs", timer.getSeconds());
 	DebugPrint(Log, " -------------------------- exiting loader thread -------------------------- ");

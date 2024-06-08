@@ -9,14 +9,13 @@ class GameScreen : public Screen
 public:
 	GameScreen();
 
-	void init() override;
-
-	void handleInput(const InputManager* input);
+	void Init() override;
+	void HandleInput(const InputManager* input);
 	void Update() override;
-	void exit() override;
+	void Exit() override;
 
-	void resume() override;
-	void pause() override;
+	void Resume() override;
+	void Pause() override;
 
 	UIScreen::Type type() override { return UIScreen::Type::Game; }
 

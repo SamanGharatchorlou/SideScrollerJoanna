@@ -7,7 +7,7 @@
 #include "Game/SystemStateManager.h"
 #include "UI/UIManager.h"
 
-void PauseScreen::handleInput(const InputManager* input) 
+void PauseScreen::HandleInput(const InputManager* input) 
 {
 	if (input->isReleased(Button::Pause) || input->isReleased(Button::Esc))
 	{

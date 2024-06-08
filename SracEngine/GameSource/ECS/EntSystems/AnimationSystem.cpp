@@ -33,13 +33,17 @@ namespace ECS
 
 			// select the next action
 			ActionState action = state.action;
-			// todo: perhaps rename this or put it into a namespace?
-			const ::Animation* anim = animator.getAnimation(action, state.facingDirection);
-			const ::Animation& active_anim = animator.activeAnimation();
+			bool is_flipped = false;
 
-			if (anim != &active_anim)
+			// todo: perhaps rename this or put it into a namespace?
+			const ::Animation* anim = animator.getAnimation(action, state.facingDirection, is_flipped);
+			const ::Animation& active_anim = animator.activeAnimation();
+			
+			transform.flip = is_flipped ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+
+			if ( anim && anim != &active_anim )
 			{
-				animator.selectAnimation(action, state.facingDirection);
+				animator.selectAnimation(*anim);
 			}
 		}
 	}

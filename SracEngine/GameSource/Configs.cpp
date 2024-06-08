@@ -20,6 +20,11 @@ static void ReadAnimationNode(XMLNode rootNode, XMLNode node, Texture* texture, 
 		out_animation.minLoops = toInt(attributeNode->value());
 	}
 
+	if (XMLNode::Attribute attributeNode = node.attribute("looping"))
+	{
+		out_animation.looping = toBool(attributeNode->value());
+	}
+
 	XMLNode frameSizeNode = rootNode.child("FrameSize");
 	const float frame_x = toFloat(frameSizeNode.attribute("x")->value());
 	const float frame_y = toFloat(frameSizeNode.attribute("y")->value());
@@ -42,6 +47,7 @@ static void ReadAnimationNode(XMLNode rootNode, XMLNode node, Texture* texture, 
 	out_animation.spriteSheet.objectPos = VectorF(object_px, object_py);
 	out_animation.spriteSheet.boundaries = (texture->originalDimentions / out_animation.spriteSheet.frameSize).toInt();
 	out_animation.direction = VectorI(dir_x, dir_y);
+	out_animation.canFlip = StringCompare(directionNode.value(), "CanFlip");
 }
 
 void AnimationConfig::Read(XMLParser& parser)
