@@ -39,6 +39,9 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 				{
 					s_selectStartPath = true;
 					s_selectionBuffer = "Selecting Start Point";
+
+					s_startPosition = VectorF::zero();
+					s_endPosition = VectorF::zero();
 				}
 
 				if(s_selectEndPath)

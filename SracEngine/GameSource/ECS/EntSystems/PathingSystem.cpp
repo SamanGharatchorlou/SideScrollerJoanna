@@ -37,6 +37,7 @@ namespace ECS
 				if(visited[i].second == path.back())
 				{
 					path.push_back(visited[i].first);
+					break;
 				}
 			}
 		}
@@ -78,6 +79,7 @@ namespace ECS
 		while (!frontier.empty())
 		{
 			const VectorI index = frontier.top().first;
+			frontier.pop();
 			const VectorI neighbours[4] = {
 										index + VectorI(0,-1), index + VectorI( 1, 0),
 										index + VectorI(0, 1), index + VectorI(-1, 0) };
