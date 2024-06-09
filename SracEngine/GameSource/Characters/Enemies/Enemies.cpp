@@ -21,13 +21,14 @@ ECS::Entity Enemy::Create()
 
 	// Transform
 	ECS::Transform& transform = ecs->AddComponent(Transform, entity);
-	transform.rect.SetSize(VectorF(64, 64));
+	transform.rect.SetSize(VectorF(17, 34));
 	
 	// MovementPhysics
 	ECS::Physics& physics = ecs->AddComponent(Physics, entity);
 	physics.applyGravity = false;	
 	physics.acceleration = VectorF(100.0f, 100.0f);
 	physics.maxSpeed = VectorF(5.0f, 5.0f);
+	physics.speed = VectorF(0,2);
 
 	// Animation
 	ECS::Animation& animation = ecs->AddComponent(Animation, entity);
@@ -60,6 +61,8 @@ ECS::Entity Enemy::Create()
 	// CharacterState
 	ECS::CharacterState& character_state = ecs->AddComponent(CharacterState, entity);
 	character_state.facingDirection = VectorI(0,1); // facing down
+
+	ecs->AddComponent(Pathing, entity);
 
 	return entity;
 }

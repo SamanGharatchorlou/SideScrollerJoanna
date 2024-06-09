@@ -23,12 +23,15 @@ struct SystemStateManager
 
 	static State* getNewGameState(SystemStates state);
 
+	template<class T>
+	const T* GetActiveState() const { return static_cast<T*>(&mStates.Top()); }
+
 	void restart() { mRestart = true; }
 	void quit() { mQuit = true; }
 
 private:
 	StateMachine<State> mStates;
 
-	bool mQuit = false;;
-	bool mRestart = false;;
+	bool mQuit = false;
+	bool mRestart = false;
 };

@@ -15,12 +15,12 @@ public:
 	void Pause() override;
 	void Resume() override;
 	void Exit() override;
-
+	
+	ECS::Entity activeMap;
 
 private:
 	void initCamera();
 	//void initRendering();
 
 	//Player* player;
-
 };

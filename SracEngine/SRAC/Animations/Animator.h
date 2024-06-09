@@ -39,7 +39,10 @@ public:
 	VectorF FrameSize() const;
 
 	ActionState activeAction() const { return mAnimations[mAnimationIndex].action; }
-	Texture* activeSpriteSheet() const { return mAnimations[mAnimationIndex].spriteSheet->texture; }
+	Texture* activeSpriteSheet() const;
+
+	const SpriteSheet&  getSpritesheet(const Animation& animation) const;
+
 	bool lastFrame() const { return mFrameIndex == mAnimations[mAnimationIndex].frameCount - 1; }
 	bool canChange() const { return mLoops >= mAnimations[mAnimationIndex].minLoops; }
 	bool finished() const { return mFinished; }

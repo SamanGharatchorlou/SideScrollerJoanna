@@ -154,8 +154,12 @@ void BasicString::getInput(const BasicString& message)
 // --- Private Functions --- //
 void BasicString::assignTerminated(const char* string)
 {
-	mLength = strlen(string);
-	memcpy(mBuffer, string, mLength + 1);
+	// i think i need this, copying an empty string breaks the code
+	//if(string)
+	{
+		mLength = strlen(string);
+		memcpy(mBuffer, string, mLength + 1);
+	}
 }
 
 

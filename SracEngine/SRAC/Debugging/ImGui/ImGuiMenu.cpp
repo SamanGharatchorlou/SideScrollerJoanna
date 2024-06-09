@@ -49,6 +49,7 @@ namespace DebugMenu
 	static bool s_entitySystemWindow = false;
 	static bool s_inputWindow = false;
 	static bool s_colliderWindow = false;
+	static bool s_gameStateWindow = false;
 
 	void Draw()
 	{
@@ -56,13 +57,14 @@ namespace DebugMenu
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
 
-
 		ImGui::Begin("MainWindow", 0, ImGuiWindowFlags_MenuBar);
 		ImGui::Checkbox("Entity System", &s_entitySystemWindow);
 		ImGui::SameLine();
 		ImGui::Checkbox("Input", &s_inputWindow);
 		ImGui::SameLine();
 		ImGui::Checkbox("Colliders", &s_colliderWindow);
+		ImGui::SameLine();
+		ImGui::Checkbox("GameState", &s_gameStateWindow);
 		ImGui::End();
 
 		if (s_entitySystemWindow)
@@ -80,7 +82,12 @@ namespace DebugMenu
 			DoColliderWindow();
 		}
 
-		ImGui::ShowDemoWindow();
+		if(s_gameStateWindow)
+		{
+			DoGameStateWindow();
+		}
+
+		//ImGui::ShowDemoWindow();
 
 		ImGui::Render();
 		ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());

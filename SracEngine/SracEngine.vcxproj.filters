@@ -372,6 +372,12 @@
     <ClCompile Include="GameSource\ECS\Components\AIController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\ECS\EntSystems\PathingSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\PathingDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -822,6 +828,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\CharacterStates\CharacterAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\EntSystems\PathingSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

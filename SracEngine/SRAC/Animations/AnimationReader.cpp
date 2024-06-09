@@ -8,6 +8,8 @@
 
 static void PopulateBaseSpriteSheet(XMLNode root, SpriteSheet& sheet)
 {
+	sheet.ID = root.child("ID").value();
+
 	XMLNode frameSizeNode = root.child("FrameSize");
 	const float frame_x = toFloat(frameSizeNode.attribute("x")->value());
 	const float frame_y = toFloat(frameSizeNode.attribute("y")->value());
@@ -106,7 +108,7 @@ void AnimationReader::Parse(const char* animation, Animator& animator)
 
 			// popup late common data
 			animation.frameTime = frame_time;
-			animation.spriteSheet = sprite_sheet;
+			animation.spriteSheetIndex = animator.mSpriteSheets.size() - 1;
 			animation.direction = direction;
 			animation.canFlip = can_flip;
 

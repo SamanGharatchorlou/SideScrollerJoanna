@@ -63,13 +63,14 @@ namespace ECS
 				if (!(entSystems[i]->signature & type))
 				{
 					const u32 ent_count = entSystems[i]->entities.size();
-					for (u32 ent = 0; ent < ent_count; ent++)
+					for (int ent = 0; ent < ent_count; ent++)
 					{
 						if (entSystems[i]->entities[ent] == entity)
 						{
 							// copy the back element into the to be removed entities place, then pop the back
 							entSystems[i]->entities[ent] = entSystems[i]->entities.back();
 							entSystems[i]->entities.pop_back();
+							break;
 						}
 					}
 				}

@@ -19,10 +19,9 @@ namespace ECS
 			return entityId;
 		}
 
-		void KillEntity()
+		void KillEntity(Entity entity)
 		{
-			// todo:....
-			// set achetype to -1
+			archetypes[entity] = ArchetypeInvalid;
 		}
 
 		// todo: not currently using these... i assume i do, but when will i need the archetype array

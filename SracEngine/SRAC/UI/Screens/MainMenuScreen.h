@@ -20,5 +20,7 @@ public:
 
 	UIScreen::Type type() override { return UIScreen::Type::MainMenu; }
 
+	void Restart();
+
 	//void setCursorTexture(Texture* texture);
 };

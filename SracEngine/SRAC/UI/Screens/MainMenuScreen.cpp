@@ -25,3 +25,9 @@ void MainMenuScreen::Update()
 		GameData::Get().systemStateManager->quit();
 	}
 }
+
+
+void MainMenuScreen::Restart()
+{
+	GameData::Get().systemStateManager->replaceState(SystemStates::GameState);
+}

@@ -151,6 +151,7 @@
     <ClCompile Include="GameSource\ECS\Components\PlayerController.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\AIControllerSystem.cpp" />
     <ClCompile Include="GameSource\CharacterStates\PlayerStates.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\PathingSystem.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="SRAC\Audio\AudioManager.cpp" />
     <ClCompile Include="SRAC\Audio\Channel.cpp" />
     <ClCompile Include="SRAC\Audio\SoundController.cpp" />
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\PathingDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\PlayerControllerDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\VelocityDebugMenu.cpp" />
     <ClCompile Include="SRAC\ECS\Components\Collider.cpp" />
@@ -277,6 +279,7 @@
     <ClInclude Include="GameSource\ECS\Components\PlayerController.h" />
     <ClInclude Include="GameSource\PlayerStates\PlayerState.h" />
     <ClInclude Include="GameSource\CharacterStates\PlayerStates.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\PathingSystem.h" />
     <ClInclude Include="SRAC\Animations\CharacterStates.h" />
     <ClInclude Include="GameSource\Configs.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h" />

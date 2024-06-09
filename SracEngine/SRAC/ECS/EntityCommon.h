@@ -28,6 +28,7 @@ namespace ECS
 			TileMap,
 			Collider,
 			AIController,
+			Pathing,
 
 			Count
 		};
@@ -43,7 +44,8 @@ namespace ECS
 		"Animation", 
 		"TileMap",
 		"Collider",
-		"AIController"
+		"AIController",
+		"Pathing"
 	};
 
 	// lock - system signature

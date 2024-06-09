@@ -15,6 +15,7 @@ public:
 	};
 
 	UITextBox(const StringMap32& attributes, const BasicString& text);
+	UITextBox() { }
 	virtual ~UITextBox() { }
 
 	void setText(const BasicString& text) { mText.setText(text); }
@@ -35,8 +36,6 @@ public:
 
 	virtual UIType type() const { return UIType::TextBox; }
 
-
-private:
 	void initText(const StringMap32& attributes, const BasicString& text);
 	void setAlignment(const StringBuffer32& alignment);
 

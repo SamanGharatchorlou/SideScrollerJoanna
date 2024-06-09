@@ -9,6 +9,7 @@
 #include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
 #include "Game/FrameRateController.h"
+#include "ECS/Components/ComponentsSetup.h"
 
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
@@ -49,6 +50,12 @@ void DebugMenu::DoEntitySystemWindow()
     {
         if (ecs->IsAlive(s_selectedEntity))
         {
+            if(ImGui::Button("Kill Entity"))
+            {
+                ECS::RemoveAllComponents(s_selectedEntity);
+                GameData::Get().ecs->entities.KillEntity(s_selectedEntity);
+            }
+
             ECS::Archetype type = 0;
             SetFlag<u64>(type, ECS::archetypeBit(DoTransformDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoAnimationDebugMenu(s_selectedEntity)));
@@ -58,6 +65,7 @@ void DebugMenu::DoEntitySystemWindow()
             SetFlag<u64>(type, ECS::archetypeBit(DoPhysicsDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoPlayerControllerDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoSpriteDebugMenu(s_selectedEntity)));
+            SetFlag<u64>(type, ECS::archetypeBit(DoPathingDebugMenu(s_selectedEntity)));
 
             ECS::Archetype entity_type = ecs->entities.GetAchetype(s_selectedEntity);
             for (u32 i = 0; i < ECS::Component::Count; i++) 
@@ -69,7 +77,6 @@ void DebugMenu::DoEntitySystemWindow()
 
 		            ImGui::CollapsingHeader(ECS::ComponentNames[i]);
                 }
-
             }
         }
     }
@@ -188,4 +195,16 @@ void DebugMenu::DoColliderWindow()
 
         DebugDraw::Shape(s_drawType, collider.mRect, Colour::Blue);
 	}
+}
+
+
+#include "Game/SystemStateManager.h"
+
+void DebugMenu::DoGameStateWindow() 
+{
+    if(ImGui::Button("Restart Game State"))
+    {
+        
+	    GameData::Get().systemStateManager->replaceState(SystemStates::GameState);
+    }
 }

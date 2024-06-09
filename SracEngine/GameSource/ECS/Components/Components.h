@@ -60,7 +60,6 @@ namespace ECS
 	struct Animation
 	{
 		Animator animator;
-		std::vector<Texture*> spriteSheets;
 
 		static ECS::Component::Type type() { return ECS::Component::Animation; }
 	};
@@ -79,6 +78,12 @@ namespace ECS
 		Entity entity;
 
 		static ECS::Component::Type type() { return ECS::Component::AIController; }
+	};
+
+	struct Pathing
+	{
+		
+		static ECS::Component::Type type() { return ECS::Component::Pathing; }
 	};
 
 	// ----------------------------------------------------------------------

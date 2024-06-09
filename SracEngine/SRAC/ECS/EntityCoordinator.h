@@ -41,14 +41,27 @@ namespace ECS
 			return comp;
 		}
 
-		template<class T>
-		void RemoveComponent(Entity entity, const T& component, Component::Type type)
-		{
-			components.RemoveComponent<T>(entity, component, type);
-			entities.RemoveComponent(entity, type);
+		//template<class T>
+		//void RemoveComponent(Entity entity, Component::Type type)
+		//{
+		//	components.RemoveComponent<T>(entity, type);
+		//	entities.RemoveComponent(entity, type);
 
-			Archetype archetype = entities.GetAchetype(entity);
-			systems.EntityRemoveType(entity, type);
+		//	Archetype archetype = entities.GetAchetype(entity);
+		//	systems.EntityRemoveType(entity, type);
+		//}
+
+		template<class T>
+		void RemoveComponent(Entity entity, Component::Type type)
+		{
+			if(const T* comp_ptr = GetComponent<T>(entity, type))
+			{
+				components.RemoveComponent<T>(entity, type);
+				entities.RemoveComponent(entity, type);
+
+				Archetype archetype = entities.GetAchetype(entity);
+				systems.EntityRemoveType(entity, type);
+			}
 		}
 
 		template<class T>
@@ -88,5 +101,5 @@ namespace ECS
 #define AddComponent(compType, entity) AddComponent<ECS::compType>(entity, ECS::compType::type())
 #define GetComponent(compType, entity) GetComponent<ECS::compType>(entity, ECS::compType::type())
 #define GetComponentRef(compType, entity) GetComponentRef<ECS::compType>(entity, ECS::compType::type())
+#define RemoveComponent(compType, entity) RemoveComponent<ECS::compType>(entity, ECS::compType::type())
 }
-

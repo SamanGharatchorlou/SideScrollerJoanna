@@ -7,9 +7,9 @@ namespace ECS
 {
 	struct PlayerController
 	{
-		PlayerStatePool statePool;
+		Player::StatePool statePool;
 
-		ActionStack<PlayerState> actions;
+		ActionStack<CharacterAction> actions;
 
 		bool hasMovementInput;
 

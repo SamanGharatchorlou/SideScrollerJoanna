@@ -16,4 +16,5 @@ namespace DebugMenu
 	ECS::Component::Type DoTileMapDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoColliderDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoPlayerControllerDebugMenu(ECS::Entity& entity);
+	ECS::Component::Type DoPathingDebugMenu(ECS::Entity& entity);
 }

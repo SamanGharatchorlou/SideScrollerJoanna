@@ -9,7 +9,11 @@
 
 using namespace Map;
 
-static bool s_displaygridLines = true;
+static bool s_displayGridLines = true;
+static bool s_displayObjects = true;
+static bool s_aiPathingGrid = true;
+static bool s_showGridIndexes = false;
+static VectorF s_aiGridSize = VectorF(8.0f, 8.0f);
 StringBuffer32 s_selectedMap = "";
 
 ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
@@ -22,12 +26,11 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
             ECS::TileMap& tile_map = ecs->GetComponentRef(TileMap, entity);
+			const SceneTileMapping& map = tile_map.tileMap;
 
-			ImGui::Checkbox("Display Grid Lines", &s_displaygridLines);
-			if (s_displaygridLines && tile_map.tileMap.tileLayers.size() > 0)
+			ImGui::Checkbox("Display Grid Lines", &s_displayGridLines);
+			if (s_displayGridLines && tile_map.tileMap.tileLayers.size() > 0)
 			{
-				const SceneTileMapping& map = tile_map.tileMap;
-
 				VectorF window_size = GameData::Get().window->size();
 				VectorF map_size = map.mapSize;
 				VectorF size_ratio = window_size / map_size;
@@ -53,6 +56,56 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 						colour = Colour::Purple;
 
 					DebugDraw::RectOutline(rect, colour);
+				}
+			}
+
+			ImGui::Checkbox("Display Objects", &s_displayObjects);
+			if (s_displayObjects && tile_map.tileMap.objectLayers.size() > 0)
+			{
+				VectorF window_size = GameData::Get().window->size();
+				VectorF map_size = map.mapSize;
+				VectorF size_ratio = window_size / map_size;
+				VectorF tile_size = map.tileSize * size_ratio;
+
+				for( u32 i = 0; i < map.objectLayers.size(); i++ )
+				{
+					const ObjectLayer& layer = map.objectLayers[i];
+					for( u32 o = 0; o < layer.rects.size(); o++ )
+					{
+						DebugDraw::RectOutline(layer.rects[o], Colour::Purple);
+					}
+				}
+			}
+
+			ImGui::Checkbox("AI Pathing Grid", &s_aiPathingGrid);
+			ImGui::Checkbox("AI Pathing Grid", &s_aiPathingGrid);
+			ImGui::InputVectorF("Grid Size", s_aiGridSize);
+			if ( s_aiPathingGrid )
+			{
+				VectorF map_size = map.mapSize;
+				VectorF tile_size = s_aiGridSize;
+
+				VectorF window_size = GameData::Get().window->size();
+				VectorF size_ratio = window_size / map_size;
+				VectorF world_tile_size = tile_size * size_ratio;
+
+				VectorF tile_count = map_size / tile_size;
+
+				for( u32 x = 0; x < tile_count.x; x++ )
+				{
+					for( u32 y = 0; y < tile_count.y; y++ )
+					{
+						VectorF pos = world_tile_size * VectorF(x,y);
+						RectF rect(pos, world_tile_size);
+						DebugDraw::RectOutline(rect, Colour::Green);
+
+						if(s_showGridIndexes)
+						{
+							char buffer[32];
+							_itoa(y * tile_count.x + x, buffer, 10 );
+							DebugDraw::Text(buffer, 10, pos, Colour::White);
+						}
+					}
 				}
 			}
 

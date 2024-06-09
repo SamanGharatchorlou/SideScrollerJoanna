@@ -76,11 +76,14 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 
 				ImGui::Text("Active Animation: %s", actionToString(animation.action).c_str());
 
-				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(animation.spriteSheet->texture);
+				
+				const SpriteSheet& ss = animator.getSpritesheet(animation);
+
+				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(ss.texture);
 				ImGui::Text("SpriteSheet: %s", spriteName.c_str());
-				ImGui::InputVectorF("Frame Size", animation.spriteSheet->frameSize);
-				ImGui::VectorText("Object Size", animation.spriteSheet->objectSize);
-				ImGui::VectorText("Boundaries", animation.spriteSheet->boundaries);
+				ImGui::VectorText("Frame Size", ss.frameSize);
+				ImGui::VectorText("Object Size", ss.objectSize);
+				ImGui::VectorText("Boundaries", ss.boundaries);
 
 				std::vector<StringBuffer32> animations;
 				for (u32 i = 0; i < animator.mAnimations.size(); i++)

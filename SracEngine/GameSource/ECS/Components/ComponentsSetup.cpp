@@ -15,6 +15,9 @@
 #include "ECS/Components/PlayerController.h"
 #include "ECS/Components/Physics.h"
 #include "ECS/EntSystems/AIControllerSystem.h"
+#include "ECS/EntSystems/PathingSystem.h"
+
+
 
 void ECS::RegisterAllComponents()
 {
@@ -29,25 +32,26 @@ void ECS::RegisterAllComponents()
 	ecs->RegisterComponent(TileMap, 4);
 	ecs->RegisterComponent(Collider, 32);
 	ecs->RegisterComponent(AIController, 32);
+	ecs->RegisterComponent(Pathing, 32);
 }
 
 void ECS::RegisterAllSystems()
 {
 	EntityCoordinator* ecs = GameData::Get().ecs;
 
-	// RenderSystem
+	// Rendering
 	Signature renderSignature = ArcheBit(Transform) | ArcheBit(Sprite);
 	ecs->RegisterSystem<RenderSystem>(renderSignature);
 
-	// PlayerInputSystem
+	// Player Controller
 	Signature playerInputSignature = ArcheBit(PlayerController) | ArcheBit(CharacterState) | ArcheBit(Transform) | ArcheBit(Physics);
 	ecs->RegisterSystem<PlayerControllerSystem>(playerInputSignature);
 
-	// PhysicsSystem
+	// Physics
 	Signature physicsSignature = ArcheBit(Transform) | ArcheBit(CharacterState) | ArcheBit(Physics);
 	ecs->RegisterSystem<PhysicsSystem>(physicsSignature);
 
-	// AnimationSystem
+	// Animation
 	Signature animationSignature = ArcheBit(Sprite) | ArcheBit(Animation) | ArcheBit(CharacterState) | ArcheBit(Transform);
 	ecs->RegisterSystem<AnimationSystem>(animationSignature);
 
@@ -59,7 +63,27 @@ void ECS::RegisterAllSystems()
 	Signature collisionSignature = ArcheBit(Collider) | ArcheBit(Transform);
 	ecs->RegisterSystem<CollisionSystem>(collisionSignature);
 
-	// Collisions
+	// AI Controller
 	Signature AIControllerSignature = ArcheBit(AIController) | ArcheBit(CharacterState) | ArcheBit(Transform) | ArcheBit(Physics);
 	ecs->RegisterSystem<AIControllerSystem>(AIControllerSignature);
+
+	// Pathing
+	Signature PathingSignature = ArcheBit(Pathing) | ArcheBit(Transform) | ArcheBit(Physics);
+	ecs->RegisterSystem<PathingSystem>(PathingSignature);
+}
+
+
+void ECS::RemoveAllComponents(Entity entity)
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ecs->RemoveComponent(Transform, entity);
+	ecs->RemoveComponent(Sprite, entity);
+	ecs->RemoveComponent(CharacterState, entity);
+	ecs->RemoveComponent(PlayerController, entity);
+	ecs->RemoveComponent(Physics, entity);
+	ecs->RemoveComponent(Animation, entity);
+	ecs->RemoveComponent(TileMap, entity);
+	ecs->RemoveComponent(Collider, entity);
+	ecs->RemoveComponent(AIController, entity);
+	ecs->RemoveComponent(Pathing, entity);
 }

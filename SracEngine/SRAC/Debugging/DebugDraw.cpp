@@ -116,14 +116,10 @@ namespace DebugDraw
 
 	void Text(const BasicString text, int ptSize, VectorF position, Colour colour, const char* alignment)
 	{
-		//UITextBox::Data textData;
-		//textData.alignment = alignment;
-		//textData.ptSize = ptSize;
-		//textData.colour = SDL_Color{ colour.r, colour.g, colour.b };
-		//textData.rect = RectF(Camera::Get()->toCameraCoords(position), VectorF(0.0f,0.0f));
-		//textData.text = text;
-
-		//UITextBox textBox(textData);
-		//textBox.render();
+		UITextBox textBox;
+		textBox.setAlignment(alignment);
+		textBox.mText.init(text, "default", ptSize, colour.toSDL());
+		textBox.setRect(RectF(position + VectorF(5,5), VectorF::zero()));
+		textBox.render();
 	}
 }

@@ -4,8 +4,8 @@
 		<ID>TribeWarrior</ID>
 		<FrameTime>0.1</FrameTime>
 		<FrameSize x = "62" y ="69"></FrameSize>
-		<ObjectSize x = "32" y ="32"></ObjectSize>
-		<ObjectPosition x = "0" y ="16"></ObjectPosition>
+		<ObjectSize x = "8" y ="16"></ObjectSize>
+		<ObjectPosition x = "22" y ="33"></ObjectPosition>
 		<SpriteSheet>TribeWarrior</SpriteSheet>
 		<!-- Up -->
 		<Animations x = "0" y ="-1"> 

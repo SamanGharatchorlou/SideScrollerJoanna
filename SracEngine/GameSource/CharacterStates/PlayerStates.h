@@ -1,51 +1,45 @@
 #pragma once
 
+#include "Core/ObjectPool.h"
 #include "SRAC/Game/GameStates/State.h"
 #include "Animations/CharacterStates.h"
-#include "Core/ObjectPool.h"
+#include "CharacterAction.h"
 
-struct PlayerState : public State
+namespace Player
 {
-	PlayerState() : action(ActionState::None), entity(ECS::EntityInvalid)  { }
+	struct StatePool : public ObjectPool<CharacterAction, ActionState>
+	{
+		CharacterAction* createNewObjects(ActionState type, int count, int& outSize) const override;
+	};
 
-	void InitState(ECS::Entity entity_id, ActionState state) { entity = entity_id; action = state; }
+	struct IdleState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
 
-	ECS::Entity entity;
-	ActionState action;
-};
+	struct WalkState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
 
-struct PlayerStatePool : public ObjectPool<PlayerState, ActionState>
-{
-	PlayerState* createNewObjects(ActionState type, int count, int& outSize) const override;
-};
+	struct RunState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
 
-struct IdleState : public PlayerState
-{
-	void Update(float dt) override;
-};
+	struct DodgeState : public CharacterAction
+	{
+		void Init() override;
+		void Update(float dt) override;
+	};
 
-struct WalkState : public PlayerState
-{
-	void Update(float dt) override;
-};
+	struct SlashAttackState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
 
-struct RunState : public PlayerState
-{
-	void Update(float dt) override;
-};
-
-struct DodgeState : public PlayerState
-{
-	void Init() override;
-	void Update(float dt) override;
-};
-
-struct SlashAttackState : public PlayerState
-{
-	void Update(float dt) override;
-};
-
-struct ChopAttackState : public PlayerState
-{
-	void Update(float dt) override;
-};
+	struct ChopAttackState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
+}

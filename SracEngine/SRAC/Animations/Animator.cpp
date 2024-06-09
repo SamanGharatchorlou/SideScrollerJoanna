@@ -1,28 +1,12 @@
 #include "pch.h"
 #include "Animator.h"
 
-//#include "GameSource/Configs.h"
-//#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
-
 Animator::Animator() :
 	mAnimationIndex(-1), 
 	mFrameIndex(0),
 	mTime(0.0f),
 	mLoops(0),
 	mState(TimeState::Stopped) { }
-
-//void Animator::AddAnimations(AnimationConfig* config)
-//{
-//	const u32 animation_count = config->animations.size();
-//
-//	mAnimations.reserve(mAnimations.size() + animation_count);
-//
-//	for (u32 i = 0; i < animation_count; i++)
-//	{
-//		const Animation& anim = config->animations[i];
-//		mAnimations.push_back(config->animations[i]);
-//	}
-//}
 
 VectorF Animator::getAnimationSubRect() const
 {
@@ -31,7 +15,8 @@ VectorF Animator::getAnimationSubRect() const
 		return VectorF::zero();
 
 	int index = animation->startIndex + mFrameIndex;
-	VectorI bounaries = animation->spriteSheet->boundaries;
+	const SpriteSheet& ss = getSpritesheet(*animation);
+	VectorI bounaries = ss.boundaries;
 
 	int y = 0;
 	int x = 0;
@@ -42,7 +27,7 @@ VectorF Animator::getAnimationSubRect() const
 	}
 	x = index;
 
-	return animation->spriteSheet->frameSize * Vector2D<int>(x, y).toFloat();
+	return ss.frameSize * Vector2D<int>(x, y).toFloat();
 }
 
 
@@ -57,9 +42,6 @@ void Animator::ResetOnNewAnimation()
 
 bool Animator::selectAnimation(ActionState action)
 {
-	//if (DebugMenu::UsingPlaylist())
-	//	return false;
-
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
 		if (mAnimations[i].action == action)
@@ -83,9 +65,6 @@ bool Animator::selectAnimation(ActionState action)
 
 bool Animator::selectAnimation(const Animation& anim)
 {
-	//if (DebugMenu::UsingPlaylist())
-	//	return false;
-
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
 		if (mAnimations[i].action == anim.action)
@@ -143,8 +122,6 @@ const Animation* Animator::getAnimation(ActionState action, VectorI direction, b
 	}
 
 	return getAnimation(action);
-	//DebugPrint(Warning, "No animation with action %d and direction %f,%f", action, direction.x, direction.y);
-	//return nullptr;
 }
 
 u32 Animator::getAnimationIndex(const Animation& anim)
@@ -217,7 +194,7 @@ VectorF Animator::FrameSize() const
 	if(!animation)
 		return VectorF::zero();
 
-	return animation->spriteSheet->frameSize; 
+	return getSpritesheet(*animation).frameSize; 
 }
 
 float Animator::FrameTime() const 
@@ -227,4 +204,16 @@ float Animator::FrameTime() const
 		return 0.0f;
 
 	return animation->frameTime; 
+}
+
+Texture* Animator::activeSpriteSheet() const 
+{
+	int sprite_sheet_index = mAnimations[mAnimationIndex].spriteSheetIndex;
+	return mSpriteSheets[sprite_sheet_index].texture; 
+}
+
+
+const SpriteSheet& Animator::getSpritesheet(const Animation& animation) const
+{
+	return mSpriteSheets[animation.spriteSheetIndex]; 
 }

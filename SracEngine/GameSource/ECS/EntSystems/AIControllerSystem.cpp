@@ -3,13 +3,10 @@
 
 #include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
-#include "Input/InputManager.h"
 #include "ECS/Components/Physics.h"
 
 namespace ECS
 {
-	using namespace ECS;
-
 	static void PushState(AIController& aic, ActionState action)
 	{
 		DebugPrint(PriorityLevel::Log, "Pushing player action state: %s | %d states left", actionToString(action).c_str(), aic.statePool.size(action));

@@ -9,15 +9,16 @@
 #include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 
+using namespace Player;
 
 #define ActionStateCase(action) case ActionState::action: \
 								out_size = sizeof(action##State);  \
 								state = new action##State[count]; \
 								break;
 
-PlayerState* PlayerStatePool::createNewObjects(ActionState type, int count, int& out_size) const
+CharacterAction* Player::StatePool::createNewObjects(ActionState type, int count, int& out_size) const
 {
-	PlayerState* state = nullptr;
+	CharacterAction* state = nullptr;
 
 	switch (type)
 	{

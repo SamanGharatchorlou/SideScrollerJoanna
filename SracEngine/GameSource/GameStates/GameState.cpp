@@ -27,6 +27,7 @@ void GameState::Init()
 
 	ECS::TileMap& tile_map = ecs->AddComponent(TileMap, entity);
 	Map::SceneBuilder::BuildTileMap("blood_test_export.xml", tile_map.tileMap);
+	activeMap = entity;
 
 	PlayerSpawn::Spawn(tile_map);
 	EnemySpawn::Spawn(tile_map);
@@ -83,8 +84,27 @@ void GameState::Exit()
 	//mGameData->environment->clear();
 	//mGameData->scoreManager->reset();
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeOut, "Game", nullptr, 150));
+	
+    ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 
-	//delete player;
+	// shut down all systems
+	for( u32 i = 0; i < ecs->systems.entSystems.size(); i++ )
+	{
+		delete ecs->systems.entSystems[i];
+	}
+	ecs->systems.entSystems.clear();
+
+	for( u32 i = 0; i < ECS::Component::Type::Count; i++ )
+	{
+		delete ecs->components.componentArrays[i];
+		ecs->components.componentArrays[i] = nullptr;
+	}
+
+	for( u32 i = 0; i < ecs->entities.entityIdIndex; i++ )
+	{
+		ecs->entities.archetypes[i] = -1;
+	}
+	ecs->entities.entityIdIndex = 0;
 }
 
 

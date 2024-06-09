@@ -6,6 +6,7 @@
 #include "ECS/EntityCoordinator.h"
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 #include "ECS/Components/PlayerController.h"
+#include "Debugging/ImGui/ImGuiMainWindows.h"
 
 namespace ECS
 {
@@ -15,6 +16,10 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
+			// debug break point
+			if(DebugMenu::GetSelectedEntity() == entity)
+				int a = 4;
+
 			CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
@@ -49,9 +54,9 @@ namespace ECS
 			{
 				animator.selectAnimation(*anim);
 
-				const SpriteSheet* ss = anim->spriteSheet;
-				sprite.relativeRenderRect = ss->GetRelativeRenderRect();
-				sprite.texture = ss->texture;
+				const SpriteSheet& ss = animator.getSpritesheet(*anim);
+				sprite.relativeRenderRect = ss.GetRelativeRenderRect();
+				sprite.texture = ss.texture;
 			}
 		}
 	}
