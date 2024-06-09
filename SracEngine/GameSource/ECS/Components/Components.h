@@ -3,14 +3,15 @@
 #include "Core/TypeDefs.h"
 #include "Core/Vector2D.h"
 #include "Core/Rect.h"
+#include "Core/stack.h"
 
 #include "ECS/EntityCommon.h"
 #include "Core/Physics/Fisics.h"
 #include "Animations/Animator.h"
 #include "Scene/SceneParsing/SceneBuilder.h"
 
-//#include "SRAC/Game/GameStates/StateMachine.h"
-//#include "SRAC/Game/GameStates/State.h"
+#include "CharacterStates/EnemyStates.h" // can try to forward decalare state
+
 
 class Texture;
 enum class ActionState;
@@ -41,9 +42,12 @@ namespace ECS
 	{
 		enum Direction { Left, Right, Up, Down, Count };
 
+		VectorI movementDirection;
 		VectorI facingDirection;
 
 		ActionState action;
+
+		bool isRunning;
 		bool canChange = true;
 
 		bool restrictMovement[Direction::Count] { false, false, false, false };
@@ -66,6 +70,15 @@ namespace ECS
 		Map::SceneTileMapping tileMap;
 
 		static ECS::Component::Type type() { return ECS::Component::TileMap; }
+	};
+
+	struct AIController
+	{
+		Enemy::StatePool statePool;
+		ActionStack<CharacterAction> actions;
+		Entity entity;
+
+		static ECS::Component::Type type() { return ECS::Component::AIController; }
 	};
 
 	// ----------------------------------------------------------------------

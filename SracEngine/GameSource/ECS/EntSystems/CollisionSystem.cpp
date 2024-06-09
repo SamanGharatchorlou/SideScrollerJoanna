@@ -2,7 +2,7 @@
 #include "CollisionSystem.h"
 
 #include "ECS/Components/Collider.h"
-#include "GameSource/ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/RenderManager.h"
 

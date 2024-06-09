@@ -12,15 +12,14 @@ class Animator
 {
 public:
 	Animator();
-	Animator(AnimationConfig* config);
 	void AddAnimations(AnimationConfig* config);
-
-	void Update(float dt);
+	
+	bool RunActive(float dt, bool force_loop = false);
 	void ResetOnNewAnimation();
 
 	const Animation* getAnimation(ActionState action) const;
 	const Animation* getAnimation(ActionState action, VectorI direction, bool& flipped_direction) const;
-	const Animation& activeAnimation() const { return mAnimations[mAnimationIndex]; }
+	const Animation* activeAnimation() const { return mAnimationIndex != -1 ? &mAnimations[mAnimationIndex] : nullptr; }
 	VectorF getAnimationSubRect() const;
 
 	bool selectAnimation(ActionState state);
@@ -33,22 +32,20 @@ public:
 	void stop();
 	void restart();
 
-	bool RunActive(float dt, bool force_loop = false);
-
 	bool isRunning() const { return mState == TimeState::Running; }
 	bool isStarted() const { return mState == TimeState::Running || mState == TimeState::Paused; }
 
-	float frameTime() const { return mAnimations[mAnimationIndex].frameTime; }
-	VectorF frameSize() const { return mAnimations[mAnimationIndex].spriteSheet.frameSize; }
+	float FrameTime() const;
+	VectorF FrameSize() const;
 
 	ActionState activeAction() const { return mAnimations[mAnimationIndex].action; }
-	Texture* activeSpriteSheet() const { return mAnimations[mAnimationIndex].spriteSheet.sprite; }
+	Texture* activeSpriteSheet() const { return mAnimations[mAnimationIndex].spriteSheet->texture; }
 	bool lastFrame() const { return mFrameIndex == mAnimations[mAnimationIndex].frameCount - 1; }
 	bool canChange() const { return mLoops >= mAnimations[mAnimationIndex].minLoops; }
 	bool finished() const { return mFinished; }
 
-
 	std::vector<Animation> mAnimations;
+	std::vector<SpriteSheet> mSpriteSheets;
 
 #if FRAME_CAPTURING
 	Queue<ActionState> mActions;
@@ -56,7 +53,6 @@ public:
 	u32 frameCaptureIndex = 0;
 #endif
 
-	//VectorF mBaseSize;
 	u32 mAnimationIndex;
 	u32 mFrameIndex;
 	

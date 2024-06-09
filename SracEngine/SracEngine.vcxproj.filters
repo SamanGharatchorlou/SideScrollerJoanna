@@ -318,10 +318,10 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\TransformDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp">
+    <ClCompile Include="GameSource\ECS\Components\ComponentsSetup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\Character\Player.cpp">
+    <ClCompile Include="GameSource\Characters\Player\PlayerCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Scene\SceneParsing\SceneBuilder.cpp">
@@ -345,7 +345,7 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\VelocityDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\PlayerStates\PlayerStates.cpp">
+    <ClCompile Include="GameSource\CharacterStates\PlayerStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRAC\Debugging\ImGui\Components\PlayerControllerDebugMenu.cpp">
@@ -355,6 +355,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameSource\ECS\Components\Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Characters\Spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Characters\Enemies\Enemies.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\ECS\EntSystems\AIControllerSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\CharacterStates\EnemyStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\ECS\Components\AIController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -671,7 +686,7 @@
     <ClInclude Include="SRAC\Core\Maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\ECS\Components.h">
+    <ClInclude Include="GameSource\ECS\Components\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\ECS\EntityManager.h">
@@ -746,10 +761,10 @@
     <ClInclude Include="SRAC\Debugging\ImGui\ImGuiHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\ECS\ComponentsSetup.h">
+    <ClInclude Include="GameSource\ECS\Components\ComponentsSetup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\Character\Player.h">
+    <ClInclude Include="GameSource\Characters\Player\PlayerCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRAC\Scene\SceneParsing\SceneBuilder.h">
@@ -782,13 +797,31 @@
     <ClInclude Include="SRAC\Core\Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\PlayerStates\PlayerStates.h">
+    <ClInclude Include="GameSource\CharacterStates\PlayerStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\Components\PlayerController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\Components\Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Characters\Spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Characters\Enemies\Enemies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\EntSystems\AIControllerSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\CharacterStates\EnemyStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\Components\AIController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\CharacterStates\CharacterAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

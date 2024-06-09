@@ -20,7 +20,7 @@ static bool s_forceLooping = true;
 
 static ECS::Entity s_activeEnt;
 
-bool DebugMenu::UsingPlaylist() { return s_usingPlaylist; }
+bool DebugMenu::UsingPlaylist(ECS::Entity& entity) { return s_usingPlaylist && s_activeEnt == entity; }
 bool DebugMenu::DisplayRenderRect(ECS::Entity& entity) { return s_displayRenderRect && s_activeEnt == entity; }
 
 static Animation* SetAnimation(Animator& animator)
@@ -53,6 +53,15 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Component::Type type = ECS::Component::Animation;
 
+	if(entity != s_activeEnt)
+	{
+		s_animationPlaylist.clear();
+		s_playlistIndex = 0;
+		s_playingPlaylist = false;
+		s_playSingleAnimation = false;
+		s_displayRenderRect = false;
+		s_forceLooping = true;
+	}
 	s_activeEnt = entity;
 
     if (ecs->HasComponent(entity, type))
@@ -67,11 +76,11 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 
 				ImGui::Text("Active Animation: %s", actionToString(animation.action).c_str());
 
-				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(animation.spriteSheet.sprite);
+				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(animation.spriteSheet->texture);
 				ImGui::Text("SpriteSheet: %s", spriteName.c_str());
-				ImGui::InputVectorF("Frame Size", animation.spriteSheet.frameSize);
-				ImGui::VectorText("Object Size", animation.spriteSheet.objectSize);
-				ImGui::VectorText("Boundaries", animation.spriteSheet.boundaries);
+				ImGui::InputVectorF("Frame Size", animation.spriteSheet->frameSize);
+				ImGui::VectorText("Object Size", animation.spriteSheet->objectSize);
+				ImGui::VectorText("Boundaries", animation.spriteSheet->boundaries);
 
 				std::vector<StringBuffer32> animations;
 				for (u32 i = 0; i < animator.mAnimations.size(); i++)

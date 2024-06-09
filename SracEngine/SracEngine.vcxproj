@@ -143,15 +143,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameSource\CharacterStates\EnemyStates.cpp" />
+    <ClCompile Include="GameSource\Characters\Enemies\Enemies.cpp" />
+    <ClCompile Include="GameSource\Characters\Spawner.cpp" />
+    <ClCompile Include="GameSource\ECS\Components\AIController.cpp" />
     <ClCompile Include="GameSource\ECS\Components\Physics.cpp" />
     <ClCompile Include="GameSource\ECS\Components\PlayerController.cpp" />
-    <ClCompile Include="GameSource\PlayerStates\PlayerStates.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\AIControllerSystem.cpp" />
+    <ClCompile Include="GameSource\CharacterStates\PlayerStates.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp" />
-    <ClCompile Include="GameSource\Character\Player.cpp" />
+    <ClCompile Include="GameSource\Characters\Player\PlayerCharacter.cpp" />
     <ClCompile Include="GameSource\Configs.cpp" />
-    <ClCompile Include="GameSource\ECS\ComponentsSetup.cpp" />
+    <ClCompile Include="GameSource\ECS\Components\ComponentsSetup.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\AnimationSystem.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\PhysicsSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -259,13 +264,19 @@
     <ClCompile Include="GameSource\ECS\EntSystems\TileMapSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSource\CharacterStates\CharacterAction.h" />
+    <ClInclude Include="GameSource\CharacterStates\EnemyStates.h" />
+    <ClInclude Include="GameSource\Characters\Enemies\Enemies.h" />
+    <ClInclude Include="GameSource\Characters\Spawner.h" />
+    <ClInclude Include="GameSource\ECS\Components\AIController.h" />
     <ClInclude Include="GameSource\ECS\Components\Physics.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\AIControllerSystem.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h" />
-    <ClInclude Include="GameSource\Character\Player.h" />
-    <ClInclude Include="GameSource\ECS\ComponentsSetup.h" />
+    <ClInclude Include="GameSource\Characters\Player\PlayerCharacter.h" />
+    <ClInclude Include="GameSource\ECS\Components\ComponentsSetup.h" />
     <ClInclude Include="GameSource\ECS\Components\PlayerController.h" />
     <ClInclude Include="GameSource\PlayerStates\PlayerState.h" />
-    <ClInclude Include="GameSource\PlayerStates\PlayerStates.h" />
+    <ClInclude Include="GameSource\CharacterStates\PlayerStates.h" />
     <ClInclude Include="SRAC\Animations\CharacterStates.h" />
     <ClInclude Include="GameSource\Configs.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AnimationSystem.h" />
@@ -294,7 +305,7 @@
     <ClInclude Include="SRAC\Debugging\MemTrack.h" />
     <ClInclude Include="SRAC\Debugging\PerformanceProfiler.h" />
     <ClInclude Include="SRAC\Debugging\UIEditor.h" />
-    <ClInclude Include="GameSource\ECS\Components.h" />
+    <ClInclude Include="GameSource\ECS\Components\Components.h" />
     <ClInclude Include="SRAC\ECS\ComponentArray.h" />
     <ClInclude Include="SRAC\ECS\ComponentManager.h" />
     <ClInclude Include="SRAC\ECS\EntityCommon.h" />

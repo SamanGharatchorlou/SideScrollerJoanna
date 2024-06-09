@@ -14,11 +14,13 @@ ECS::Component::Type DebugMenu::DoPlayerControllerDebugMenu(ECS::Entity& entity)
 	{
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
-			ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
 			if (ImGui::TreeNode("Component Data"))
 			{
-				ImGui::VectorText("Movement Direction", pc.movementDirection);
-				ImGui::VectorText("Facing Direction", pc.facingDirection);
+				ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
+				ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+
+				ImGui::VectorText("Movement Direction", state.movementDirection);
+				ImGui::VectorText("Facing Direction", state.facingDirection);
 
 				ImGui::Text("State count: %d", pc.actions.stack.size());
 				ImGui::Text("Current State: %s", actionToString(pc.actions.Top().action).c_str());

@@ -6,17 +6,21 @@ enum class ActionState;
 
 struct SpriteSheet
 {
-	Texture* sprite;
+	BasicString ID;
+	Texture* texture;
 	VectorF frameSize;
 	VectorF objectSize;
 	VectorF objectPos;
 	VectorI boundaries;
+
+	// derive the render rect from the object pos + size
+	RectF GetRelativeRenderRect() const;
 };
 
 struct Animation
 {
 	// todo: pull this out of each animation, can hold a seperate list
-	SpriteSheet spriteSheet;
+	SpriteSheet* spriteSheet;
 
 	ActionState action = (ActionState)0;
 

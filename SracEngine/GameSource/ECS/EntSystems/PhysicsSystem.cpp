@@ -3,7 +3,7 @@
 #include "PhysicsSystem.h"
 
 #include "ECS/Components/Physics.h"
-#include "GameSource/ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 
 namespace ECS
@@ -14,7 +14,6 @@ namespace ECS
 
 		for (Entity entity : entities)
 		{
-			const CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 			Physics& physics = ecs->GetComponentRef(Physics, entity);
 
@@ -24,8 +23,6 @@ namespace ECS
 				speed = speed + VectorF(0.0f, 1.0f) * dt;
 				physics.speed = speed.clamp(physics.maxSpeed * -1.0f, physics.maxSpeed);
 			}
-
-			//physics.ApplyDrag(0.9f);
 		}
 	}
 }

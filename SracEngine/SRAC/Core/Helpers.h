@@ -52,6 +52,23 @@ static Vector2D<int> toVectorI(const char* x, const char* y)
 }
 
 //--------------------------------------------------------
+// Parser helpers
+static VectorF attributesToVectorF(XMLNode node, const char* x, const char* y)
+{
+	float vec_x = toFloat(node.attribute(x)->value());
+	float vec_y = toFloat(node.attribute(y)->value());
+	return VectorF(vec_x, vec_y);
+}
+
+static VectorI attributesToVectorI(XMLNode node, const char* x, const char* y)
+{
+	int vec_x = toInt(node.attribute(x)->value());
+	int vec_y = toInt(node.attribute(y)->value());
+	return VectorI(vec_x, vec_y);
+}
+
+
+//--------------------------------------------------------
 // map helpers
 template<class T, class K>
 static void log(const std::unordered_map<T,K>& map)

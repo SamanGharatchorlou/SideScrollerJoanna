@@ -1,6 +1,6 @@
 #pragma once
 
-class Enemy;
+//class Enemy;
 class TargePositionAttackAbility;
 class Texture;
 
@@ -153,14 +153,14 @@ struct UpdateLoadingBarEvent : public EventData
 };
 
 
-struct EnemyDeadEvent : public EventData
-{
-	EnemyDeadEvent(const Enemy* enemy, int score, int exp) : EventData(Event::EnemyDead), mEnemy(enemy), mScore(score), mExp(exp) { }
-
-	const Enemy* mEnemy;
-	const int mScore;
-	const int mExp;
-};
+//struct EnemyDeadEvent : public EventData
+//{
+//	EnemyDeadEvent(const Enemy* enemy, int score, int exp) : EventData(Event::EnemyDead), mEnemy(enemy), mScore(score), mExp(exp) { }
+//
+//	const Enemy* mEnemy;
+//	const int mScore;
+//	const int mExp;
+//};
 
 
 struct SetUIBarEvent : public EventData

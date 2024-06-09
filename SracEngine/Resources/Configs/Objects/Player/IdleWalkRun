@@ -1,9 +1,0 @@
-IdleWalkRun
-
-BreakRun [0, 7]
-BreakWalk [7, 10]
-Idle [10, 16]
-Running [16, 24]
-ToRun [24, 27]
-ToWalk [27, 30]
-Walking [30, 48]

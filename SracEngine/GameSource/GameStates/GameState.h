@@ -21,6 +21,6 @@ private:
 	void initCamera();
 	//void initRendering();
 
-	Player* player;
+	//Player* player;
 
 };

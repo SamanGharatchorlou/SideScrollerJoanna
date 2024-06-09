@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="10">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="26">
  <tileset firstgid="1" source="main_1.tsx"/>
  <tileset firstgid="433" source="big_sword_n_trees.tsx"/>
  <layer id="1" name="Floor" width="16" height="16" locked="1">
@@ -143,12 +143,31 @@
 </data>
  </layer>
  <objectgroup id="18" name="Object Layer 1">
-  <object id="3" x="181.069" y="63.3742" width="14.379" height="42.6045"/>
-  <object id="4" x="68.6998" y="191.188" width="14.379" height="42.072"/>
-  <object id="5" x="101.186" y="191.188" width="4.79301" height="29.2906"/>
-  <object id="6" x="53.7882" y="145.388" width="5.32557" height="28.7581"/>
-  <object id="7" x="137.4" y="52.7231" width="12.7814" height="14.379"/>
-  <object id="8" x="160.832" y="85.7416" width="11.7162" height="10.1186"/>
-  <object id="9" x="214.62" y="237.52" width="18.1069" height="11.7162"/>
+  <object id="3" x="182.77" y="95.3572" width="10.9766" height="7.21907"/>
+  <object id="4" x="68.6998" y="226.233" width="14.379" height="4.98534"/>
+  <object id="5" x="101.186" y="216.706" width="4.79301" height="3.77226"/>
+  <object id="6" x="53.7882" y="169.545" width="5.32557" height="4.60074"/>
+  <object id="7" x="139.441" y="58.8475" width="8.35822" height="5.87289"/>
+  <object id="8" x="163.894" y="88.1233" width="7.63327" height="4.33444"/>
+  <object id="9" x="215.981" y="240.922" width="13.6837" height="5.5918"/>
+  <object id="10" x="104.795" y="18.7135" width="13.2695" height="5.78416"/>
+  <object id="11" x="49.3355" y="111.94" width="7.82562" height="5.78416"/>
+  <object id="12" x="56.8208" y="118.405" width="15.311" height="5.10367"/>
+  <object id="13" x="65.327" y="102.414" width="10.2073" height="4.42318"/>
+  <object id="14" x="139.841" y="138.139" width="5.10367" height="3.74269"/>
+  <object id="15" x="171.483" y="135.758" width="6.1244" height="4.42318"/>
+  <object id="16" x="192.578" y="137.459" width="6.46465" height="4.42318"/>
+  <object id="17" x="195.3" y="124.53" width="5.10367" height="3.74269"/>
+  <object id="18" x="208.57" y="210.271" width="6.46465" height="3.74269"/>
+  <object id="19" x="33.6842" y="67.0282" width="5.78416" height="3.74269"/>
+  <object id="20" x="46.2733" y="231.366" width="6.46465" height="6.1244"/>
+  <object id="21" x="165.699" y="218.437" width="26.8793" height="7.48538"/>
+  <object id="22" x="177.267" y="226.603" width="14.6305" height="7.82562"/>
+ </objectgroup>
+ <objectgroup id="19" name="PlayerSpawn">
+  <object id="23" x="95.949" y="80.2977" width="31.3025" height="31.983"/>
+ </objectgroup>
+ <objectgroup id="20" name="EnemySpawn">
+  <object id="25" name="EnemySpawn" x="67.0282" y="133.036" width="27.2196" height="21.7757"/>
  </objectgroup>
 </map>

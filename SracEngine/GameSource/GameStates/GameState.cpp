@@ -6,11 +6,12 @@
 #include "Game/Camera/Camera.h"
 #include "UI/UIManager.h"
 
-#include "ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 
-#include "GameSource/Character/Player.h"
-#include "GameSource/ECS/ComponentsSetup.h"
+#include "Characters/Spawner.h"
+
+#include "ECS/Components/ComponentsSetup.h"
 
 #include "Scene/SceneParsing/SceneBuilder.h"
 
@@ -21,14 +22,14 @@ void GameState::Init()
 	ECS::RegisterAllComponents();
 	ECS::RegisterAllSystems();
 
-	player = new Player;
-	player->Init();
-
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Entity entity = ecs->CreateEntity("Map");
 
 	ECS::TileMap& tile_map = ecs->AddComponent(TileMap, entity);
 	Map::SceneBuilder::BuildTileMap("blood_test_export.xml", tile_map.tileMap);
+
+	PlayerSpawn::Spawn(tile_map);
+	EnemySpawn::Spawn(tile_map);
 
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->replaceScreen(UIScreen::Type::Game);
@@ -83,7 +84,7 @@ void GameState::Exit()
 	//mGameData->scoreManager->reset();
 	AudioManager::Get()->push(AudioEvent(AudioEvent::FadeOut, "Game", nullptr, 150));
 
-	delete player;
+	//delete player;
 }
 
 

@@ -32,14 +32,18 @@ namespace Map
 
 	struct SceneTileMapping
 	{
+		std::vector<TileSet> tilesets;
+		std::vector<TileLayer> tileLayers;
+
+		std::vector<ObjectLayer> objectLayers;
+		std::vector<u32> colliderEntities;
+
+		RectF playerSpawnArea;
+		RectF enemySpawnArea;
+
 		VectorF mapSize;
 		VectorF tileSize;
 		VectorI tileCount;
-
-		std::vector<TileSet> tilesets;
-		std::vector<TileLayer> tileLayers;
-		std::vector<ObjectLayer> objectLayers;
-		std::vector<u32> colliderEntities;
 	};
 
 	static VectorI IndexToMapIndex(u32 index, Vector2D<int> size)

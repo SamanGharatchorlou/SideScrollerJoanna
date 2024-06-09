@@ -2,7 +2,7 @@
 #include "ComponentDebugMenu.h"
 
 #include "ECS/EntityCoordinator.h"
-#include "ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ThirdParty/imgui-master/imgui.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
 

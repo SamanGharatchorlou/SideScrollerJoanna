@@ -1,46 +1,37 @@
 #include "pch.h"
 #include "Animator.h"
 
-#include "GameSource/Configs.h"
-#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
+//#include "GameSource/Configs.h"
+//#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
 Animator::Animator() :
-	mAnimationIndex(0), 
+	mAnimationIndex(-1), 
 	mFrameIndex(0),
 	mTime(0.0f),
 	mLoops(0),
 	mState(TimeState::Stopped) { }
 
-Animator::Animator(AnimationConfig* config)
-{
-	mFrameIndex = 0;
-	mAnimationIndex = 0;
-	mTime = 0.0f;
-	mLoops = 0;
-	mState = TimeState::Running;
-
-	AddAnimations(config);
-}
-
-void Animator::AddAnimations(AnimationConfig* config)
-{
-	const u32 animation_count = config->animations.size();
-
-	mAnimations.reserve(mAnimations.size() + animation_count);
-
-	for (u32 i = 0; i < animation_count; i++)
-	{
-		const Animation& anim = config->animations[i];
-		mAnimations.push_back(config->animations[i]);
-	}
-}
+//void Animator::AddAnimations(AnimationConfig* config)
+//{
+//	const u32 animation_count = config->animations.size();
+//
+//	mAnimations.reserve(mAnimations.size() + animation_count);
+//
+//	for (u32 i = 0; i < animation_count; i++)
+//	{
+//		const Animation& anim = config->animations[i];
+//		mAnimations.push_back(config->animations[i]);
+//	}
+//}
 
 VectorF Animator::getAnimationSubRect() const
 {
-	const Animation& animation = mAnimations[mAnimationIndex];
+	const Animation* animation =  activeAnimation();
+	if(!animation)
+		return VectorF::zero();
 
-	int index = animation.startIndex + mFrameIndex;
-	VectorI bounaries = animation.spriteSheet.boundaries;
+	int index = animation->startIndex + mFrameIndex;
+	VectorI bounaries = animation->spriteSheet->boundaries;
 
 	int y = 0;
 	int x = 0;
@@ -51,7 +42,7 @@ VectorF Animator::getAnimationSubRect() const
 	}
 	x = index;
 
-	return animation.spriteSheet.frameSize * Vector2D<int>(x, y).toFloat();
+	return animation->spriteSheet->frameSize * Vector2D<int>(x, y).toFloat();
 }
 
 
@@ -66,8 +57,8 @@ void Animator::ResetOnNewAnimation()
 
 bool Animator::selectAnimation(ActionState action)
 {
-	if (DebugMenu::UsingPlaylist())
-		return false;
+	//if (DebugMenu::UsingPlaylist())
+	//	return false;
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
@@ -92,8 +83,8 @@ bool Animator::selectAnimation(ActionState action)
 
 bool Animator::selectAnimation(const Animation& anim)
 {
-	if (DebugMenu::UsingPlaylist())
-		return false;
+	//if (DebugMenu::UsingPlaylist())
+	//	return false;
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
@@ -191,20 +182,23 @@ bool Animator::RunActive(float dt, bool force_loop)
 	if (mState == TimeState::Running)
 		mTime += dt;
 
-	const Animation& animation = mAnimations[mAnimationIndex];
-	bool progress_frame = mTime >= animation.frameTime;
+	const Animation* animation = activeAnimation();
+	if(!animation)
+		return false;
+
+	bool progress_frame = mTime >= animation->frameTime;
 	int next_frame = mFrameIndex + 1;
 
 	if (progress_frame)
 	{	
 		// cant pass last frame if we can loop
-		if(!animation.looping && lastFrame() && !force_loop)
+		if(!animation->looping && lastFrame() && !force_loop)
 		{
 			mFinished = true;
 			return false;
 		}
 
-		mFrameIndex = next_frame % animation.frameCount;
+		mFrameIndex = next_frame % animation->frameCount;
 		mTime = 0.0f;
 
 		if (mFrameIndex == 0)
@@ -217,10 +211,20 @@ bool Animator::RunActive(float dt, bool force_loop)
 	return false;
 }
 
-void Animator::Update(float dt)
-{
-	if (DebugMenu::UsingPlaylist())
-		return;
+VectorF Animator::FrameSize() const 
+{ 
+	const Animation* animation = activeAnimation();
+	if(!animation)
+		return VectorF::zero();
 
-	RunActive(dt);
+	return animation->spriteSheet->frameSize; 
+}
+
+float Animator::FrameTime() const 
+{ 
+	const Animation* animation = activeAnimation();
+	if(!animation)
+		return 0.0f;
+
+	return animation->frameTime; 
 }

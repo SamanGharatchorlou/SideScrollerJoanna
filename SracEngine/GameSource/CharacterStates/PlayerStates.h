@@ -1,28 +1,16 @@
 #pragma once
 
 #include "SRAC/Game/GameStates/State.h"
-#include "Core/Stack.h"
 #include "Animations/CharacterStates.h"
-
 #include "Core/ObjectPool.h"
-
-namespace ECS { struct PlayerController; }
 
 struct PlayerState : public State
 {
-	PlayerState() : action(ActionState::None), playerController(nullptr)  { }
+	PlayerState() : action(ActionState::None), entity(ECS::EntityInvalid)  { }
 
-	inline PlayerState& operator = (const PlayerState& state) { 
-		playerController = state.playerController; action = state.action; return *this; 
-	}
+	void InitState(ECS::Entity entity_id, ActionState state) { entity = entity_id; action = state; }
 
-	void SetBaseParameters(ECS::PlayerController* _playerController, ActionState _state) { playerController = _playerController; action = _state;  }
-	
-	void Push(ActionState action);
-	void Replace(ActionState action);
-	void PopSelf();
-
-	ECS::PlayerController* playerController;
+	ECS::Entity entity;
 	ActionState action;
 };
 
@@ -54,6 +42,10 @@ struct DodgeState : public PlayerState
 
 struct SlashAttackState : public PlayerState
 {
-	void Init() override;
+	void Update(float dt) override;
+};
+
+struct ChopAttackState : public PlayerState
+{
 	void Update(float dt) override;
 };

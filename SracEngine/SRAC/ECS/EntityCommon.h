@@ -27,7 +27,7 @@ namespace ECS
 			Animation,
 			TileMap,
 			Collider,
-			Velocity,
+			AIController,
 
 			Count
 		};
@@ -43,7 +43,7 @@ namespace ECS
 		"Animation", 
 		"TileMap",
 		"Collider",
-		"Velocity"
+		"AIController"
 	};
 
 	// lock - system signature

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "PlayerStates/PlayerStates.h"
+#include "Core/stack.h"
+#include "CharacterStates/PlayerStates.h"
 
 namespace ECS
 {
@@ -10,16 +11,14 @@ namespace ECS
 
 		ActionStack<PlayerState> actions;
 
-		VectorI movementDirection;
-		VectorF facingDirection;
 		bool hasMovementInput;
-		bool isRunning;
 
 		Entity entity;
 
 		ActionState Action() const { return actions.Top().action; }
-		void PushState(ActionState state);
 
+		void PushState(ActionState state);
+		void PopState();
 
 		static ECS::Component::Type type() { return ECS::Component::PlayerController; }
 	};

@@ -7,7 +7,7 @@
 #include "Graphics/Renderer.h"
 #include "UI/Screens/MainMenuScreen.h"
 
-#include "GameSource/ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 #include "ECS/ComponentManager.h"
 #include "ECS/SystemManager.h"

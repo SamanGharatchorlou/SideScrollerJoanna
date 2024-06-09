@@ -8,7 +8,7 @@
 #include "System/Window.h"
 
 #include "ECS/EntityCoordinator.h"
-#include "ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ECS/Components/Collider.h"
 
 using namespace Map;
@@ -75,6 +75,20 @@ static void PopulateLayerData(TileLayer& layer, XMLNode layer_node)
 	}
 }
 
+static RectF BuildObjectRect(XMLNode object_node, VectorF size_ratio)
+{
+	StringMap32 objectAttributes;
+	objectAttributes.fillAtributes(object_node);
+
+	// create the rect
+	VectorF pos = objectAttributes.getVectorF("x", "y");
+	VectorF size = objectAttributes.getVectorF("width", "height");
+	RectF rect(pos, size);
+	rect.Scale(size_ratio);
+
+	return rect;
+}
+
 static void PopulateObjectLayerData(const XMLNode& object_layer_node, SceneTileMapping& tile_mapping, VectorF size_ratio)
 {
 	StringMap32 attributes;
@@ -88,14 +102,8 @@ static void PopulateObjectLayerData(const XMLNode& object_layer_node, SceneTileM
 	XMLNode object_node = object_layer_node.child("object");
 	while (object_node)
 	{
-		StringMap32 objectAttributes;
-		objectAttributes.fillAtributes(object_node);
-
 		// create the rect
-		VectorF pos = objectAttributes.getVectorF("x", "y");
-		VectorF size = objectAttributes.getVectorF("width", "height");
-		RectF rect(pos, size);
-		rect.Scale(size_ratio);
+		RectF rect = BuildObjectRect(object_node, size_ratio);
 		object_layer.rects.push_back(rect);
 
 		// create a static collider entity
@@ -165,7 +173,25 @@ void SceneBuilder::BuildTileMap(const char* mapName, SceneTileMapping& tile_mapp
 	XMLNode object_layer_node = map_node.child("objectgroup");
 	while (object_layer_node)
 	{
-		PopulateObjectLayerData(object_layer_node, tile_mapping, size_ratio);
+		if(StringCompare(object_layer_node.attribute("name")->value(), "PlayerSpawn"))
+		{
+			if(XMLNode object_node = object_layer_node.child("object"))
+			{
+				tile_mapping.playerSpawnArea = BuildObjectRect(object_node, size_ratio);;
+			}
+		}
+		else if(StringCompare(object_layer_node.attribute("name")->value(), "EnemySpawn"))
+		{
+			if(XMLNode object_node = object_layer_node.child("object"))
+			{
+				tile_mapping.enemySpawnArea = BuildObjectRect(object_node, size_ratio);;
+			}
+		}
+		else
+		{
+			PopulateObjectLayerData(object_layer_node, tile_mapping, size_ratio);
+		}
+
 		object_layer_node = object_layer_node.next("objectgroup");
 	}
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ECS/Components.h"
+#include "ECS/Components/Components.h"
 #include "ECS/Components/Collider.h"
 
 namespace DebugMenu 
 {
-	bool UsingPlaylist();
+	bool UsingPlaylist(ECS::Entity& entity);
 	bool DisplayRenderRect(ECS::Entity& entity);
 
 	ECS::Component::Type DoTransformDebugMenu(ECS::Entity& entity);

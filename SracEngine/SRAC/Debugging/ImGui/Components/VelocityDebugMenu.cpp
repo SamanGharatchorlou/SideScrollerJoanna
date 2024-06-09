@@ -27,23 +27,15 @@ ECS::Component::Type DebugMenu::DoPhysicsDebugMenu(ECS::Entity& entity)
 
 			if (ImGui::TreeNode("Display"))
 			{
-				if (const ECS::Transform* transform = ecs->GetComponent(Transform, entity))
+				if (!physics.speed.isZero())
 				{
-					if (ECS::PlayerController* player_controller = ecs->GetComponent(PlayerController, entity))
-					{
-						if (!physics.speed.isZero())
-						{
-							VectorF A = transform->rect.Center();
-							VectorF B = A + physics.speed * player_controller->movementDirection.toFloat() * 10.0f;
+					ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+					ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
 
-							//if (physics.speed > physics.maxSpeed * 0.8f)
-							//	int a = 4;
+					VectorF A = transform.rect.Center();
+					VectorF B = A + physics.speed * state.movementDirection.toFloat() * 10.0f;
 
-							DebugDraw::Line(A, B, Colour::Green);
-						}
-					}
-
-
+					DebugDraw::Line(A, B, Colour::Green);
 				}
 
 				ImGui::TreePop();
