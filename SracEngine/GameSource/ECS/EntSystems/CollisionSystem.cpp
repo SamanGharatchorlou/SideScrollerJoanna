@@ -79,6 +79,7 @@ namespace ECS
 					 
 					 transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
 
+					 // even rolling it back doenst work either
 					 this_collider.mRect.SetCenter(transform.targetCenterPosition);
 
 					 if (character_state)
