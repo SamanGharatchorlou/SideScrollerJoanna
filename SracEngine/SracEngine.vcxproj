@@ -149,9 +149,11 @@
     <ClCompile Include="GameSource\ECS\Components\AIController.cpp" />
     <ClCompile Include="GameSource\ECS\Components\Physics.cpp" />
     <ClCompile Include="GameSource\ECS\Components\PlayerController.cpp" />
+    <ClCompile Include="GameSource\ECS\Components\TileMap.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\AIControllerSystem.cpp" />
     <ClCompile Include="GameSource\CharacterStates\PlayerStates.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\PathingSystem.cpp" />
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\AIControllerDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\CollisionSystem.cpp" />
@@ -272,6 +274,7 @@
     <ClInclude Include="GameSource\Characters\Spawner.h" />
     <ClInclude Include="GameSource\ECS\Components\AIController.h" />
     <ClInclude Include="GameSource\ECS\Components\Physics.h" />
+    <ClInclude Include="GameSource\ECS\Components\TileMap.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AIControllerSystem.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\CollisionSystem.h" />
     <ClInclude Include="GameSource\Characters\Player\PlayerCharacter.h" />

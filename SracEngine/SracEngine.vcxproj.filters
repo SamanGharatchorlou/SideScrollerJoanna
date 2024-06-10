@@ -378,6 +378,12 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\PathingDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\ECS\Components\TileMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\AIControllerDebugMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -831,6 +837,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\EntSystems\PathingSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\Components\TileMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

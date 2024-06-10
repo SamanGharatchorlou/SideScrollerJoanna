@@ -36,7 +36,7 @@ namespace Map
 		std::vector<TileLayer> tileLayers;
 
 		std::vector<ObjectLayer> objectLayers;
-		std::vector<u32> colliderEntities;
+		std::vector<ECS::Entity> colliderEntities;
 
 		RectF playerSpawnArea;
 		RectF enemySpawnArea;

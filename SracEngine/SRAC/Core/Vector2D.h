@@ -7,7 +7,7 @@ class Vector2D
 {
 public:
 	Vector2D() { x = 0; y = 0; }
-	Vector2D(T _x, T _y) : x(_x), y(_y) { }
+	Vector2D(T _x, T _y) : x((T)_x), y((T)_y) { }
 
 	// -- Functions -- //
 	inline Vector2D<int> toInt() const { return Vector2D<int>((int)x, (int)y); }

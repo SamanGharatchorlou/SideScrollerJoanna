@@ -7,14 +7,12 @@
 #include "UI/UIManager.h"
 
 #include "ECS/Components/Components.h"
+#include "ECS/Components/TileMap.h"
 #include "ECS/EntityCoordinator.h"
 
 #include "Characters/Spawner.h"
-
 #include "ECS/Components/ComponentsSetup.h"
-
 #include "Scene/SceneParsing/SceneBuilder.h"
-
 #include "Configs.h"
 
 void GameState::Init()
@@ -29,8 +27,11 @@ void GameState::Init()
 	Map::SceneBuilder::BuildTileMap("blood_test_export.xml", tile_map.tileMap);
 	activeMap = entity;
 
-	PlayerSpawn::Spawn(tile_map);
-	EnemySpawn::Spawn(tile_map);
+	ECS::Entity player = PlayerSpawn::Spawn(tile_map);
+	ECS::Entity enemy = EnemySpawn::Spawn(tile_map);
+
+	ECS::Pathing& pathing = ecs->GetComponentRef(Pathing, enemy);
+	pathing.target = player;
 
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->replaceScreen(UIScreen::Type::Game);

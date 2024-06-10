@@ -1,12 +1,10 @@
 #include "pch.h"
 #include "PathingSystem.h"
 
-#include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
+#include "ECS/Components/Components.h"
 #include "ECS/Components/Physics.h"
-#include "Game/SystemStateManager.h"
-#include "GameStates/GameState.h"
-#include "System/Window.h"
+#include "ECS/Components/TileMap.h"
 
 namespace ECS
 {
@@ -45,26 +43,17 @@ namespace ECS
 		return path;
 	}
 
-
 	std::vector<VectorI> PathingSystem::FindPath(VectorF startPosition, VectorF endPosition)
 	{
-		const GameState* gs = GameData::Get().systemStateManager->GetActiveState<GameState>();
-		
-		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-		const TileMap& map = ecs->GetComponentRef(TileMap, gs->activeMap);
+		const TileMap* map = TileMap::GetActive();
 
-		VectorF window_size = GameData::Get().window->size();
-		VectorF size_ratio = window_size / map.tileMap.mapSize;
-		VectorF tile_size = VectorF(8.0f, 8.0f);
-		VectorF world_tile_size = tile_size * size_ratio;
-		
-		VectorI tile_count = (map.tileMap.mapSize / tile_size).toInt();
+		const VectorI tile_count = (map->tileMap.mapSize / c_tileSize).toInt();
+		const VectorF world_tile_size = TileMap::GetMapSizeRatio() * c_tileSize;
 
-		VectorI start_index = (startPosition / world_tile_size).toInt();
-		VectorI end_index = (endPosition / world_tile_size).toInt();
+		const VectorI start_index = (startPosition / world_tile_size).toInt();
+		const VectorI end_index = (endPosition / world_tile_size).toInt();
 
 		// Lowest to highest path cost queue
-		
 		std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
 		frontier.push(TileCost(start_index, 0));
 
@@ -102,7 +91,6 @@ namespace ECS
 						}
 					}
 
-
 					if (!has_visited)
 					{
 						int priority = heuristic(end_index, next_index);
@@ -113,13 +101,10 @@ namespace ECS
 						if (next_index == end_index)
 						{
 							return getPath(start_index, end_index, visited);
-							//return visited;
 						}
 					}
 				}
 			}
-
-			//frontier.pop();
 
 	#if DEBUG_CHECK
 			if (frontier.size() > tile_count.x * tile_count.y)
@@ -140,20 +125,52 @@ namespace ECS
 		}
 	#endif
 		
-				return std::vector<VectorI>();
+		return std::vector<VectorI>();
 	}
 
 	void PathingSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
+		
+		const TileMap* tm = TileMap::GetActive();
+		const VectorF world_tile_size = TileMap::GetMapSizeRatio() * c_tileSize;
+		const VectorI map_dim = (tm->tileMap.mapSize / c_tileSize).toInt();
 
  		for (Entity entity : entities)
 		{
 			Pathing& pathing = ecs->GetComponentRef(Pathing, entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
-			Physics& physics = ecs->GetComponentRef(Physics, entity);
 
+			VectorF start_position = transform.rect.Center();
+			VectorF end_position(-1,-1);
+			if(ecs->IsAlive(pathing.target))
+			{
+				const Transform& target_transform = ecs->GetComponentRef(Transform, pathing.target);
+				end_position = target_transform.rect.Center();
+			}
+			
+			// only update if the target has moved
+			const VectorI end_index = (end_position / world_tile_size).toInt();
+			const VectorI start_index = (start_position / world_tile_size).toInt();
+			const bool valid_end = end_index.isPositive() && end_index.x < map_dim.x && end_index.y < map_dim.y;
+			const bool valid_start = start_index.isPositive() && start_index.x < map_dim.x && start_index.y < map_dim.y;
 
+			if(!valid_end || !valid_start)
+			{
+				pathing.path.clear();
+				continue;
+			}
+
+			const bool update_path = start_index != pathing.currentStart || end_index != pathing.currentTarget;
+			if(update_path)
+			{
+				pathing.currentTarget = end_index;	
+				pathing.currentStart = start_index;
+				if(valid_start && valid_end)
+				{
+					pathing.path = FindPath(start_position, end_position);
+				}
+			}
 		}
 	}
 }

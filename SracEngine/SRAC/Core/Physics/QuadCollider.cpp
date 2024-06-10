@@ -6,7 +6,7 @@
 #endif
 
 
-bool QuadCollider::intersects(const Collider& collider) const
+bool QuadCollider::intersects(Collider& collider)
 {
 	RectF thatRect = collider.mRect;
 	Quad2D<float> thatQuad(thatRect);

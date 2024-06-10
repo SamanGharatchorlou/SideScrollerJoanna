@@ -10,10 +10,18 @@ namespace ECS
 		{
 			Static = 1 << 0
 		};
+
+		enum RuntimeFlags 
+		{ 
+			RestrictLeft	= 1 << 0, 
+			RestrictRight	= 2 << 0, 
+			RestrictUp		= 3 << 0, 
+			RestrictDown	= 4 << 0
+		};
 		
 		static ECS::Component::Type type() { return ECS::Component::Collider; }
 		
-		virtual bool intersects(const Collider& collider) const;
+		virtual bool intersects(Collider& collider);
 		virtual bool intersects(const RectF& rect) const;
 		bool contains(VectorF position) const;
 	
@@ -24,6 +32,9 @@ namespace ECS
 	#endif
 
 		RectF mRect;
-		u32 mFlags;
+		VectorF mTargetCenter;
+
+		u32 mFlags = 0;
+		u32 mRuntimeFlags = 0;
 	};
 }

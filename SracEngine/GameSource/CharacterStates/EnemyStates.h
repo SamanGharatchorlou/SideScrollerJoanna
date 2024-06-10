@@ -16,4 +16,9 @@ namespace Enemy
 	{
 		void Update(float dt) override;
 	};
+
+	struct RunState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
 }

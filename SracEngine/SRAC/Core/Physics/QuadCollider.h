@@ -10,7 +10,7 @@ public:
 	QuadCollider(Quad2D<float>* quad) : mQuad(quad) { }
 
 	void init(Quad2D<float>* quad) { mQuad = quad; }
-	bool intersects(const Collider& collider) const override;
+	bool intersects(Collider& collider) override;
 
 
 #if TRACK_COLLISIONS

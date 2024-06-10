@@ -27,7 +27,7 @@ namespace ECS
 		Entity FindEntity(const char* name) { return entities.FindEntity(name); }
 #endif
 
-		bool IsAlive(Entity entity) const { return entities.GetAchetype(entity) != ArchetypeInvalid; }
+		bool IsAlive(Entity entity) const { return entity != EntityInvalid && entities.GetAchetype(entity) != ArchetypeInvalid; }
 
 		template<class T>
 		T& AddComponent(Entity entity, Component::Type type)

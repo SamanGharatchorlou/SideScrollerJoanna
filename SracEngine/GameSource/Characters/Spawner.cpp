@@ -4,6 +4,7 @@
 #include "Characters/Player/PlayerCharacter.h"
 #include "Characters/Enemies/Enemies.h"
 #include "ECS/Components/Components.h"
+#include "ECS/Components/TileMap.h"
 #include "ECS/EntityCoordinator.h"
 
 ECS::Entity PlayerSpawn::Spawn(ECS::TileMap& map)

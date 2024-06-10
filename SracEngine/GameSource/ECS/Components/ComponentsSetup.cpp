@@ -1,21 +1,22 @@
 #include "pch.h"
 #include "ComponentsSetup.h"
 
-#include "ECS/EntityCoordinator.h"
-#include "ECS/Components/Components.h"
+#include "ECS/Components/AIController.h"
 #include "ECS/Components/Collider.h"
-
-#include "ECS/SystemManager.h"
-#include "ECS/EntSystems/RenderSystem.h"
-#include "ECS/EntSystems/PlayerControllerSystem.h"
-#include "ECS/EntSystems/PhysicsSystem.h"
-#include "ECS/EntSystems/AnimationSystem.h"
-#include "ECS/EntSystems/TileMapSystem.h"
-#include "ECS/EntSystems/CollisionSystem.h"
-#include "ECS/Components/PlayerController.h"
+#include "ECS/Components/Components.h"
 #include "ECS/Components/Physics.h"
+#include "ECS/Components/PlayerController.h"
+#include "ECS/Components/TileMap.h"
+#include "ECS/EntityCoordinator.h"
 #include "ECS/EntSystems/AIControllerSystem.h"
+#include "ECS/EntSystems/AnimationSystem.h"
+#include "ECS/EntSystems/CollisionSystem.h"
 #include "ECS/EntSystems/PathingSystem.h"
+#include "ECS/EntSystems/PhysicsSystem.h"
+#include "ECS/EntSystems/PlayerControllerSystem.h"
+#include "ECS/EntSystems/RenderSystem.h"
+#include "ECS/EntSystems/TileMapSystem.h"
+#include "ECS/SystemManager.h"
 
 
 
@@ -68,7 +69,7 @@ void ECS::RegisterAllSystems()
 	ecs->RegisterSystem<AIControllerSystem>(AIControllerSignature);
 
 	// Pathing
-	Signature PathingSignature = ArcheBit(Pathing) | ArcheBit(Transform) | ArcheBit(Physics);
+	Signature PathingSignature = ArcheBit(Pathing) | ArcheBit(Transform);
 	ecs->RegisterSystem<PathingSystem>(PathingSignature);
 }
 

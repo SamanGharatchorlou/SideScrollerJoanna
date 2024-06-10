@@ -4,6 +4,8 @@
 
 namespace ECS
 {
+	static const VectorF c_tileSize = VectorF(8.0f, 8.0f);
+
 	class PathingSystem : public EntitySystem
 	{
 	public:

@@ -4,6 +4,7 @@
 #include "ECS/Components/Components.h"
 #include "ECS/Components/Collider.h"
 #include "ECS/EntityCoordinator.h"
+#include "ECS/Components/AIController.h"
 
 #include "Graphics/TextureManager.h"
 #include "Configs.h"
@@ -43,20 +44,16 @@ ECS::Entity Enemy::Create()
 	ECS::Collider& collider = ecs->AddComponent(Collider, entity);
 	collider.mRect = transform.rect;
 	
-	// PlayerController
-	//ECS::PlayerController& player_controller = ecs->AddComponent(PlayerController, entity);
-	//player_controller.entity = entity;
-
-	//std::vector<ActionState> actions;
-	//for( u32 i = 0; i < (u32)ActionState::Count; i++ )
-	//{
-	//	actions.push_back((ActionState)i);
-	//}
-	//player_controller.statePool.load(actions, 4);
-
 	// AI Controller
 	ECS::AIController& ai_controller = ecs->AddComponent(AIController, entity);
 	ai_controller.entity = entity;
+
+	std::vector<ActionState> actions;
+	for( u32 i = 0; i < (u32)ActionState::Count; i++ )
+	{
+		actions.push_back((ActionState)i);
+	}
+	ai_controller.statePool.load(actions, 4);
 	
 	// CharacterState
 	ECS::CharacterState& character_state = ecs->AddComponent(CharacterState, entity);

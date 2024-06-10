@@ -30,8 +30,6 @@ namespace ECS
 				continue;
 			
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
-
-			// this doesnt seem to make a difference, seems like it should
 			//collider.mRect.SetCenter(transform.targetCenterPosition);
 			collider.mRect.SetCenter(transform.rect.Center());
 		}
@@ -61,12 +59,12 @@ namespace ECS
 				 Collider& that_collider = collider_list[i];
 				 if(this_collider.intersects(that_collider)) 
 				 {
+
+
 					 VectorF velocity = transform.targetCenterPosition - transform.rect.Center();
 
 					 VectorF allowed_velocity;
 
-					 // doesnt matter on the direction, always seems to fail NOT with static colliders though
-					 // only with moving colliders to be fair, maybe theres something in that
 					 const RectF horizontal_rect = transform.rect.Translate(VectorF(velocity.x, 0.0f));
 					 const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
 					 if (can_move_horizontally)

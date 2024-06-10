@@ -2,6 +2,7 @@
 #include "TileMapSystem.h"
 
 #include "ECS/Components/Components.h"
+#include "ECS/Components/TileMap.h"
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/RenderManager.h"
 #include "System/Window.h"

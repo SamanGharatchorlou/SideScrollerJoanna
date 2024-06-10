@@ -5,7 +5,12 @@
 #include "SRAC/Game/GameStates/State.h"
 #include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
+#include "ECS/Components/AIController.h"
+#include "ECS/Components/Physics.h"
+#include "Debugging/ImGui/ImGuiMainWindows.h"
 
+
+bool& EnemyCanMove();
 
 #define ActionStateCase(action) case ActionState::action: \
 								out_size = sizeof(action##State);  \
@@ -19,6 +24,7 @@ CharacterAction* Enemy::StatePool::createNewObjects(ActionState type, int count,
 	switch (type)
 	{
 	ActionStateCase(Idle)
+	ActionStateCase(Run)
 	case ActionState::Count:
 	case ActionState::None:
 	default:
@@ -35,4 +41,32 @@ void Enemy::IdleState::Update(float dt)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
+	ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+
+	if(!state.movementDirection.isZero())
+	{
+		ai.PushState(ActionState::Run);
+	}
+}
+
+// Run
+// ---------------------------------------------------------
+void Enemy::RunState::Update(float dt)
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
+	ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+
+	if (ECS::Physics* physics = ecs->GetComponent(Physics, ai.entity))
+	{
+		// apply walk speed
+		physics->maxSpeed = VectorF(3.0f, 3.0f);
+		physics->ApplyMovement(state.movementDirection.toFloat(), dt);
+		physics->ApplyDrag(state.movementDirection.toFloat(), 0.9f);
+	}
+
+	if(state.movementDirection.isZero())
+	{
+		ai.PopState();
+	}
 }

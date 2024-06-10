@@ -42,7 +42,6 @@ private:
 
 using TimerF = Timer<float>;
 
-
 template <typename T>
 Timer<T>::Timer(Command startingState) : startTicks(0), pauseTicks(0)
 {

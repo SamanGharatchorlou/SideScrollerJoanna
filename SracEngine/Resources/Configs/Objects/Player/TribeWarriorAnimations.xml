@@ -10,17 +10,17 @@
 		<!-- Up -->
 		<Animations x = "0" y ="-1"> 
 			<Idle x = "0" y = "2">6</Idle>
-			<Walk x = "0" y = "5">12</Walk>
+			<Run x = "0" y = "5">12</Run>
 		</Animations>
 		<!-- Down -->
 		<Animations x = "0" y ="1">
 			<Idle x = "0" y = "1">6</Idle>
-			<Walk x = "0" y = "4">12</Walk>
+			<Run x = "0" y = "4">12</Run>
 		</Animations>
 		<!-- Left/Right -->
 		<Animations x = "1" y ="0" canFlip = "true">
 			<Idle x = "0" y = "0">6</Idle>
-			<Walk x = "0" y = "3">12</Walk>
+			<Run x = "0" y = "3">12</Run>
 		</Animations>
 
 	</Animator>

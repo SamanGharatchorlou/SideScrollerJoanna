@@ -6,6 +6,7 @@
 
 #include "ThirdParty/imgui-master/imgui.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
+#include "ECS/Components/TileMap.h"
 
 using namespace Map;
 
@@ -74,6 +75,19 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 					{
 						DebugDraw::RectOutline(layer.rects[o], Colour::Purple);
 					}
+				}
+			}
+
+			if(ImGui::Button("Remove Objects"))
+			{
+				VectorF window_size = GameData::Get().window->size();
+				VectorF map_size = map.mapSize;
+				VectorF size_ratio = window_size / map_size;
+				VectorF tile_size = map.tileSize * size_ratio;
+
+				for( u32 i = 0; i < map.colliderEntities.size(); i++ )
+				{
+					GameData::Get().ecs->entities.KillEntity(map.colliderEntities[i]);
 				}
 			}
 

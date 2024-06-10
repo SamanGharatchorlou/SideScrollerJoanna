@@ -5,13 +5,8 @@
 #include "Core/Rect.h"
 #include "Core/stack.h"
 
-#include "ECS/EntityCommon.h"
 #include "Core/Physics/Fisics.h"
 #include "Animations/Animator.h"
-#include "Scene/SceneParsing/SceneBuilder.h"
-
-#include "CharacterStates/EnemyStates.h" // can try to forward decalare state
-
 
 class Texture;
 enum class ActionState;
@@ -64,25 +59,15 @@ namespace ECS
 		static ECS::Component::Type type() { return ECS::Component::Animation; }
 	};
 
-	struct TileMap
-	{
-		Map::SceneTileMapping tileMap;
-
-		static ECS::Component::Type type() { return ECS::Component::TileMap; }
-	};
-
-	struct AIController
-	{
-		Enemy::StatePool statePool;
-		ActionStack<CharacterAction> actions;
-		Entity entity;
-
-		static ECS::Component::Type type() { return ECS::Component::AIController; }
-	};
-
 	struct Pathing
 	{
-		
+		Entity target = ECS::EntityInvalid;
+
+		VectorI currentStart;
+		VectorI currentTarget;
+
+		std::vector<VectorI> path;
+
 		static ECS::Component::Type type() { return ECS::Component::Pathing; }
 	};
 

@@ -22,7 +22,6 @@ namespace ECS
 
 			CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
-
 			Animation& animation = ecs->GetComponentRef(Animation, entity);
 
 			bool using_playlist = DebugMenu::UsingPlaylist(entity);
