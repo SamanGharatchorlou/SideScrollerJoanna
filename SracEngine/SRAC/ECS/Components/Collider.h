@@ -27,12 +27,17 @@ namespace ECS
 	
 		static bool test1DOverlap(float minA, float maxA, float minB, float maxB);
 
+		void SetPosition(const RectF& rect, VectorF& target);
+		void RollBackPosition();
+		void RollForwardPosition();
+
 	#if TRACK_COLLISIONS
 		virtual void renderCollider();	
 	#endif
 
 		RectF mRect;
-		VectorF mTargetCenter;
+		VectorF mForward;
+		VectorF mBack;;
 
 		u32 mFlags = 0;
 		u32 mRuntimeFlags = 0;

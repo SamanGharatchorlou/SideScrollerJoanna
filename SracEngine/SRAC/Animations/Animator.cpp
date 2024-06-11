@@ -52,7 +52,7 @@ bool Animator::selectAnimation(ActionState action)
 				mActions.popFront();
 #endif
 
-			DebugPrint(PriorityLevel::Log, "Selecting animation %s (%d,%d)", actionToString(action).c_str(), mAnimations[i].direction.x, mAnimations[i].direction.y);
+			//DebugPrint(PriorityLevel::Log, "Selecting animation %s (%d,%d)", actionToString(action).c_str(), mAnimations[i].direction.x, mAnimations[i].direction.y);
 			mAnimationIndex = i;
 			ResetOnNewAnimation();
 			return true;
@@ -80,7 +80,7 @@ bool Animator::selectAnimation(const Animation& anim)
 					mActions.popFront();
 	#endif
 			
-				DebugPrint(PriorityLevel::Log, "Selecting animation %s (%d,%d)", actionToString(anim.action).c_str(), mAnimations[i].direction.x, mAnimations[i].direction.y);
+				//DebugPrint(PriorityLevel::Log, "Selecting animation %s (%d,%d)", actionToString(anim.action).c_str(), mAnimations[i].direction.x, mAnimations[i].direction.y);
 				mAnimationIndex = i;
 				ResetOnNewAnimation();
 				mFlipped = flipped_direction;

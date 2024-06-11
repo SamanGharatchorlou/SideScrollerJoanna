@@ -189,7 +189,7 @@ void SceneBuilder::BuildTileMap(const char* mapName, SceneTileMapping& tile_mapp
 		}
 		else
 		{
-			PopulateObjectLayerData(object_layer_node, tile_mapping, size_ratio);
+			//PopulateObjectLayerData(object_layer_node, tile_mapping, size_ratio);
 		}
 
 		object_layer_node = object_layer_node.next("objectgroup");

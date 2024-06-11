@@ -54,6 +54,21 @@ namespace ECS
 		return maxA > minB && minA < maxB;
 	}
 
+	void Collider::SetPosition(const RectF& rect, VectorF& forward)
+	{
+		mRect = rect;
+		mForward = forward;
+		mBack = rect.Center();
+	}
+	void Collider::RollBackPosition()
+	{
+		mRect.SetCenter(mBack);
+	}
+	void Collider::RollForwardPosition()
+	{
+		mRect.SetCenter(mForward);
+	}
+
 	#if TRACK_COLLISIONS
 	void Collider::renderCollider()
 	{

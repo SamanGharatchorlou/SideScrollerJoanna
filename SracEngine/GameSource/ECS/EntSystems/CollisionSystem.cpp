@@ -32,8 +32,8 @@ namespace ECS
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
 			// this doesnt seem to make a difference, seems like it should
-			//collider.mRect.SetCenter(transform.targetCenterPosition);
-			collider.mRect.SetCenter(transform.rect.Center());
+			collider.SetPosition(transform.rect, transform.targetCenterPosition);
+			collider.RollForwardPosition();
 		}
 
 		for (Entity entity : entities)
@@ -62,44 +62,43 @@ namespace ECS
 				 if(this_collider.intersects(that_collider)) 
 				 {
 					 VectorF velocity = transform.targetCenterPosition - transform.rect.Center();
+					 if (velocity.isZero())
+						 continue;
 
 					 VectorF allowed_velocity;
 
-					 // doesnt matter on the direction, always seems to fail NOT with static colliders though
-					 // only with moving colliders to be fair, maybe theres something in that
-					 const RectF horizontal_rect = transform.rect.Translate(VectorF(velocity.x, 0.0f));
-					 const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
-					 if (can_move_horizontally)
-						 allowed_velocity.x = velocity.x;
+					 this_collider.RollBackPosition();
+					 that_collider.RollBackPosition();
 
-					 const RectF vertical_rect = transform.rect.Translate(VectorF(0.0f, velocity.y));
-					 const bool can_move_vertically = !that_collider.intersects(vertical_rect);
-					 if (can_move_vertically)
-						 allowed_velocity.y = velocity.y;
-					 
-					 transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
-
-					 // even rolling it back doenst work either
-					 this_collider.mRect.SetCenter(transform.targetCenterPosition);
-
-					 if (character_state)
+					 bool still_interacts = this_collider.intersects(that_collider);
+					 if (!still_interacts)
 					 {
-						 // set the velocity here
-						 if (!can_move_horizontally)
-						 {
-							 character_state->restrictMovement[CharacterState::Left] = true;
-							 character_state->restrictMovement[CharacterState::Right] = true;
-						 }
+						 // doesnt matter on the direction, always seems to fail NOT with static colliders though
+						 // only with moving colliders to be fair, maybe theres something in that
+						 const RectF horizontal_rect = transform.rect.Translate(VectorF(velocity.x, 0.0f));
+						 const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
+						 if (can_move_horizontally)
+							 allowed_velocity.x = velocity.x;
 
-						 if (!can_move_vertically)
-						 {
-							 character_state->restrictMovement[CharacterState::Up] = true;
-							 character_state->restrictMovement[CharacterState::Down] = true;
-						 }
+						 const RectF vertical_rect = transform.rect.Translate(VectorF(0.0f, velocity.y));
+						 const bool can_move_vertically = !that_collider.intersects(vertical_rect);
+						 if (can_move_vertically)
+							 allowed_velocity.y = velocity.y;
 
-						 // also need to set acceleraton
-						 // make a velcity reset function matey
+						 // now that we're allowed to move this much we cant also allow the other collider to do the same
+						 // priorities?
+						 // otherwise we could both move towards each other assuming we can, but really only 1 can right?
+						 // so remove our roll back, we're not going that way for sure
+						 this_collider.mBack = transform.rect.Center() + allowed_velocity;
 					 }
+					 else
+					 {
+						 allowed_velocity = VectorF::zero();
+					 }
+					 that_collider.RollForwardPosition();
+
+					 transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
+					 this_collider.mRect.SetCenter(transform.targetCenterPosition);
 				 }
             }
 		}
