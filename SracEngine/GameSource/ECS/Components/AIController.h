@@ -7,13 +7,12 @@ namespace ECS
 {
 	struct AIController
 	{
+		COMPONENT_TYPE(AIController)
+
 		Enemy::StatePool statePool;
 		ActionStack<CharacterAction> actions;
-		Entity entity;
 
 		void PushState(ActionState state);
 		void PopState();
-
-		static ECS::Component::Type type() { return ECS::Component::AIController; }
 	};
 }

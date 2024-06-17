@@ -15,12 +15,8 @@ enum class ActionState
 
 	Dodge,
 
-	Attack,
-	SlashAttack,
+	BasicAttack,
 	ChopAttack,
-
-	Hurt,
-	Dead,
 
 	Count
 };
@@ -36,23 +32,18 @@ static void initActionMap()
 	s_actionMap["Idle"] = ActionState::Idle;
 	s_actionMap["Walk"] = ActionState::Walk;
 	s_actionMap["Run"] = ActionState::Run;
-	s_actionMap["Attack"] = ActionState::Attack;
+
 	s_actionMap["Dodge"] = ActionState::Dodge;
-	s_actionMap["SlashAttack"] = ActionState::SlashAttack;
+
+	s_actionMap["BasicAttack"] = ActionState::BasicAttack;
 	s_actionMap["ChopAttack"] = ActionState::ChopAttack;
-
-	//s_actionMap["Jump"] = ActionState::Jump;
-	//s_actionMap["Fall"] = ActionState::Fall;
-
-	//s_actionMap["AirAttack"] = ActionState::AirAttack;
-	//s_actionMap["LightAttack"] = ActionState::LightAttack;
-	//s_actionMap["UpLightAttack"] = ActionState::UpLightAttack;
-	//s_actionMap["HeavyAttack"] = ActionState::HeavyAttack;
-
-	//s_actionMap["Alert"] = ActionState::Alert;
-	//s_actionMap["Hurt"] = ActionState::Hurt;
-	//s_actionMap["Dead"] = ActionState::Dead;
 }
+
+
+#define ActionStateCase(action) case ActionState::action: \
+								out_size = sizeof(action##State);  \
+								state = new action##State[count]; \
+								break;
 
 static ActionState stringToAction(const char* action)
 {

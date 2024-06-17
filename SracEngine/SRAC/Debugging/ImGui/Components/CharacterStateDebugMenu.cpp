@@ -3,8 +3,10 @@
 
 #include "ECS/EntityCoordinator.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
-
+#include "ECS/Components/AIController.h"
+#include "ECS/Components/PlayerController.h"
 #include "Animations/CharacterStates.h"
+
 
 ECS::Component::Type DebugMenu::DoCharacterStateDebugMenu(ECS::Entity& entity)
 {
@@ -13,6 +15,7 @@ ECS::Component::Type DebugMenu::DoCharacterStateDebugMenu(ECS::Entity& entity)
 
 	if (ecs->HasComponent(entity, type))
 	{
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			ECS::CharacterState& cs = ecs->GetComponentRef(CharacterState, entity);
@@ -24,12 +27,48 @@ ECS::Component::Type DebugMenu::DoCharacterStateDebugMenu(ECS::Entity& entity)
 
 				ImGui::Checkbox("Can Change", &cs.canChange);
 
-				bool on_floor = cs.OnFloor();
-				ImGui::Checkbox("On Floor", &on_floor);
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("State Editor"))
+			{
+				if(ECS::AIController* aic = ecs->GetComponent(AIController, entity))
+				{
+					if (ImGui::BeginCombo("Enter Action", "", 0))
+					{
+						for( u32 i = 0; i < (u32)ActionState::Count; i++ )
+						{
+							const char* action_string = actionToString((ActionState)i).c_str();
+							if (ImGui::Selectable(action_string, false))
+							{
+								aic->PushState((ActionState)i);
+							}
+						}
+						
+						ImGui::EndCombo();
+					}
+				}
+				else if(ECS::PlayerController* pc = ecs->GetComponent(PlayerController, entity))
+				{
+					if (ImGui::BeginCombo("Enter Action", "", 0))
+					{
+						for( u32 i = 0; i < (u32)ActionState::Count; i++ )
+						{
+							const char* action_string = actionToString((ActionState)i).c_str();
+							if (ImGui::Selectable(action_string, false))
+							{
+								pc->PushState((ActionState)i);
+							}
+						}
+						
+						ImGui::EndCombo();
+					}
+				}
 
 				ImGui::TreePop();
 			}
 		}
+		ImGui::PopID();
 	}
 
 	return type;

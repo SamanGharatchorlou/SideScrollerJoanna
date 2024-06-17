@@ -14,22 +14,11 @@ ECS::Component::Type DebugMenu::DoColliderDebugMenu(ECS::Entity& entity)
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			ECS::Collider& collider = ecs->GetComponentRef(Collider, entity);
+			ImGui::PushID(entity + (int)type);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				RectF rect = collider.mRect;
 				ImGui::DisplayRect(rect);
-
-				bool can_move_up = !HasFlag(collider.mRuntimeFlags, ECS::Collider::RestrictUp);
-				ImGui::Checkbox("Can Move Up", &can_move_up);
-
-				bool can_move_right = !HasFlag(collider.mRuntimeFlags, ECS::Collider::RestrictRight);
-				ImGui::Checkbox("Can Move Right", &can_move_right);
-
-				bool can_move_down = !HasFlag(collider.mRuntimeFlags, ECS::Collider::RestrictDown);
-				ImGui::Checkbox("Can Move Down", &can_move_down);
-
-				bool can_move_left = !HasFlag(collider.mRuntimeFlags, ECS::Collider::RestrictLeft);
-				ImGui::Checkbox("Can Move Left", &can_move_left);
 
 				ImGui::TreePop();
 			}
@@ -41,6 +30,8 @@ ECS::Component::Type DebugMenu::DoColliderDebugMenu(ECS::Entity& entity)
 
 				ImGui::TreePop();
 			}
+			
+			ImGui::PopID();
 		}
 	}
 

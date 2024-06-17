@@ -147,6 +147,7 @@
     <ClCompile Include="GameSource\Characters\Enemies\Enemies.cpp" />
     <ClCompile Include="GameSource\Characters\Spawner.cpp" />
     <ClCompile Include="GameSource\ECS\Components\AIController.cpp" />
+    <ClCompile Include="GameSource\ECS\Components\Components.cpp" />
     <ClCompile Include="GameSource\ECS\Components\Physics.cpp" />
     <ClCompile Include="GameSource\ECS\Components\PlayerController.cpp" />
     <ClCompile Include="GameSource\ECS\Components\TileMap.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="SRAC\Audio\SoundController.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\PathingDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\PlayerControllerDebugMenu.cpp" />
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\SimpleDebugMenus.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\VelocityDebugMenu.cpp" />
     <ClCompile Include="SRAC\ECS\Components\Collider.cpp" />
     <ClCompile Include="SRAC\Core\Physics\QuadCollider.cpp" />

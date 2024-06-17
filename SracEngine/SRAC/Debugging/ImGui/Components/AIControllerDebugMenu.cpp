@@ -20,6 +20,7 @@ ECS::Component::Type DebugMenu::DoAIControllerDebugMenu(ECS::Entity& entity)
 
 	if (ecs->HasComponent(entity, type))
 	{
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			if (ImGui::TreeNode("Component Data"))
@@ -36,6 +37,7 @@ ECS::Component::Type DebugMenu::DoAIControllerDebugMenu(ECS::Entity& entity)
 
 				ImGui::TreePop();
 			}
+			ImGui::PopID();
 
 			if (ImGui::TreeNode("Restrict Enemy Movement"))
 			{
@@ -51,6 +53,8 @@ ECS::Component::Type DebugMenu::DoAIControllerDebugMenu(ECS::Entity& entity)
 				ImGui::TreePop();
 			}
 		}
+		
+		ImGui::PopID();
 	}
 
 	return type;

@@ -46,14 +46,14 @@ namespace ECS
 		Entity entityIdIndex;
 
 #if ENTITY_LOGGING
-		std::unordered_map<Entity, StringBuffer32> entityNames;
+		std::unordered_map<Entity, BasicString> entityNames;
 
 		Entity CreateEntityWithName(const char* name = nullptr)
 		{
 			const Entity entityId = CreateEntityId();
 
 			if(name)
-				entityNames[entityId] = StringBuffer32(name);
+				entityNames[entityId] = BasicString(name);
 
 			return entityId;
 		}
@@ -67,6 +67,14 @@ namespace ECS
 					return iter->first;
 				}     
 			}
+		}
+
+		const char* GetEntityName(Entity entity) 
+		{
+			if(entityNames.count(entity) > 0)
+				return entityNames.at(entity).c_str();
+
+			return nullptr;
 		}
 #endif
 	};

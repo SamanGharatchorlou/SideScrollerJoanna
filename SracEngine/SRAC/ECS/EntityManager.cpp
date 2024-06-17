@@ -10,5 +10,16 @@ namespace ECS
 	{
 		RemoveAllComponents(entity);
 		archetypes[entity] = ArchetypeInvalid;
+
+#if ENTITY_LOGGING
+		for( auto iter = entityNames.begin(); iter != entityNames.end(); iter++ )
+		{
+			if(iter->first == entity)
+			{
+				entityNames.erase(iter);
+				break;
+			}
+		}
+#endif
 	}
 }

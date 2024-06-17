@@ -16,6 +16,7 @@ ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 
     if (ecs->HasComponent(entity, type))
     {
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
@@ -43,6 +44,7 @@ ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 				ImGui::TreePop();
 			}
 		}
+		ImGui::PopID();
 	}
 
 	return type;

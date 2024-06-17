@@ -7,11 +7,13 @@ void PlayerController::PushState(ActionState action)
 {
 	DebugPrint(PriorityLevel::Log, "Pushing player action state: %s | %d states left", actionToString(action).c_str(), statePool.size(action));
 	
-	CharacterAction* state = statePool.getObject(action);
-	state->entity = entity;
-	state->action = action;
+	if(CharacterAction* state = statePool.getObject(action))
+	{
+		state->entity = entity;
+		state->action = action;
 
-	actions.Push(state);
+		actions.Push(state);
+	}
 }
 
 void PlayerController::PopState()

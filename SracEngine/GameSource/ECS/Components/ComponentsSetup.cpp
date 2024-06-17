@@ -34,6 +34,8 @@ void ECS::RegisterAllComponents()
 	ecs->RegisterComponent(Collider, 32);
 	ecs->RegisterComponent(AIController, 32);
 	ecs->RegisterComponent(Pathing, 32);
+	ecs->RegisterComponent(Damage, 32);
+	ecs->RegisterComponent(Health, 32);
 }
 
 void ECS::RegisterAllSystems()
@@ -87,4 +89,6 @@ void ECS::RemoveAllComponents(Entity entity)
 	ecs->RemoveComponent(Collider, entity);
 	ecs->RemoveComponent(AIController, entity);
 	ecs->RemoveComponent(Pathing, entity);
+	ecs->RemoveComponent(Damage, entity);
+	ecs->RemoveComponent(Health, entity);
 }

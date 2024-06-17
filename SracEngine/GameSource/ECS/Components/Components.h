@@ -15,60 +15,77 @@ namespace ECS
 {
 	struct Transform
 	{
+		COMPONENT_TYPE(Transform)
+
 		// rect of the actual object
 		RectF rect;
 		VectorF targetCenterPosition;
 
 		SDL_RendererFlip flip;
-		static ECS::Component::Type type() { return ECS::Component::Transform; }
 	};
 
 	struct Sprite
 	{
+		COMPONENT_TYPE(Sprite)
+
 		// used to derive the render rect from the transform rect
 		RectF relativeRenderRect;
 		RectF subRect;
-		Texture* texture;
-		u32 renderLayer;
-		static ECS::Component::Type type() { return ECS::Component::Sprite; }
+		Texture* texture = nullptr;
+		u32 renderLayer = 0;
 	};
 
 	struct CharacterState
 	{
+		COMPONENT_TYPE(CharacterState)
+
 		enum Direction { Left, Right, Up, Down, Count };
 
 		VectorI movementDirection;
 		VectorI facingDirection;
 
-		ActionState action;
+		ActionState action = ActionState::None;
 
-		bool isRunning;
+		bool isRunning = false;
 		bool canChange = true;
-
-		bool restrictMovement[Direction::Count] { false, false, false, false };
-
-		bool OnFloor() const { return restrictMovement[Direction::Down]; }
-
-		static ECS::Component::Type type() { return ECS::Component::CharacterState; }
 	};
 
 	struct Animation
 	{
-		Animator animator;
+		COMPONENT_TYPE(Animation)
 
-		static ECS::Component::Type type() { return ECS::Component::Animation; }
+		Animator animator;
 	};
 
 	struct Pathing
 	{
+		COMPONENT_TYPE(Pathing)
+
 		Entity target = ECS::EntityInvalid;
 
 		VectorI currentStart;
 		VectorI currentTarget;
 
 		std::vector<VectorI> path;
+	};
 
-		static ECS::Component::Type type() { return ECS::Component::Pathing; }
+	struct Damage
+	{
+		COMPONENT_TYPE(Damage)
+
+		float value = -1;
+	};
+
+	struct Health
+	{
+		COMPONENT_TYPE(Health)
+
+		float maxHealth;
+		float currentHealth;
+
+		std::vector<Entity> ignoredDamaged;
+
+		void ApplyDamage(const Damage& damage);
 	};
 
 	// ----------------------------------------------------------------------

@@ -18,23 +18,6 @@ namespace ECS
 	bool Collider::intersects(Collider& collider)
 	{ 
 		const RectF& rect = collider.mRect;
-
-		// right
-		if(mRect.RightPoint() > rect.LeftPoint() && mRect.RightPoint() < rect.RightPoint())
-			SetFlag<u32>(mRuntimeFlags, RuntimeFlags::RestrictRight);
-		
-		// left
-		if(mRect.LeftPoint() < rect.RightPoint() && mRect.LeftPoint() > rect.LeftPoint())
-			SetFlag<u32>(mRuntimeFlags, RuntimeFlags::RestrictLeft);
-
-		// up
-		if(mRect.TopPoint() < rect.BotPoint() && mRect.TopPoint() > rect.TopPoint())
-			SetFlag<u32>(mRuntimeFlags, RuntimeFlags::RestrictUp);
-		
-		// down
-		if(mRect.BotPoint() > rect.TopPoint() && mRect.BotPoint() < rect.BotPoint())
-			SetFlag<u32>(mRuntimeFlags, RuntimeFlags::RestrictDown);
-
 		const bool xOverlaps = mRect.LeftPoint() < rect.RightPoint() && mRect.RightPoint() > rect.LeftPoint();
 		const bool yOverlaps = mRect.TopPoint() < rect.BotPoint() && mRect.BotPoint() > rect.TopPoint();
 

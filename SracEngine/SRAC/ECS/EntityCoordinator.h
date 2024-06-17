@@ -25,6 +25,7 @@ namespace ECS
 #if ENTITY_LOGGING
 		Entity CreateNewEntity(const char* name) { return entities.CreateEntityWithName(name); }
 		Entity FindEntity(const char* name) { return entities.FindEntity(name); }
+		const char* GetEntityName(Entity entity) { return entities.GetEntityName(entity); }
 #endif
 
 		bool IsAlive(Entity entity) const { return entity != EntityInvalid && entities.GetAchetype(entity) != ArchetypeInvalid; }
@@ -33,6 +34,8 @@ namespace ECS
 		T& AddComponent(Entity entity, Component::Type type)
 		{
 			T& comp = components.AddComponent<T>(entity, type);
+			comp.entity = entity;
+
 			entities.AddComponent(entity, type);
 
 			Archetype archetype = entities.GetAchetype(entity);
@@ -40,16 +43,6 @@ namespace ECS
 
 			return comp;
 		}
-
-		//template<class T>
-		//void RemoveComponent(Entity entity, Component::Type type)
-		//{
-		//	components.RemoveComponent<T>(entity, type);
-		//	entities.RemoveComponent(entity, type);
-
-		//	Archetype archetype = entities.GetAchetype(entity);
-		//	systems.EntityRemoveType(entity, type);
-		//}
 
 		template<class T>
 		void RemoveComponent(Entity entity, Component::Type type)

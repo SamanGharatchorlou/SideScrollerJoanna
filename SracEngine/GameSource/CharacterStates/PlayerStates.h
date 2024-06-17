@@ -33,7 +33,7 @@ namespace Player
 		void Update(float dt) override;
 	};
 
-	struct SlashAttackState : public CharacterAction
+	struct BasicAttackState : public CharacterAction
 	{
 		void Update(float dt) override;
 	};

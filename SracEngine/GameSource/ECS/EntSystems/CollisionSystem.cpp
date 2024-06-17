@@ -17,13 +17,12 @@ namespace ECS
 
 		ComponentArray<Collider>& colliders =  ecs->GetComponents<Collider>(Component::Type::Collider);
 		std::vector<Collider>& collider_list = colliders.components;
-		u32 count = collider_list.size();
+		const u32 count = collider_list.size();
 
 		// first we need to update the collider position with where the entity wants to be
 		for (Entity entity : entities)
 		{
 			Collider& collider = ecs->GetComponentRef(Collider, entity);
-			collider.mRuntimeFlags = 0;
 
 			// ignore static colliders, they dont move
 			if(HasFlag(collider.mFlags, Collider::Flags::Static))
@@ -48,9 +47,10 @@ namespace ECS
 			if(HasFlag(this_collider.mFlags, Collider::Flags::Static))
 				continue;
 
-			u32 index = colliders.GetComponentIndex(entity);
+			const u32 index = colliders.GetComponentIndex(entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
-			CharacterState* character_state = ecs->GetComponent(CharacterState, entity);
+			
+			const Damage* this_damage = ecs->GetComponent(Damage, entity);
 
 			for (u32 i = 0; i < count; i++) 
 			{
@@ -58,48 +58,63 @@ namespace ECS
 				if(i == index)
 					continue;
 
-				 Collider& that_collider = collider_list[i];
-				 if(this_collider.intersects(that_collider)) 
-				 {
-					 VectorF velocity = transform.targetCenterPosition - transform.rect.Center();
-					 if (velocity.isZero())
-						 continue;
+				Collider& that_collider = collider_list[i];
 
-					 VectorF allowed_velocity;
+				// if this applies damage we only need to do the check if they have health
+				ECS::Entity that_entity = that_collider.entity;
+				Health* that_health = ecs->GetComponent(Health, that_entity);
+				if(this_damage && !that_health)
+					continue;
 
-					 this_collider.RollBackPosition();
-					 that_collider.RollBackPosition();
+				if(this_collider.intersects(that_collider)) 
+				{
+					// Damage
+					if( this_damage )
+					{
+						that_health->ApplyDamage(*this_damage);
+					}
+					// Physical
+					else
+					{
+						VectorF velocity = transform.targetCenterPosition - transform.rect.Center();
+						if (velocity.isZero())
+							continue;
 
-					 bool still_interacts = this_collider.intersects(that_collider);
-					 if (!still_interacts)
-					 {
-						 // doesnt matter on the direction, always seems to fail NOT with static colliders though
-						 // only with moving colliders to be fair, maybe theres something in that
-						 const RectF horizontal_rect = transform.rect.Translate(VectorF(velocity.x, 0.0f));
-						 const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
-						 if (can_move_horizontally)
-							 allowed_velocity.x = velocity.x;
+						VectorF allowed_velocity;
 
-						 const RectF vertical_rect = transform.rect.Translate(VectorF(0.0f, velocity.y));
-						 const bool can_move_vertically = !that_collider.intersects(vertical_rect);
-						 if (can_move_vertically)
-							 allowed_velocity.y = velocity.y;
+						this_collider.RollBackPosition();
+						that_collider.RollBackPosition();
 
-						 // now that we're allowed to move this much we cant also allow the other collider to do the same
-						 // priorities?
-						 // otherwise we could both move towards each other assuming we can, but really only 1 can right?
-						 // so remove our roll back, we're not going that way for sure
-						 this_collider.mBack = transform.rect.Center() + allowed_velocity;
-					 }
-					 else
-					 {
-						 allowed_velocity = VectorF::zero();
-					 }
-					 that_collider.RollForwardPosition();
+						bool still_interacts = this_collider.intersects(that_collider);
+						if (!still_interacts)
+						{
+							// doesnt matter on the direction, always seems to fail NOT with static colliders though
+							// only with moving colliders to be fair, maybe theres something in that
+							const RectF horizontal_rect = transform.rect.Translate(VectorF(velocity.x, 0.0f));
+							const bool can_move_horizontally = !that_collider.intersects(horizontal_rect);
+							if (can_move_horizontally)
+								allowed_velocity.x = velocity.x;
 
-					 transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
-					 this_collider.mRect.SetCenter(transform.targetCenterPosition);
-				 }
+							const RectF vertical_rect = transform.rect.Translate(VectorF(0.0f, velocity.y));
+							const bool can_move_vertically = !that_collider.intersects(vertical_rect);
+							if (can_move_vertically)
+								allowed_velocity.y = velocity.y;
+
+							// now that we're allowed to move this much we cant also allow the other collider to do the same priorities?
+							// otherwise we could both move towards each other assuming we can, but really only 1 can right?
+							// so remove our roll back, we're not going that way for sure
+							this_collider.mBack = transform.rect.Center() + allowed_velocity;
+						}
+						else
+						{
+							allowed_velocity = VectorF::zero();
+						}
+						that_collider.RollForwardPosition();
+
+						transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
+						this_collider.mRect.SetCenter(transform.targetCenterPosition);
+					}
+				}
             }
 		}
 	}

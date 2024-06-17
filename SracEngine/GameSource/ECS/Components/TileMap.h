@@ -6,9 +6,9 @@ namespace ECS
 {
 	struct TileMap
 	{
-		Map::SceneTileMapping tileMap;
+		COMPONENT_TYPE(TileMap)
 
-		static ECS::Component::Type type() { return ECS::Component::TileMap; }
+		Map::SceneTileMapping tileMap;
 
 		static VectorF GetMapSizeRatio();
 		static const TileMap* GetActive();

@@ -21,6 +21,8 @@ public:
 
 private:
 	virtual K* createNewObjects(T type, int count, int& objectSize) const = 0;
+		
+	K* GetObjectOfType(T type);
 
 protected:
 	std::unordered_map<T, std::queue<K*>> mPool;
@@ -62,6 +64,19 @@ void ObjectPool<K, T>::addNewObjects(T type, int count)
 	}
 }
 
+// to stop the function below running into an infinite loop
+template<class K, typename T>
+K* ObjectPool<K, T>::GetObjectOfType(T type)
+{
+	if (mPool.at(type).size() > 0)
+	{
+		K* object = mPool[type].front();
+		mPool[type].pop();
+		return object;
+	}
+
+	return nullptr;
+}
 
 
 template<class K, typename T>
@@ -79,7 +94,7 @@ K* ObjectPool<K, T>::getObject(T type)
 		{
 			addNewObjects(type, 10);
 			DebugPrint(Warning, "Not enough objects in the pool, size increased by 10");
-			return getObject(type);
+			return GetObjectOfType(type);
 		}
 	}
 

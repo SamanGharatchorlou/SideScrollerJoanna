@@ -2,24 +2,27 @@
 #include "pch.h"
 #include "AIController.h"
 
-using namespace ECS;
-
-void AIController::PushState(ActionState action)
+namespace ECS
 {
-	DebugPrint(PriorityLevel::Log, "Pushing player action state: %s | %d states left", actionToString(action).c_str(), statePool.size(action));
+	void AIController::PushState(ActionState action)
+	{
+		DebugPrint(PriorityLevel::Log, "Pushing player action state: %s | %d states left", actionToString(action).c_str(), statePool.size(action));
 	
-	CharacterAction* state = statePool.getObject(action);
-	state->entity = entity;
-	state->action = action;
+		if(CharacterAction* state = statePool.getObject(action))
+		{
+			state->entity = entity;
+			state->action = action;
 
-	actions.Push(state);
-}
+			actions.Push(state);
+		}
+	}
 
-void AIController::PopState()
-{
-	CharacterAction* state = &actions.Top();
-	actions.Pop();
-	statePool.returnObject(state, state->action);
+	void AIController::PopState()
+	{
+		CharacterAction* state = &actions.Top();
+		actions.Pop();
+		statePool.returnObject(state, state->action);
 
-	DebugPrint(PriorityLevel::Log, "Returning player action state: %s | %d states left", actionToString(state->action).c_str(), statePool.size(state->action));
+		DebugPrint(PriorityLevel::Log, "Returning player action state: %s | %d states left", actionToString(state->action).c_str(), statePool.size(state->action));
+	}
 }

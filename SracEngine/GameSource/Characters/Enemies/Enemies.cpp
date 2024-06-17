@@ -43,10 +43,10 @@ ECS::Entity Enemy::Create()
 	// Collider
 	ECS::Collider& collider = ecs->AddComponent(Collider, entity);
 	collider.mRect = transform.rect;
+	SetFlag<u32>(collider.mFlags, (u32)ECS::Collider::IsEnemy);
 	
 	// AI Controller
 	ECS::AIController& ai_controller = ecs->AddComponent(AIController, entity);
-	ai_controller.entity = entity;
 
 	std::vector<ActionState> actions;
 	for( u32 i = 0; i < (u32)ActionState::Count; i++ )
@@ -59,7 +59,13 @@ ECS::Entity Enemy::Create()
 	ECS::CharacterState& character_state = ecs->AddComponent(CharacterState, entity);
 	character_state.facingDirection = VectorI(0,1); // facing down
 
+	// Pathing
 	ecs->AddComponent(Pathing, entity);
+
+	// Health
+	ECS::Health& health = ecs->AddComponent(Health, entity);
+	health.maxHealth = 100;
+	health.currentHealth = 100;
 
 	return entity;
 }

@@ -11,16 +11,19 @@
 		<Animations x = "0" y ="-1"> 
 			<Idle x = "0" y = "2">6</Idle>
 			<Run x = "0" y = "5">12</Run>
+			<BasicAttack x = "0" y = "8" looping = "false">11</BasicAttack>
 		</Animations>
 		<!-- Down -->
 		<Animations x = "0" y ="1">
 			<Idle x = "0" y = "1">6</Idle>
 			<Run x = "0" y = "4">12</Run>
+			<BasicAttack x = "0" y = "7" looping = "false">11</BasicAttack>
 		</Animations>
 		<!-- Left/Right -->
 		<Animations x = "1" y ="0" canFlip = "true">
 			<Idle x = "0" y = "0">6</Idle>
 			<Run x = "0" y = "3">12</Run>
+			<BasicAttack x = "0" y = "6" looping = "false">11</BasicAttack>
 		</Animations>
 
 	</Animator>

@@ -23,6 +23,7 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 		{
 			ECS::Pathing& pathing = ecs->GetComponentRef(Pathing, entity);
 			InputManager* input = InputManager::Get();
+			ImGui::PushID(entity + (int)type);
 			if (ImGui::TreeNode("Display"))
 			{
 				const VectorF world_tile_size = ECS::TileMap::GetMapSizeRatio() * ECS::c_tileSize;
@@ -39,6 +40,8 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 
 				ImGui::TreePop();
 			}
+			
+			ImGui::PopID();
 		}
 	}
 

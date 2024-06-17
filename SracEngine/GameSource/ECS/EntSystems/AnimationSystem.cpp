@@ -59,4 +59,20 @@ namespace ECS
 			}
 		}
 	}
+
+	RectF AnimationSystem::GetRenderRect(ECS::Entity entity)
+	{
+		EntityCoordinator* ecs = GameData::Get().ecs;
+		if(const ECS::Sprite* sprite = ecs->GetComponent(Sprite, entity))
+		{
+			if(const ECS::Transform* transform = ecs->GetComponent(Transform, entity))
+			{
+				VectorF size = transform->rect.Size() * sprite->relativeRenderRect.Size();
+				VectorF pos = transform->rect.TopLeft() - sprite->relativeRenderRect.TopLeft() * size;
+				return RectF(pos, size);
+			}
+		}
+
+		return RectF();
+	}
 }

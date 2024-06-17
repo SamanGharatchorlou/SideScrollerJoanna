@@ -26,7 +26,7 @@ CharacterAction* Player::StatePool::createNewObjects(ActionState type, int count
 	ActionStateCase(Walk)
 	ActionStateCase(Run)
 	ActionStateCase(Dodge)
-	ActionStateCase(SlashAttack)
+	ActionStateCase(BasicAttack)
 	ActionStateCase(ChopAttack)
 	case ActionState::Count:
 	case ActionState::None:
@@ -55,7 +55,7 @@ void IdleState::Update(float dt)
 	InputManager* input = InputManager::Get();
 	if (input->isCursorPressed(Cursor::ButtonType::Left))
 	{
-		pc.PushState(ActionState::SlashAttack);
+		pc.PushState(ActionState::BasicAttack);
 	}
 	if (input->isCursorPressed(Cursor::ButtonType::Right, c_inputBuffer))
 	{
@@ -94,7 +94,7 @@ void WalkState::Update(float dt)
 	InputManager* input = InputManager::Get();
 	if (input->isCursorPressed(Cursor::ButtonType::Left))
 	{
-		pc.PushState(ActionState::SlashAttack);
+		pc.PushState(ActionState::BasicAttack);
 	}
 	if (input->isCursorPressed(Cursor::ButtonType::Right, c_inputBuffer))
 	{
@@ -133,7 +133,7 @@ void RunState::Update(float dt)
 	InputManager* input = InputManager::Get();
 	if (input->isCursorPressed(Cursor::ButtonType::Left, c_inputBuffer))
 	{
-		pc.PushState(ActionState::SlashAttack);
+		pc.PushState(ActionState::BasicAttack);
 	}
 	if (input->isCursorPressed(Cursor::ButtonType::Right, c_inputBuffer))
 	{
@@ -185,7 +185,7 @@ void DodgeState::Update(float dt)
 
 // SlashAttack
 // ---------------------------------------------------------
-void SlashAttackState::Update(float dt)
+void BasicAttackState::Update(float dt)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
@@ -197,7 +197,7 @@ void SlashAttackState::Update(float dt)
 	
 	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 	ActionState action = animation.animator.activeAction();
-	ASSERT(action == ActionState::SlashAttack, "Not the Slash Attack State");
+	ASSERT(action == ActionState::BasicAttack, "Not the BasicAttack State");
 
 	if(animation.animator.finished())
 	{

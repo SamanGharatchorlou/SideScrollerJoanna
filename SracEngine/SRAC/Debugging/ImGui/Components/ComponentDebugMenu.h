@@ -18,4 +18,5 @@ namespace DebugMenu
 	ECS::Component::Type DoPlayerControllerDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoPathingDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoAIControllerDebugMenu(ECS::Entity& entity);
+	ECS::Component::Type DoHealthDebugMenu(ECS::Entity& entity);
 }

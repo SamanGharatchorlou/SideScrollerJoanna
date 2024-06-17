@@ -45,7 +45,6 @@ ECS::Entity Player::Create()
 	
 	// PlayerController
 	ECS::PlayerController& player_controller = ecs->AddComponent(PlayerController, entity);
-	player_controller.entity = entity;
 
 	std::vector<ActionState> actions;
 	for( u32 i = 0; i < (u32)ActionState::Count; i++ )
@@ -57,6 +56,11 @@ ECS::Entity Player::Create()
 	// CharacterState
 	ECS::CharacterState& character_state = ecs->AddComponent(CharacterState, entity);
 	character_state.facingDirection = VectorI(0,1); // facing down
+	
+	// Health
+	ECS::Health& health = ecs->AddComponent(Health, entity);
+	health.maxHealth = 100;
+	health.currentHealth = 100;
 
 	return entity;
 }

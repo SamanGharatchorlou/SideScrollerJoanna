@@ -14,6 +14,7 @@ ECS::Component::Type DebugMenu::DoPlayerControllerDebugMenu(ECS::Entity& entity)
 	{
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
+			ImGui::PushID(entity + (int)type);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
@@ -28,6 +29,8 @@ ECS::Component::Type DebugMenu::DoPlayerControllerDebugMenu(ECS::Entity& entity)
 
 				ImGui::TreePop();
 			}
+			
+			ImGui::PopID();
 		}
 	}
 

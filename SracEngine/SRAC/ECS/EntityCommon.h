@@ -29,6 +29,8 @@ namespace ECS
 			Collider,
 			AIController,
 			Pathing,
+			Damage,
+			Health,
 
 			Count
 		};
@@ -45,9 +47,14 @@ namespace ECS
 		"TileMap",
 		"Collider",
 		"AIController",
-		"Pathing"
+		"Pathing",
+		"Damage",
+		"Health"
 	};
 
+#define COMPONENT_TYPE(comp) static Component::Type type() { return Component::comp; } \
+							 Entity entity = EntityInvalid; \
+	
 	// lock - system signature
 	// key - entity archetype
 	static bool LockAndKey(Signature lock, Archetype key) 

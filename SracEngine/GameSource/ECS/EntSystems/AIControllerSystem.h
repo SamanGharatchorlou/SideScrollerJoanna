@@ -2,8 +2,13 @@
 
 #include "ECS/SystemManager.h"
 
+
+enum class ActionState;
+
 namespace ECS
 {
+	struct AIController;
+
 	class AIControllerSystem : public EntitySystem
 	{
 	public:

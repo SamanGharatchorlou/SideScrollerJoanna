@@ -23,7 +23,7 @@ void DebugMenu::DoEntitySystemWindow()
     
     ECS::EntityCoordinator* ecs = GameData::Get().ecs;
     ECS::EntityManager& em = ecs->entities;
-    std::unordered_map<ECS::Entity, StringBuffer32>& entityNames = em.entityNames;
+    std::unordered_map<ECS::Entity, BasicString>& entityNames = em.entityNames;
 
     const char* selected = entityNames.count(s_selectedEntity) > 0 ? entityNames[s_selectedEntity].c_str() : "No selection";
 
@@ -53,6 +53,8 @@ void DebugMenu::DoEntitySystemWindow()
             if(ImGui::Button("Kill Entity"))
             {
                 GameData::Get().ecs->entities.KillEntity(s_selectedEntity);
+                ImGui::End();
+                return;
             }
 
             ECS::Archetype type = 0;
@@ -66,6 +68,7 @@ void DebugMenu::DoEntitySystemWindow()
             SetFlag<u64>(type, ECS::archetypeBit(DoSpriteDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoPathingDebugMenu(s_selectedEntity)));
             SetFlag<u64>(type, ECS::archetypeBit(DoAIControllerDebugMenu(s_selectedEntity)));
+            SetFlag<u64>(type, ECS::archetypeBit(DoHealthDebugMenu(s_selectedEntity)));
 
             ECS::Archetype entity_type = ecs->entities.GetAchetype(s_selectedEntity);
             for (u32 i = 0; i < ECS::Component::Count; i++) 

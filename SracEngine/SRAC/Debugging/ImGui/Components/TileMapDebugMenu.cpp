@@ -24,6 +24,7 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 
     if (ecs->HasComponent(entity, type))
     {
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
             ECS::TileMap& tile_map = ecs->GetComponentRef(TileMap, entity);
@@ -103,13 +104,13 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 				VectorF size_ratio = window_size / map_size;
 				VectorF world_tile_size = tile_size * size_ratio;
 
-				VectorF tile_count = map_size / tile_size;
+				VectorI tile_count = (map_size / tile_size).toInt();
 
 				for( u32 x = 0; x < tile_count.x; x++ )
 				{
 					for( u32 y = 0; y < tile_count.y; y++ )
 					{
-						VectorF pos = world_tile_size * VectorF(x,y);
+						VectorF pos = world_tile_size * VectorI(x,y).toFloat();
 						RectF rect(pos, world_tile_size);
 						DebugDraw::RectOutline(rect, Colour::Green);
 
@@ -145,6 +146,8 @@ ECS::Component::Type DebugMenu::DoTileMapDebugMenu(ECS::Entity& entity)
 				SceneBuilder::BuildTileMap(s_selectedMap.c_str(), tile_map.tileMap);
 			}
 		}
+		
+		ImGui::PopID();
 	}
 
 	return type;

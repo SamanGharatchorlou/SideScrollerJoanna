@@ -69,6 +69,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
             ECS::Animation& anim = ecs->GetComponentRef(Animation, entity);
+			ImGui::PushID(entity + (int)type);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				Animator& animator = anim.animator;
@@ -297,6 +298,7 @@ ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 
 	if (ecs->HasComponent(entity, type))
 	{
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			ECS::Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
@@ -309,7 +311,7 @@ ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 				VectorF pos = transform.rect.TopLeft() - sprite.relativeRenderRect.TopLeft() * size;
 				renderRect = RectF(pos, size);
 			}
-
+			
 			if (ImGui::TreeNode("Component Data"))
 			{
 				if (ecs->HasComponent(entity, ECS::Component::Transform))
@@ -340,8 +342,9 @@ ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 
 				ImGui::TreePop();
 			}
-
 		}
+
+		ImGui::PopID();
 	}
 
 	return type;

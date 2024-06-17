@@ -384,6 +384,12 @@
     <ClCompile Include="SRAC\Debugging\ImGui\Components\AIControllerDebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\ECS\Components\Components.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRAC\Debugging\ImGui\Components\SimpleDebugMenus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

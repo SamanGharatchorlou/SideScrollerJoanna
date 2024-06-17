@@ -6,9 +6,21 @@ namespace ECS
 {
 	struct Collider
 	{
+		COMPONENT_TYPE(Collider)
+
 		enum Flags
 		{
-			Static = 1 << 0
+			// type
+			Static = 1 << 0,
+			//Damage = 1 << 1,
+
+			// damage layer
+			IsPlayer = 1 << 2,
+			IsEnemy = 1 << 3,
+
+			HitPlayerOnly = 1 << 4,
+			HitEnemyOnly = 1 << 5
+
 		};
 
 		enum RuntimeFlags 
@@ -18,8 +30,6 @@ namespace ECS
 			RestrictUp		= 3 << 0, 
 			RestrictDown	= 4 << 0
 		};
-		
-		static ECS::Component::Type type() { return ECS::Component::Collider; }
 		
 		virtual bool intersects(Collider& collider);
 		virtual bool intersects(const RectF& rect) const;
@@ -40,6 +50,5 @@ namespace ECS
 		VectorF mBack;;
 
 		u32 mFlags = 0;
-		u32 mRuntimeFlags = 0;
 	};
 }

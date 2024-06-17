@@ -13,6 +13,7 @@ ECS::Component::Type DebugMenu::DoPhysicsDebugMenu(ECS::Entity& entity)
 
 	if (ecs->HasComponent(entity, type))
 	{
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
 			ECS::Physics& physics = ecs->GetComponentRef(Physics, entity);
@@ -41,6 +42,7 @@ ECS::Component::Type DebugMenu::DoPhysicsDebugMenu(ECS::Entity& entity)
 				ImGui::TreePop();
 			}
 		}
+		ImGui::PopID();
 	}
 
 	return type;
