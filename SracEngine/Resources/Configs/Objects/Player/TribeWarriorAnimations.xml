@@ -25,6 +25,9 @@
 			<Run x = "0" y = "3">12</Run>
 			<BasicAttack x = "0" y = "6" looping = "false">11</BasicAttack>
 		</Animations>
+		<Animations>
+			<Death x = "0" y = "9" looping = "false">16</Death>
+		</Animations>
 
 	</Animator>
 </root>

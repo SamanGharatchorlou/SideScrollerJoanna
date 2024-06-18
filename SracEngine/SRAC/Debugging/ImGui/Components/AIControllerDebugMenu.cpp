@@ -5,10 +5,9 @@
 #include "ECS/EntityCoordinator.h"
 #include "Debugging/ImGui/ImGuiHelpers.h"
 
-static bool s_enemyCanMove = false;
-static bool s_lockCanMove = false;
+static bool s_enemyCanMove = true;
 
-bool& EnemyCanMove() 
+bool EnemyCanMove() 
 { 
 	return s_enemyCanMove; 
 }
@@ -34,22 +33,12 @@ ECS::Component::Type DebugMenu::DoAIControllerDebugMenu(ECS::Entity& entity)
 				ImGui::Text("State count: %d", pc.actions.stack.size());
 				ImGui::Text("Current State: %s", actionToString(pc.actions.Top().action).c_str());
 
-
 				ImGui::TreePop();
 			}
-			ImGui::PopID();
 
 			if (ImGui::TreeNode("Restrict Enemy Movement"))
 			{
-				ImGui::Checkbox("Lock Movement", &s_lockCanMove);
-				s_enemyCanMove = s_lockCanMove;
-
-				ImGui::SameLine();
-				if(ImGui::Button("Allow movement"))
-				{
-					s_enemyCanMove = true;
-				}
-
+				ImGui::Checkbox("Allow Enemy Movement", &s_enemyCanMove);
 				ImGui::TreePop();
 			}
 		}

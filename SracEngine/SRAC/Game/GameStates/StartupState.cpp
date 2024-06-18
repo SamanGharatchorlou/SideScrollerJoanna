@@ -59,7 +59,7 @@ void StartupState::Init()
 	loader.init();
 
 	std::thread assetLoader(loadGameAssets);
-	std::thread loadingscreen(renderLoadingBar, &loader);
+	//std::thread loadingscreen(renderLoadingBar, &loader);
 
 	SDL_Event events;
 
@@ -78,7 +78,7 @@ void StartupState::Init()
 	}
 
 	assetLoader.join();
-	loadingscreen.join();
+	//loadingscreen.join();
 
 	loader.exit();
 }

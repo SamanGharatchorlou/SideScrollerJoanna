@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ECS/EntityCommon.h"
-#include "Core/ObjectPool.h"
+//#include "ECS/EntityCommon.h"
+//#include "Core/ObjectPool.h"
 #include "SRAC/Game/GameStates/State.h"
 #include "Animations/CharacterStates.h"
 
@@ -14,3 +14,5 @@ struct CharacterAction : public State
 	ECS::Entity entity;
 	ActionState action;
 };
+
+ECS::Entity CreateAttackCollider(ECS::Entity entity, const RectF& rect, float damage, const char* entity_name);

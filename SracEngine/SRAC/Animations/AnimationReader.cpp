@@ -91,8 +91,14 @@ void AnimationReader::Parse(const char* animation, Animator& animator)
 	{
 		SpriteSheet* sprite_sheet = &animator.mSpriteSheets.back();
 
-		const int x = toInt(animations_node.attribute("x")->value());
-		const int y = toInt(animations_node.attribute("y")->value());
+		int x = 0;
+		if(XMLNode::Attribute attribute = animations_node.attribute("x"))
+			x = toInt(attribute->value());
+
+		int y = 0;
+		if(XMLNode::Attribute attribute = animations_node.attribute("y"))
+			y = toInt(attribute->value());
+
 		VectorI direction = VectorI(x,y);
 
 		bool can_flip = false;

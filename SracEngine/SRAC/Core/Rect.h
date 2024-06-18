@@ -55,12 +55,28 @@ public:
 	inline T HCenter() const { return (x1 + x2) / (T)2; }
 	inline T VCenter() const { return (y1 + y2) / (T)2; }
 
-
 	// Set Dimentions
-	inline void SetSize(Vector2D<T> size) { x2 = x1 + size.x; y2 = y1 + size.y; }
-	inline void SetSize(T x, T y) { x2 = x1 + x; y2 = y1 + y; }
-	inline void SetWidth(T width) { x2 = x1 + width; }
-	inline void SetHeight(T height) { y2 = y1 + height; }
+	inline void SetSize(Vector2D<T> size) 
+	{
+		ASSERT(size.x >= 0 && size.y > 0, "Negative rect size, invalid");
+		x2 = x1 + size.x; y2 = y1 + size.y; 
+	}
+	inline void SetSize(T x, T y) 
+	{ 
+		ASSERT(x >= 0 && y > 0, "Negative rect size, invalid");
+		x2 = x1 + x; y2 = y1 + y; 
+	}
+
+	inline void SetWidth(T width) 
+	{ 
+		ASSERT(width > 0, "Negative rect width, invalid");
+		x2 = x1 + width; 
+	}
+	inline void SetHeight(T height) 
+	{
+		ASSERT(height > 0, "Negative rect height, invalid");
+		y2 = y1 + height; 
+	}
 
 	inline void Scale(Vector2D<T> scale);
 
@@ -72,6 +88,8 @@ public:
 	// Set Position
 	inline void SetTopLeft(Vector2D<T> point);
 	inline void SetBotRight(Vector2D<T> point);
+	inline void SetBotLeft(Vector2D<T> point);
+	inline void SetTopRight(Vector2D<T> point);
 	inline void SetTopCenter(Vector2D<T> point);
 	inline void SetBotCenter(Vector2D<T> point);
 	inline void SetLeftCenter(Vector2D<T> point);
@@ -159,6 +177,19 @@ inline void Rect<T>::SetTopLeft(Vector2D<T> point)
 
 
 template <class T>
+inline void Rect<T>::SetTopRight(Vector2D<T> point)
+{
+	T width = Width();
+	T height = Height();
+
+	x1 = point.x - width; 
+	x2 = point.x; 
+	y1 = point.y; 
+	y2 = point.y + height;
+}
+
+
+template <class T>
 inline void Rect<T>::SetBotRight(Vector2D<T> point)
 {
 	T width = Width();
@@ -166,6 +197,18 @@ inline void Rect<T>::SetBotRight(Vector2D<T> point)
 
 	x1 = point.x - width;
 	x2 = point.x;
+	y1 = point.y - height;
+	y2 = point.y;
+}
+
+template <class T>
+inline void Rect<T>::SetBotLeft(Vector2D<T> point)
+{
+	T width = Width();
+	T height = Height();
+
+	x1 = point.x;
+	x2 = point.x + width;
 	y1 = point.y - height;
 	y2 = point.y;
 }
@@ -182,7 +225,6 @@ inline void Rect<T>::SetLeftCenter(Vector2D<T> point)
 	y1 = point.y - halfHeight;
 	y2 = point.y + halfHeight;
 }
-
 
 
 template <class T>

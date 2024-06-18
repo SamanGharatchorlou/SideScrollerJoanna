@@ -8,6 +8,7 @@
 #include "ECS/Components/Physics.h"
 #include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
+#include "ECS/EntSystems/AnimationSystem.h"
 
 using namespace Player;
 
@@ -28,6 +29,7 @@ CharacterAction* Player::StatePool::createNewObjects(ActionState type, int count
 	ActionStateCase(Dodge)
 	ActionStateCase(BasicAttack)
 	ActionStateCase(ChopAttack)
+	ActionStateCase(Death)
 	case ActionState::Count:
 	case ActionState::None:
 	default:
@@ -62,7 +64,7 @@ void IdleState::Update(float dt)
 		pc.PushState(ActionState::ChopAttack);
 	}
 
-	if(ECS::Physics* physics = ecs->GetComponent(Physics, pc.entity))
+	if(ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 	{
 		physics->speed.set(0.0f, 0.0f);
 	}
@@ -82,7 +84,7 @@ void WalkState::Update(float dt)
 	if (state.isRunning)
 		pc.PushState(ActionState::Run);
 
-	if (ECS::Physics* physics = ecs->GetComponent(Physics, pc.entity))
+	if (ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 	{
 		// apply walk speed
 		physics->maxSpeed = VectorF(3.0f, 3.0f);
@@ -185,6 +187,54 @@ void DodgeState::Update(float dt)
 
 // SlashAttack
 // ---------------------------------------------------------
+void BasicAttackState::Init()
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+
+	const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
+	const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+
+	const RectF& character_rect = transform.rect;
+	const RectF boundary_rect = ECS::AnimationSystem::GetRenderRect(entity);
+
+	RectF collider_rect;
+		
+	const VectorI direction = state.facingDirection;
+	if(!direction.isZero())
+	{
+		if( direction.x == -1 || direction.x == 1 )
+		{
+			const float right = boundary_rect.RightCenter().x;
+			const float left = character_rect.Center().x;
+			const float width = right - left;
+			const float height = transform.rect.Height() * 0.5f;
+			const VectorF size(width, height);
+			collider_rect.SetSize(size);
+
+			if( direction.x == 1 )
+				collider_rect.SetTopLeft(character_rect.Center());
+			else
+				collider_rect.SetTopRight(character_rect.Center());
+		}
+		else if( direction.y == -1 || direction.y == 1 )
+		{
+			const float top = character_rect.Center().y;
+			const float bottom = boundary_rect.BotCenter().y;
+			const float height = bottom - top;
+			const float width = transform.rect.Width() * 1.25f;
+			const VectorF size(width, height);
+			collider_rect.SetSize(size);
+
+			if( direction.y == 1 )
+				collider_rect.SetTopLeft(character_rect.LeftCenter());
+			else
+				collider_rect.SetBotLeft(character_rect.LeftCenter());
+		}
+	}
+
+	attackCollider = CreateAttackCollider(entity, collider_rect, 60, "Player Attack Collider");
+}
+
 void BasicAttackState::Update(float dt)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
@@ -218,6 +268,13 @@ void BasicAttackState::Update(float dt)
 	}
 }
 
+void BasicAttackState::Exit()
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	GameData::Get().ecs->entities.KillEntity(attackCollider);
+}
+
+
 // ChopAttack
 // ---------------------------------------------------------
 void ChopAttackState::Update(float dt)
@@ -250,5 +307,21 @@ void ChopAttackState::Update(float dt)
 			pc.PopState();
 			pc.PushState(action);;
 		}
+	}
+}
+
+
+// DeathState
+// ---------------------------------------------------------
+void DeathState::Update(float dt)
+{	
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
+
+	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
+
+	if(animation.animator.finished())
+	{
+		pc.PopState();
 	}
 }

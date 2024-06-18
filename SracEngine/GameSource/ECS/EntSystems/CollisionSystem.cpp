@@ -57,11 +57,16 @@ namespace ECS
 				// ignore ourself
 				if(i == index)
 					continue;
-
+				
 				Collider& that_collider = collider_list[i];
+				ECS::Entity that_entity = that_collider.entity;
+				
+				// ignore checking against damage colliders
+				Damage* that_damage = ecs->GetComponent(Damage, that_entity);
+				if(that_damage)
+					continue;	
 
 				// if this applies damage we only need to do the check if they have health
-				ECS::Entity that_entity = that_collider.entity;
 				Health* that_health = ecs->GetComponent(Health, that_entity);
 				if(this_damage && !that_health)
 					continue;

@@ -30,4 +30,14 @@ namespace Enemy
 
 		ECS::Entity attackCollider = ECS::EntityInvalid;
 	};
+
+	struct DeathState : public CharacterAction
+	{
+		void Init() override;
+		void Update(float dt) override;
+
+		bool can_kill = false;
+	};
+
+	const float GetAttackRange(ECS::Entity entity);
 }

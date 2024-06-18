@@ -35,10 +35,19 @@ namespace Player
 
 	struct BasicAttackState : public CharacterAction
 	{
+		void Init() override;
 		void Update(float dt) override;
+		void Exit() override;
+		
+		ECS::Entity attackCollider = ECS::EntityInvalid;
 	};
 
 	struct ChopAttackState : public CharacterAction
+	{
+		void Update(float dt) override;
+	};
+
+	struct DeathState : public CharacterAction
 	{
 		void Update(float dt) override;
 	};

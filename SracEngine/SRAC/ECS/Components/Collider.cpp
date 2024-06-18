@@ -9,27 +9,36 @@ namespace ECS
 {
 	bool Collider::intersects(const RectF& rect) const
 	{
-		const bool xOverlaps = mRect.LeftPoint() < rect.RightPoint() && mRect.RightPoint() > rect.LeftPoint();
-		const bool yOverlaps = mRect.TopPoint() < rect.BotPoint() && mRect.BotPoint() > rect.TopPoint();
-
-		return xOverlaps && yOverlaps;
+		return !(	rect.LeftPoint()  > mRect.RightPoint() || 
+					rect.RightPoint() < mRect.LeftPoint()  || 
+					rect.TopPoint()   > mRect.BotPoint()   || 
+					rect.BotPoint()   < mRect.TopPoint());
 	}
 
 	bool Collider::intersects(Collider& collider)
-	{ 
-		const RectF& rect = collider.mRect;
-		const bool xOverlaps = mRect.LeftPoint() < rect.RightPoint() && mRect.RightPoint() > rect.LeftPoint();
-		const bool yOverlaps = mRect.TopPoint() < rect.BotPoint() && mRect.BotPoint() > rect.TopPoint();
-
+	{
 		return intersects(collider.mRect);
 	}
 
 	bool Collider::contains(VectorF position) const 
 	{
-		bool xOverlaps = mRect.LeftPoint() < position.x && mRect.RightPoint() > position.x;
-		bool yOverlaps = mRect.TopPoint() < position.y && mRect.BotPoint() > position.y;
+#if DEBUG_CHECK
+		bool a = position.x > mRect.RightPoint();
+		bool b = position.x < mRect.LeftPoint();
+		bool c = position.y > mRect.BotPoint(); 
+		bool d = position.y < mRect.TopPoint();
+		int z = 4;
+#endif
 
-		return xOverlaps && yOverlaps;
+		return !(	position.x > mRect.RightPoint() || 
+					position.x < mRect.LeftPoint()  || 
+					position.y > mRect.BotPoint()   || 
+					position.y < mRect.TopPoint());
+
+		//bool xOverlaps = mRect.LeftPoint() < position.x && mRect.RightPoint() > position.x;
+		//bool yOverlaps = mRect.TopPoint() < position.y && mRect.BotPoint() > position.y;
+
+		//return xOverlaps && yOverlaps;
 	}
 
 	bool Collider::test1DOverlap(float minA, float maxA, float minB, float maxB)

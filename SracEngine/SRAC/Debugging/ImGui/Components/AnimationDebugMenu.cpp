@@ -66,10 +66,10 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 
     if (ecs->HasComponent(entity, type))
     {
+		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{
             ECS::Animation& anim = ecs->GetComponentRef(Animation, entity);
-			ImGui::PushID(entity + (int)type);
 			if (ImGui::TreeNode("Component Data"))
 			{
 				Animator& animator = anim.animator;
@@ -240,8 +240,8 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 							ActionState action = animator.mAnimations[i].action;
 							//const bool is_selected = action == activeAnim->action;
 
-							char symbol;
-							char dir;
+							char symbol = 0;
+							char dir = 0;
 
 							VectorI direction = animator.mAnimations[i].direction;
 							bool flipable = animator.mAnimations[i].canFlip;
@@ -286,6 +286,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 				ImGui::TreePop();
 			}
 		}
+		ImGui::PopID();
 	}
 
 	return type;

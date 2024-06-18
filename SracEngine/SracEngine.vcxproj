@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameSource\CharacterStates\CharacterAction.cpp" />
     <ClCompile Include="GameSource\CharacterStates\EnemyStates.cpp" />
     <ClCompile Include="GameSource\Characters\Enemies\Enemies.cpp" />
     <ClCompile Include="GameSource\Characters\Spawner.cpp" />

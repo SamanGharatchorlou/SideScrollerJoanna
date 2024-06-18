@@ -7,13 +7,15 @@
 #include "ECS/Components/AIController.h"
 #include "Debugging/ImGui/ImGuiMainWindows.h"
 
-bool& EnemyCanMove();
+bool EnemyCanMove();
 
 namespace ECS
 {
 	void AIControllerSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
+
+		std::vector<Entity> dead_entities;
 
  		for (Entity entity : entities)
 		{
@@ -25,9 +27,35 @@ namespace ECS
 			transform.rect.SetCenter(transform.targetCenterPosition);
 			
 			if(aic.actions.HasAction())
-				aic.actions.Top().Update(dt);
+			{
+				CharacterAction* character_state = &aic.actions.Top();
+				character_state->Update(dt);
+
+				if( character_state->action == ActionState::Death )
+				{
+					Enemy::DeathState* death_state = static_cast<Enemy::DeathState*>(character_state);
+					if(death_state->can_kill)
+					{
+						dead_entities.push_back(entity);
+						continue;
+					}
+				}
+				else
+				{
+					if(Health* health = ecs->GetComponent(Health, entity))
+					{
+						if(health->currentHealth <= 0.0f)
+						{
+							aic.PopState();
+							aic.PushState(ActionState::Death);
+						}
+					}
+				}
+			}
 			else
+			{
 				aic.PushState(ActionState::Idle);
+			}
 
 			aic.actions.ProcessStateChanges();
 			state.action = aic.actions.Top().action;
@@ -40,23 +68,27 @@ namespace ECS
 					VectorI next = pathing->path[pathing->path.size() - 2];
 
 					state.movementDirection = next - current;
-					state.facingDirection = state.movementDirection;
+
+					if(!state.movementDirection.isZero())
+						state.facingDirection = state.movementDirection;
 				}
 			}
 						
 			if(DebugMenu::GetSelectedEntity() == entity)
 			{
-				bool& can_move = EnemyCanMove();
-				if(!can_move)
+				if(!EnemyCanMove())
 				{
 					physics.speed = VectorF::zero();
 				}
-
-				can_move = false;
 			}
 
 			// where we're trying to move to
 			transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
+		}
+
+		for( u32 i = 0; i < dead_entities.size(); i++ )
+		{
+			ecs->entities.KillEntity(dead_entities[i]);
 		}
 	}
 }
