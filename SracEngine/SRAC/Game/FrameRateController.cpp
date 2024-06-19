@@ -19,6 +19,7 @@ FrameRateController::FrameRateController() : dt(0.0f), frameRateCap(0.0f), frame
 void FrameRateController::start()
 {
 	frameTimer.start();
+	gameTimer.start();
 
 #if FRAMERATE_CAP
 	frameRateCap = FRAMERATE_CAP;

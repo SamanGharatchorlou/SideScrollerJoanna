@@ -10,7 +10,7 @@ namespace ECS
 {
 	static int heuristic(VectorI from, VectorI to)
 	{
-		return std::abs(from.x - to.x) + std::abs(from.y - to.y);
+		return (from - to).lengthSquared();
 	}
 	
 	using TileCost = std::pair<VectorI, int>;

@@ -11,6 +11,8 @@
 #include "ECS/EntSystems/AnimationSystem.h"
 #include "ECS/Components/Collider.h"
 
+#include "Game/FrameRateController.h"
+
 namespace Enemy
 {
 	CharacterAction* StatePool::createNewObjects(ActionState type, int count, int& out_size) const
@@ -84,12 +86,6 @@ namespace Enemy
 						ai.PushState(ActionState::BasicAttack);
 					}
 				}
-
-				//if( (attack_range * attack_range) > distance_squard)
-				//{
-				//	ai.PopState();
-				//	ai.PushState(ActionState::BasicAttack);
-				//}
 			}
 		}
 
@@ -103,6 +99,10 @@ namespace Enemy
 	// ---------------------------------------------------------
 	void BasicAttackState::Init()
 	{	
+		// init values
+		recoveryTimer = FLT_MAX;
+		attackCollider = ECS::EntityInvalid;
+
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 
 		const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
@@ -150,7 +150,16 @@ namespace Enemy
 		ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 		ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
 			
-		if(animation.animator.finished())
+		if(animation.animator.finished() && recoveryTimer == FLT_MAX)
+		{
+			recoveryTimer = FrameRateController::Get().GameTime();
+
+			//ai.PopState();
+		}
+
+		// 0.8s recovery time
+		float time = (recoveryTimer + 800);
+		if ( FrameRateController::Get().GameTime() > (recoveryTimer + 800) )
 		{
 			ai.PopState();
 		}
@@ -166,6 +175,8 @@ namespace Enemy
 	// ---------------------------------------------------------
 	void DeathState::Init()
 	{
+		can_kill = false;
+
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 
 		if(ECS::Physics* physics = ecs->GetComponent(Physics, entity))

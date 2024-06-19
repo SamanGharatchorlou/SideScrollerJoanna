@@ -18,6 +18,7 @@ public:
 	void capFrameRate();
 
 	unsigned long frameCount() const { return frameNumber; }
+	float GameTime() const { return gameTimer.getMilliseconds(); }
 
 #if PRINT_FRAMERATE_EVERY
 	void printfFrameRate();
@@ -31,6 +32,7 @@ private:
 	TimerF capTimer;
 	float frameRateCap;
 
+	TimerF gameTimer;
 	unsigned long frameNumber;
 
 	// --- debugging --- //

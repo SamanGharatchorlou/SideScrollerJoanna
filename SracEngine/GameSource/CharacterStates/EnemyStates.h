@@ -15,6 +15,8 @@ namespace Enemy
 	struct IdleState : public CharacterAction
 	{
 		void Update(float dt) override;
+
+		//float 
 	};
 
 	struct RunState : public CharacterAction
@@ -28,6 +30,7 @@ namespace Enemy
 		void Update(float dt) override;
 		void Exit() override;
 
+		float recoveryTimer = 0;
 		ECS::Entity attackCollider = ECS::EntityInvalid;
 	};
 
