@@ -7,6 +7,9 @@
 #include "ECS/Components/PlayerController.h"
 #include "ECS/Components/Physics.h"
 
+#include "Characters/Spawner.h"
+#include "Characters/Player/PlayerCharacter.h"
+
 namespace ECS
 {
 	void PlayerControllerSystem::Update(float dt)
@@ -26,7 +29,31 @@ namespace ECS
 			transform.rect.SetCenter(transform.targetCenterPosition);
 
 			if(pc.actions.HasAction())
-				pc.actions.Top().Update(dt);
+			{
+				CharacterAction* character_state = &pc.actions.Top();
+				character_state->Update(dt);
+
+				if( character_state->action == ActionState::Death )
+				{
+					Player::DeathState* death_state = static_cast<Player::DeathState*>(character_state);
+					if(death_state->can_respawn)
+					{
+						spawnPlayer = true;
+						continue;
+					}
+				}
+				else
+				{
+					if(Health* health = ecs->GetComponent(Health, entity))
+					{
+						if(health->currentHealth <= 0.0f)
+						{
+							pc.PopState();
+							pc.PushState(ActionState::Death);
+						}
+					}
+				}
+			}
 			else
 				pc.PushState(ActionState::Idle);
 
@@ -65,6 +92,17 @@ namespace ECS
 
 			// where we're trying to move to
 			transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
+		}
+
+		if(spawnPlayer)
+		{
+			if(entities.size() != 0)
+			{
+				ecs->entities.KillEntity(entities.front());
+			}
+
+			PlayerSpawn::Spawn();
+			spawnPlayer = false;
 		}
 	} 
 }

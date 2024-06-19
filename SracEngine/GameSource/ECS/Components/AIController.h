@@ -5,6 +5,8 @@
 
 namespace ECS
 {
+	static float constexpr c_noTime = 0.0f;
+
 	struct AIController
 	{
 		COMPONENT_TYPE(AIController)
@@ -12,7 +14,10 @@ namespace ECS
 		Enemy::StatePool statePool;
 		ActionStack<CharacterAction> actions;
 
-		void PushState(ActionState state);
+		float lockStateTime = c_noTime;
+
+		bool PushState(ActionState state);
+		bool PushState(ActionState state, float lock_in_state_time);
 		void PopState();
 	};
 }

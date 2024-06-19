@@ -7,7 +7,8 @@ namespace ECS
 
 namespace PlayerSpawn
 {
-	ECS::Entity Spawn(ECS::TileMap& map);
+	ECS::Entity Spawn();
+	ECS::Entity Spawn(VectorF spawn_pos);
 }
 
 namespace EnemySpawn

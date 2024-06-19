@@ -34,5 +34,8 @@
 			<BasicAttack x = "0" y = "4" looping = "false" frameTime = "0.04">7</BasicAttack>
 			<ChopAttack x = "0" y = "3" looping = "false">4</ChopAttack>
 		</Animations>
+		<Animations>
+			<Death x = "0" y = "18" looping = "false">16</Death>
+		</Animations>
 	</Animator>
 </root>

@@ -49,6 +49,9 @@ namespace Player
 
 	struct DeathState : public CharacterAction
 	{
+		void Init() override;
 		void Update(float dt) override;
+
+		bool can_respawn = false;
 	};
 }

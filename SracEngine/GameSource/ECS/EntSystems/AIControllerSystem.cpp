@@ -7,6 +7,8 @@
 #include "ECS/Components/AIController.h"
 #include "Debugging/ImGui/ImGuiMainWindows.h"
 
+#include "Characters/Player/PlayerCharacter.h"
+
 bool EnemyCanMove();
 
 namespace ECS
@@ -60,8 +62,11 @@ namespace ECS
 			aic.actions.ProcessStateChanges();
 			state.action = aic.actions.Top().action;
 
-			if(const Pathing* pathing = ecs->GetComponent(Pathing, entity))
+			if(Pathing* pathing = ecs->GetComponent(Pathing, entity))
 			{
+				pathing->target = Player::Get();
+
+				//pathing->target 
 				if(pathing->path.size() > 2)
 				{
 					VectorI current = pathing->path.back();
@@ -69,8 +74,10 @@ namespace ECS
 
 					state.movementDirection = next - current;
 
-					if(!state.movementDirection.isZero())
+					if(!state.movementDirection.isZero() && !physics.speed.isZero())
+					{
 						state.facingDirection = state.movementDirection;
+					}
 				}
 			}
 						

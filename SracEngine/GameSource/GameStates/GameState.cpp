@@ -27,7 +27,7 @@ void GameState::Init()
 	Map::SceneBuilder::BuildTileMap("blood_test_export.xml", tile_map.tileMap);
 	activeMap = entity;
 
-	ECS::Entity player = PlayerSpawn::Spawn(tile_map);
+	ECS::Entity player = PlayerSpawn::Spawn(tile_map.tileMap.playerSpawnArea.Center());
 	ECS::Entity enemy = EnemySpawn::Spawn(tile_map);
 
 	ECS::Pathing& pathing = ecs->GetComponentRef(Pathing, enemy);

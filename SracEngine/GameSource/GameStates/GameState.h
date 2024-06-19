@@ -2,8 +2,6 @@
 
 #include "SRAC/Game/GameStates/State.h"
 
-struct Player;
-
 class GameState : public State
 {
 public:
@@ -20,7 +18,4 @@ public:
 
 private:
 	void initCamera();
-	//void initRendering();
-
-	//Player* player;
 };

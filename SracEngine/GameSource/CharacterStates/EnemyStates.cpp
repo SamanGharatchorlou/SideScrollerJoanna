@@ -11,8 +11,6 @@
 #include "ECS/EntSystems/AnimationSystem.h"
 #include "ECS/Components/Collider.h"
 
-#include "Game/FrameRateController.h"
-
 namespace Enemy
 {
 	CharacterAction* StatePool::createNewObjects(ActionState type, int count, int& out_size) const
@@ -100,7 +98,6 @@ namespace Enemy
 	void BasicAttackState::Init()
 	{	
 		// init values
-		recoveryTimer = FLT_MAX;
 		attackCollider = ECS::EntityInvalid;
 
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
@@ -150,18 +147,10 @@ namespace Enemy
 		ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 		ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
 			
-		if(animation.animator.finished() && recoveryTimer == FLT_MAX)
-		{
-			recoveryTimer = FrameRateController::Get().GameTime();
-
-			//ai.PopState();
-		}
-
-		// 0.8s recovery time
-		float time = (recoveryTimer + 800);
-		if ( FrameRateController::Get().GameTime() > (recoveryTimer + 800) )
+		if(animation.animator.finished())
 		{
 			ai.PopState();
+			ai.PushState(ActionState::Idle, 1.0f);
 		}
 	}
 
@@ -196,6 +185,7 @@ namespace Enemy
 		}
 	}
 
+	// helpers
 	const float GetAttackRange(ECS::Entity entity)
 	{
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;

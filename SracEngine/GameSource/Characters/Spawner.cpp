@@ -7,11 +7,25 @@
 #include "ECS/Components/TileMap.h"
 #include "ECS/EntityCoordinator.h"
 
-ECS::Entity PlayerSpawn::Spawn(ECS::TileMap& map)
+
+#include "Game/SystemStateManager.h"
+#include "GameStates/GameState.h"
+
+ECS::Entity PlayerSpawn::Spawn()
+{
+	if( const GameState* gs = GameData::Get().systemStateManager->GetActiveState<GameState>() )
+	{
+		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+		const ECS::TileMap& tile_map = ecs->GetComponentRef(TileMap, gs->activeMap);
+
+		const VectorF spawn_pos = tile_map.tileMap.playerSpawnArea.Center();
+		return PlayerSpawn::Spawn(spawn_pos);
+	}
+}
+
+ECS::Entity PlayerSpawn::Spawn(VectorF spawn_pos)
 {
 	ECS::Entity entity = Player::Create();
-
-	VectorF spawn_pos = map.tileMap.playerSpawnArea.Center();
 
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);

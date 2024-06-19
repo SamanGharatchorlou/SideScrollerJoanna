@@ -313,15 +313,25 @@ void ChopAttackState::Update(float dt)
 
 // DeathState
 // ---------------------------------------------------------
+void DeathState::Init()
+{
+	can_respawn = false;
+
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+
+	if(ECS::Physics* physics = ecs->GetComponent(Physics, entity))
+	{
+		physics->speed.set(0.0f, 0.0f);
+	}
+}
+
 void DeathState::Update(float dt)
 {	
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-	ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
 
-	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
-
+	const ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 	if(animation.animator.finished())
 	{
-		pc.PopState();
+		can_respawn = true;
 	}
 }
