@@ -7,8 +7,8 @@
 
 static void InitButton(Button& button)
 {
-	button.mPressedFrame = 0;
-	button.mReleasedFrame = 1;
+	button.mPressedFrame = -501;
+	button.mReleasedFrame = -500;
 	button.mHeldFrames = 0;
 }
 

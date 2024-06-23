@@ -61,10 +61,10 @@ namespace ECS
 			return components[index];
 		}
 				
-		u32 GetComponentIndex(Entity entity)
+		u32 GetComponentIndex(Entity entity) const
 		{
-			ASSERT(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity], "Entity does not have an entry in this component list");
-			return entityToComponent[entity];
+			//ASSERT(entityToComponent.count(entity) > 0 && components.size() > entityToComponent[entity], "Entity does not have an entry in this component list");
+			return entityToComponent.at(entity);
 		}
 
 		// mapping from an entity id to a components array index;

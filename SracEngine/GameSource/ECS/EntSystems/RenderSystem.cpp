@@ -4,6 +4,7 @@
 #include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/RenderManager.h"
+#include "ECS/Components/ComponentCommon.h"
 
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
 
@@ -12,6 +13,7 @@ namespace ECS
 	void RenderSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
+		RenderManager* renderer = GameData::Get().renderManager;
 
  		for (Entity entity : entities)
 		{
@@ -20,17 +22,16 @@ namespace ECS
 			if(!sprite.texture)
 				continue;
 
-			VectorF size = transform.rect.Size() * sprite.relativeRenderRect.Size();
-			VectorF pos = transform.rect.TopLeft() - sprite.relativeRenderRect.TopLeft() * size;
-			RectF renderRect(pos, size);
-			
+			const RectF renderRect(transform.rect.TopLeft(), sprite.renderSize);
+
 			RenderPack pack(sprite.texture, renderRect, sprite.renderLayer);
 			pack.subRect = sprite.subRect;
-			pack.flip = transform.flip;
+			pack.flip = sprite.flip;
+			pack.flipPoint = ECS::GetObjectRect(entity).Center() - renderRect.TopLeft();
 
-			VectorF rect_center = transform.rect.Center();
-			pack.flipPoint = rect_center - renderRect.TopLeft();
-			GameData::Get().renderManager->AddRenderPacket(pack);
+			float target_flip = renderRect.Height() * 0.5f;
+
+			renderer->AddRenderPacket(pack);
 
 			if( DebugMenu::DisplayRenderRect(entity) )
 			{

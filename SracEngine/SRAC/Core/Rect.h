@@ -11,7 +11,7 @@ public:
 	// Constructors
 	Rect() { SetRect(0, 0, 0, 0); }
 	Rect(T x1, T y1, T x2, T y2) { SetRect(x1, y1, x2, y2); }
-	Rect(Vector2D<T> position, Vector2D<T> size) { SetRect(position, size); }
+	Rect(Vector2D<T> top_left, Vector2D<T> size) { SetRect(top_left, size); }
 	//Rect(int isValid) { if(isValid == -1) SetRect(-1, -1, -1, -1); }
 
 	template<class K>
@@ -19,7 +19,7 @@ public:
 
 	// Initialisations
 	inline void SetRect(T left, T top, T right, T bot) { x1 = left; y1 = top; x2 = right, y2 = bot; }
-	inline void SetRect(Vector2D<T> position, Vector2D<T> dimentions);
+	inline void SetRect(Vector2D<T> top_left, Vector2D<T> dimentions);
 	inline void SetRect(const Rect<T>& rect) { x1 = rect.x1; y1 = rect.y1; x2 = rect.x2; y2 = rect.y2; }
 
 	// Corners
@@ -99,9 +99,9 @@ public:
 
 
 	// Movement
-	inline Rect<T> Translate(Vector2D<T> vector) const;
-	inline Rect<T> Translate(T lateral, T vertical) const { return Rect<T>(x1 + lateral, y1 + vertical, x2 + lateral, y2 + vertical); }
-	inline Rect<T> MoveCopy(Vector2D<T> vector) const { return Rect<T>(vector, Size()); }
+	inline void Translate(Vector2D<T> vector);
+	//inline Rect<T> Translate(T lateral, T vertical) const { return Rect<T>(x1 + lateral, y1 + vertical, x2 + lateral, y2 + vertical); }
+	inline Rect<T> MoveCopy(Vector2D<T> vector) const { return Rect<T>(TopLeft() + vector, Size()); }
 
 	// Get Size
 	inline Vector2D<T> Size() const { return Vector2D<T>(Width(), Height()); }
@@ -143,13 +143,13 @@ typedef Rect<float>  RectF;
 #define InvalidRectF Rect<float>(0.0f, -1.0f, 0.0f, - 1.0f)
 
 template <class T>
-inline void Rect<T>::SetRect(const Vector2D<T> position, const Vector2D<T> dimentions)
+inline void Rect<T>::SetRect(const Vector2D<T> top_left, const Vector2D<T> dimentions)
 {
-	x1 = position.x;
-	x2 = position.x + dimentions.x;
+	x1 = top_left.x;
+	x2 = top_left.x + dimentions.x;
 
-	y1 = position.y;
-	y2 = position.y + dimentions.y;
+	y1 = top_left.y;
+	y2 = top_left.y + dimentions.y;
 }
 
 // Returns 1 if the rectangles overlap
@@ -298,9 +298,12 @@ inline void Rect<T>::Scale(Vector2D<T> scale)
 
 
 template <class T>
-inline Rect<T> Rect<T>::Translate(Vector2D<T> vector) const
+inline void Rect<T>::Translate(Vector2D<T> vector)
 {
-	return Rect<T>(x1 + vector.x, y1 + vector.y, x2 + vector.x, y2 + vector.y);
+	x1 += vector.x;
+	x2 += vector.x;
+	y1 += vector.y;
+	y2 += vector.y;
 }
 
 template <class T>

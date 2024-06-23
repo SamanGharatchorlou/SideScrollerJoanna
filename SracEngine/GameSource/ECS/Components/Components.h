@@ -19,9 +19,8 @@ namespace ECS
 
 		// rect of the actual object
 		RectF rect;
-		VectorF targetCenterPosition;
+		//VectorF targetCenterPosition;
 
-		SDL_RendererFlip flip;
 	};
 
 	struct Sprite
@@ -29,10 +28,14 @@ namespace ECS
 		COMPONENT_TYPE(Sprite)
 
 		// used to derive the render rect from the transform rect
-		RectF relativeRenderRect;
+		//RectF relativeRenderRect;
+
+		VectorF renderSize;
 		RectF subRect;
 		Texture* texture = nullptr;
 		u32 renderLayer = 0;
+		
+		SDL_RendererFlip flip;
 	};
 
 	struct CharacterState
@@ -80,8 +83,10 @@ namespace ECS
 	{
 		COMPONENT_TYPE(Health)
 
-		float maxHealth;
-		float currentHealth;
+		float maxHealth = 0.0f;
+		float currentHealth = 0.0f;
+
+		bool invulnerable = false;
 
 		std::vector<Entity> ignoredDamaged;
 
@@ -94,6 +99,4 @@ namespace ECS
 	{
 		return (u64)1 << type;
 	}
-
-#define ArcheBit(compType) archetypeBit(ECS::compType::type())
 }

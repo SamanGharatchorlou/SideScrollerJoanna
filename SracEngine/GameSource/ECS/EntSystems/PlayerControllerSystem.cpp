@@ -10,56 +10,96 @@
 #include "Characters/Spawner.h"
 #include "Characters/Player/PlayerCharacter.h"
 
+#include "Debugging/ImGui/Components/ComponentDebugMenu.h"
+#include "Debugging/ImGui/ImGuiMainWindows.h"
+
+#include "ECS/EntSystems/CollisionSystem.h"
+
 namespace ECS
 {
+	static void UpdatePlayerState(ECS::Entity entity, float dt, bool& respawn)
+	{
+		EntityCoordinator* ecs = GameData::Get().ecs;
+		PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
+		if(pc.actions.HasAction())
+		{
+			CharacterAction* character_state = &pc.actions.Top();
+			character_state->Update(dt);
+
+			if(ECS::Collider* collider = ecs->GetComponent(Collider, entity))
+			{
+				if(HasFlag(collider->mFlags, Collider::IgnoreCollisions))
+				{
+					// remove the flag so we can make a "would it collide" check
+					// if so, add it back we'll end up in a bad state
+					RemoveFlag(collider->mFlags, (u32)Collider::IgnoreCollisions);
+					if(CollisionSystem::DoesColliderInteract(entity))
+					{
+						SetFlag(collider->mFlags, (u32)Collider::IgnoreCollisions);
+					}
+				}
+			}
+
+			if( character_state->action == ActionState::Death )
+			{
+				Player::DeathState* death_state = static_cast<Player::DeathState*>(character_state);
+				if(death_state->can_respawn)
+				{
+					respawn = true;
+				}
+			}
+			else
+			{
+				if(Health* health = ecs->GetComponent(Health, entity))
+				{
+					if(health->currentHealth <= 0.0f)
+					{
+						pc.PopState();
+						pc.PushState(ActionState::Death);
+					}
+				}
+			}
+		}
+		else
+		{
+			pc.PushState(ActionState::Idle);
+		}
+	}
+
 	void PlayerControllerSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
 		InputManager* input = InputManager::Get();
-;
+
+		std::vector<ECS::Entity> to_respawn;
+
 		for (Entity entity : entities)
 		{
 			PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
 			CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-			Transform& transform = ecs->GetComponentRef(Transform, entity);
+			//Transform& transform = ecs->GetComponentRef(Transform, entity);
 			Physics& physics = ecs->GetComponentRef(Physics, entity);
+
+			bool using_playlist = DebugMenu::UsingPlaylist(entity);
+			if(using_playlist)
+				continue;
 
 			// update the transform with where we wanted to move last frame 
 			// it may have been changed by the collision system
-			transform.rect.SetCenter(transform.targetCenterPosition);
+			//transform.rect.SetCenter(transform.targetCenterPosition);
 
-			if(pc.actions.HasAction())
+			bool respawn_player = false;
+			UpdatePlayerState(entity, dt, respawn_player);
+
+			if(respawn_player)
 			{
-				CharacterAction* character_state = &pc.actions.Top();
-				character_state->Update(dt);
-
-				if( character_state->action == ActionState::Death )
-				{
-					Player::DeathState* death_state = static_cast<Player::DeathState*>(character_state);
-					if(death_state->can_respawn)
-					{
-						spawnPlayer = true;
-						continue;
-					}
-				}
-				else
-				{
-					if(Health* health = ecs->GetComponent(Health, entity))
-					{
-						if(health->currentHealth <= 0.0f)
-						{
-							pc.PopState();
-							pc.PushState(ActionState::Death);
-						}
-					}
-				}
+				to_respawn.push_back(entity);
+				continue;
 			}
-			else
-				pc.PushState(ActionState::Idle);
 
-			pc.actions.ProcessStateChanges();
+			//pc.actions.ProcessStateChanges();
 			state.action = pc.actions.Top().action;
-
+			 
 			// Movement Direction
 			pc.hasMovementInput = input->isHeld(Button::Right) || input->isHeld(Button::Left) || 
 				input->isHeld(Button::Up) || input->isHeld(Button::Down);
@@ -91,19 +131,19 @@ namespace ECS
 			state.isRunning = input->isHeld(Button::Shift);
 
 			// where we're trying to move to
-			transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
+			//transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
 		}
 
-		if(spawnPlayer)
+		for( u32 i = 0; i < to_respawn.size(); i++ )
 		{
-			if(entities.size() != 0)
-			{
-				ecs->entities.KillEntity(entities.front());
-			}
-
+			ecs->entities.KillEntity(entities.front());
+			
 			PlayerSpawn::Spawn();
 			spawnPlayer = false;
+
 		}
+
+		to_respawn.clear();
 	} 
 }
 

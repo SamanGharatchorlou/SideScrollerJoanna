@@ -42,7 +42,7 @@ public:
 	Texture* activeSpriteSheet() const;
 
 	const SpriteSheet& getSpritesheet(const Animation& animation) const;
-	const SpriteSheet& getActiveSpritesheet() const;
+	const SpriteSheet* getActiveSpritesheet() const;
 
 	bool lastFrame() const { return mFrameIndex == mAnimations[mAnimationIndex].frameCount - 1; }
 	bool canChange() const { return mLoops >= mAnimations[mAnimationIndex].minLoops; }

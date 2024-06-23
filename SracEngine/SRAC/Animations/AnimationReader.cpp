@@ -5,22 +5,25 @@
 #include "Graphics/TextureManager.h"
 #include "SRAC/Graphics/Texture.h"
 
+static void ReadRect(XMLNode root, const char* node, VectorF& pos, VectorF& size)
+{
+	char buffer[32];
+
+	snprintf(buffer, 32, "%sPosition", node);	
+	XMLNode pos_node = root.child(buffer);
+	pos = attributesToVectorF(pos_node);
+	
+	snprintf(buffer, 32, "%sSize", node);
+	XMLNode size_node = root.child(buffer);
+	size = attributesToVectorF(size_node);
+}
 
 static void PopulateBaseSpriteSheet(XMLNode root, SpriteSheet& sheet)
 {
 	sheet.ID = root.child("ID").value();
 
-	XMLNode frameSizeNode = root.child("FrameSize");
-	const float frame_x = toFloat(frameSizeNode.attribute("x")->value());
-	const float frame_y = toFloat(frameSizeNode.attribute("y")->value());
-
-	XMLNode objectSizeNode = root.child("ObjectSize");
-	const float object_sx = toFloat(objectSizeNode.attribute("x")->value());
-	const float object_sy = toFloat(objectSizeNode.attribute("y")->value());
-
-	XMLNode objectPosNode = root.child("ObjectPosition");
-	const float object_px = toFloat(objectPosNode.attribute("x")->value());
-	const float object_py = toFloat(objectPosNode.attribute("y")->value());
+	ReadRect(root, "Object", sheet.objectPos, sheet.objectSize);
+	ReadRect(root, "Collider", sheet.colliderPos, sheet.colliderSize);
 
 	const char* spriteSheet = root.child("SpriteSheet").value();
 	Texture* texture = TextureManager::Get()->getTexture(spriteSheet, FileManager::Folder::Image_Animations);
@@ -31,9 +34,8 @@ static void PopulateBaseSpriteSheet(XMLNode root, SpriteSheet& sheet)
 	}
 
 	sheet.texture = texture;
-	sheet.frameSize = VectorF(frame_x, frame_y);
-	sheet.objectSize = VectorF(object_sx, object_sy);
-	sheet.objectPos = VectorF(object_px, object_py);
+	sheet.frameSize = attributesToVectorF(root.child("FrameSize"));
+	sheet.renderSize = attributesToVectorF(root.child("RenderSize"));
 	sheet.boundaries = (texture->originalDimentions / sheet.frameSize).toInt();
 }
 
@@ -54,6 +56,11 @@ static void PopulateAnimation(XMLNode node, Animation& animation, const SpriteSh
 	if (XMLNode::Attribute attributeNode = node.attribute("looping"))
 	{
 		animation.looping = toBool(attributeNode->value());
+	}
+
+	if (XMLNode::Attribute attributeNode = node.attribute("colliderFrame"))
+	{
+		animation.colliderFrame = toInt(attributeNode->value());
 	}
 
 	if (XMLNode::Attribute attributeNode = node.attribute("frameTime"))

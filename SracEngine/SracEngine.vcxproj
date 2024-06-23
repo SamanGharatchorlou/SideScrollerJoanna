@@ -148,6 +148,7 @@
     <ClCompile Include="GameSource\Characters\Enemies\Enemies.cpp" />
     <ClCompile Include="GameSource\Characters\Spawner.cpp" />
     <ClCompile Include="GameSource\ECS\Components\AIController.cpp" />
+    <ClCompile Include="GameSource\ECS\Components\ComponentCommon.cpp" />
     <ClCompile Include="GameSource\ECS\Components\Components.cpp" />
     <ClCompile Include="GameSource\ECS\Components\Physics.cpp" />
     <ClCompile Include="GameSource\ECS\Components\PlayerController.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="GameSource\ECS\EntSystems\AIControllerSystem.cpp" />
     <ClCompile Include="GameSource\CharacterStates\PlayerStates.cpp" />
     <ClCompile Include="GameSource\ECS\EntSystems\PathingSystem.cpp" />
+    <ClCompile Include="GameSource\ECS\EntSystems\TransformSystem.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\AIControllerDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\CharacterStateDebugMenu.cpp" />
     <ClCompile Include="SRAC\Debugging\ImGui\Components\ColliderDebugMenu.cpp" />
@@ -276,6 +278,7 @@
     <ClInclude Include="GameSource\Characters\Enemies\Enemies.h" />
     <ClInclude Include="GameSource\Characters\Spawner.h" />
     <ClInclude Include="GameSource\ECS\Components\AIController.h" />
+    <ClInclude Include="GameSource\ECS\Components\ComponentCommon.h" />
     <ClInclude Include="GameSource\ECS\Components\Physics.h" />
     <ClInclude Include="GameSource\ECS\Components\TileMap.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\AIControllerSystem.h" />
@@ -283,6 +286,7 @@
     <ClInclude Include="GameSource\Characters\Player\PlayerCharacter.h" />
     <ClInclude Include="GameSource\ECS\Components\ComponentsSetup.h" />
     <ClInclude Include="GameSource\ECS\Components\PlayerController.h" />
+    <ClInclude Include="GameSource\ECS\EntSystems\TransformSystem.h" />
     <ClInclude Include="GameSource\PlayerStates\PlayerState.h" />
     <ClInclude Include="GameSource\CharacterStates\PlayerStates.h" />
     <ClInclude Include="GameSource\ECS\EntSystems\PathingSystem.h" />

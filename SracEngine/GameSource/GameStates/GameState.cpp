@@ -30,8 +30,8 @@ void GameState::Init()
 	ECS::Entity player = PlayerSpawn::Spawn(tile_map.tileMap.playerSpawnArea.Center());
 	ECS::Entity enemy = EnemySpawn::Spawn(tile_map);
 
-	ECS::Pathing& pathing = ecs->GetComponentRef(Pathing, enemy);
-	pathing.target = player;
+	if(ECS::Pathing* pathing = ecs->GetComponent(Pathing, enemy))
+		pathing->target = player;
 
 	UIManager* ui = GameData::Get().uiManager;
 	ui->controller()->replaceScreen(UIScreen::Type::Game);

@@ -5,7 +5,14 @@
 
 namespace ECS
 {
-	bool AIController::PushState(ActionState action)
+	
+	AIController::~AIController()
+	{
+		int a = 4;
+	}
+
+	
+	bool AIController::CanPushTimedState()
 	{
 		if(lockStateTime != c_noTime)
 		{
@@ -13,30 +20,46 @@ namespace ECS
 				return false;
 		}
 
-		lockStateTime = c_noTime;
+		return true;
+	}
 
-		DebugPrint(PriorityLevel::Debug, "Pushing enemy action state: %s | %d states left", actionToString(action).c_str(), statePool.size(action));
-	
+	bool AIController::PushNewState(ActionState action)
+	{
 		if(CharacterAction* state = statePool.getObject(action))
 		{
 			state->entity = entity;
 			state->action = action;
 
 			actions.Push(state);
-
 			return true;
 		}
 
 		return false;
 	}
 
+	bool AIController::PushState(ActionState action)
+	{
+		if(!CanPushTimedState())
+			return false;
+
+		lockStateTime = c_noTime;
+
+		// prevent multiple of the same states
+		if(actions.HasAction() && actions.Top().action == action)
+			return false;
+
+		DebugPrint(PriorityLevel::Debug, "Pushing enemy action state: %s | %d states left", actionToString(action).c_str(), statePool.size(action));
+
+		return PushNewState(action);
+	}
+
 	// push a state and lock it into the state for a certain time
 	bool AIController::PushState(ActionState action, float lock_in_state_time)
 	{
-		if(PushState(action))
+		if(CanPushTimedState())
 		{
 			lockStateTime = FrameRateController::Get().GameSeconds() + lock_in_state_time;
-			return true;
+			return PushState(action);
 		}
 
 		return false;

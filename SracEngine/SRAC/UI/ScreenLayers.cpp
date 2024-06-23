@@ -256,7 +256,7 @@ namespace ScreenBuilder
 			{
 				RectF parentRect = element->parent()->rect();
 				VectorF parentPosition = parentRect.TopLeft();
-				rect = rect.Translate(parentPosition);
+				rect.Translate(parentPosition);
 			}
 
 			element->setRect(rect);

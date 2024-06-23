@@ -9,6 +9,8 @@
 #include "ECS/Components/Components.h"
 #include "ECS/EntityCoordinator.h"
 #include "ECS/EntSystems/AnimationSystem.h"
+#include "ECS/Components/Collider.h"
+#include "ECS/Components/ComponentCommon.h"
 
 using namespace Player;
 
@@ -162,6 +164,11 @@ void DodgeState::Init()
 		float amplitude = 10.0f;
 		physics->speed = state.movementDirection.toFloat() * amplitude;
 	}
+
+	if(ECS::Collider* collider = ecs->GetComponent(Collider, entity))
+	{
+		SetFlag(collider->mFlags, (u32)ECS::Collider::IgnoreAll);
+	}
 }
 
 void DodgeState::Update(float dt)
@@ -184,6 +191,16 @@ void DodgeState::Update(float dt)
 	}
 }
 
+void DodgeState::Exit()
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	if(ECS::Collider* collider = ecs->GetComponent(Collider, entity))
+	{
+		RemoveFlag(collider->mFlags, (u32)ECS::Collider::IgnoreAll);
+		SetFlag(collider->mFlags, (u32)ECS::Collider::IgnoreCollisions);
+	}
+}
+
 
 // SlashAttack
 // ---------------------------------------------------------
@@ -195,7 +212,7 @@ void BasicAttackState::Init()
 	const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 
 	const RectF& character_rect = transform.rect;
-	const RectF boundary_rect = ECS::AnimationSystem::GetRenderRect(entity);
+	const RectF boundary_rect = ECS::GetRenderRect(entity);
 
 	RectF collider_rect;
 		
@@ -249,7 +266,7 @@ void BasicAttackState::Update(float dt)
 	ActionState action = animation.animator.activeAction();
 	ASSERT(action == ActionState::BasicAttack, "Not the BasicAttack State");
 
-	if(animation.animator.finished())
+	if(HandleAttackAnimation(entity, attackCollider))
 	{
 		pc.PopState();
 	}

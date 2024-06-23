@@ -111,7 +111,7 @@ static void PopulateObjectLayerData(const XMLNode& object_layer_node, SceneTileM
 		ECS::Entity ent = ecs->CreateNewEntity();
 
 		ECS::Collider& collider = ecs->AddComponent(Collider, ent);
-		collider.mRect = rect;
+		collider.SetRect( rect );
 		SetFlag<u32>(collider.mFlags, (u32)ECS::Collider::Static);
 
 		ECS::Transform& transform = ecs->AddComponent(Transform, ent);

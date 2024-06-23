@@ -393,6 +393,12 @@
     <ClCompile Include="GameSource\CharacterStates\CharacterAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSource\ECS\Components\ComponentCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\ECS\EntSystems\TransformSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -849,6 +855,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\ECS\Components\TileMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\Components\ComponentCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\EntSystems\TransformSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

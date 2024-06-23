@@ -73,7 +73,7 @@ void RenderManager::render()
 				{
 					// same distance but flipped over to the other side, so x2 the diff between rect center and the flip point
 					VectorF diff = render_packs[i].rect.Size() - (render_packs[i].flipPoint * 2.0f);
-					render_packs[i].rect = render_packs[i].rect.Translate(diff * -1);
+					render_packs[i].rect.Translate(diff * -1);
 				}
 
 				render_packs[i].texture->renderSubTexture(render_packs[i].rect, render_packs[i].subRect, render_packs[i].rotation, render_packs[i].flipPoint, render_packs[i].flip);
@@ -93,19 +93,20 @@ void RenderManager::render()
 		case DebugDrawType::Line:
 		{
 			Colour colour = mDebugRenders[i].colour;
-			SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+			SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
 
 			const RectF& rect = mDebugRenders[i].rect;
 			const Vector2D<int> A = rect.TopLeft().toInt();
 			const Vector2D<int> B = rect.Size().toInt();
 
-			SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), A.x, A.y, B.x, B.y);
+			SDL_RenderDrawLine(renderer, A.x, A.y, B.x, B.y);
 			break;
 		}
 		case DebugDrawType::RectOutline:
 		{
 			Colour colour = mDebugRenders[i].colour;
-			SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+			SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 			RectF& rect = mDebugRenders[i].rect;
 			SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
@@ -113,14 +114,14 @@ void RenderManager::render()
 				static_cast<int>(rect.Width()),
 				static_cast<int>(rect.Height()) };
 
-			SDL_RenderDrawRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
+			SDL_RenderDrawRect(renderer, &renderQuadb);
 			break;
 		}
 		case DebugDrawType::Point:
 		case DebugDrawType::RectFill:
 		{
 			Colour colour = mDebugRenders[i].colour;
-			SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+			SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
 			
 			RectF& rect = mDebugRenders[i].rect;
 			SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
@@ -128,7 +129,7 @@ void RenderManager::render()
 							static_cast<int>(rect.Width()),
 							static_cast<int>(rect.Height()) };
 
-			SDL_RenderFillRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
+			SDL_RenderFillRect(renderer, &renderQuadb);
 			break;
 		}
 		default:

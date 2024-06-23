@@ -11,13 +11,20 @@ namespace ECS
 	{
 		COMPONENT_TYPE(AIController)
 
+		~AIController();
+
 		Enemy::StatePool statePool;
 		ActionStack<CharacterAction> actions;
 
 		float lockStateTime = c_noTime;
 
+
 		bool PushState(ActionState state);
 		bool PushState(ActionState state, float lock_in_state_time);
 		void PopState();
+
+	private:
+		bool CanPushTimedState();
+		bool PushNewState(ActionState state);
 	};
 }

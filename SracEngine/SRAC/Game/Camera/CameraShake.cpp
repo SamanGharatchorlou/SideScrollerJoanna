@@ -39,7 +39,7 @@ void CameraShake::fastUpdate(float dt)
 		mCameraRect.RightPoint() + translation.x <= mBoundaries.x2)
 #endif
 	{
-		mCameraRect = mCameraRect.Translate(translation.x, 0.0f);
+		mCameraRect.Translate(VectorF(translation.x, 0.0f));
 	}
 
 
@@ -48,7 +48,7 @@ void CameraShake::fastUpdate(float dt)
 		mCameraRect.BotPoint() + translation.y <= mBoundaries.y2)
 #endif
 	{
-		mCameraRect = mCameraRect.Translate(0.0f, translation.y);
+		mCameraRect.Translate(VectorF(0.0f, translation.y));
 	}
 
 	// dampen trauma;

@@ -10,5 +10,7 @@ namespace ECS
 		CollisionSystem(Archetype type) : EntitySystem(type) { }
 
 		void Update(float dt) override;
+
+		static bool DoesColliderInteract(ECS::Entity entity);
 	};
 }

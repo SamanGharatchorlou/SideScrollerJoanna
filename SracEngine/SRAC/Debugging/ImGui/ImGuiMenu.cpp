@@ -50,6 +50,7 @@ namespace DebugMenu
 	static bool s_inputWindow = false;
 	static bool s_colliderWindow = false;
 	static bool s_gameStateWindow = false;
+	static bool s_tweakerWindow = false;
 
 	void Draw()
 	{
@@ -65,6 +66,8 @@ namespace DebugMenu
 		ImGui::Checkbox("Colliders", &s_colliderWindow);
 		ImGui::SameLine();
 		ImGui::Checkbox("GameState", &s_gameStateWindow);
+		ImGui::SameLine();
+		ImGui::Checkbox("Tweakers", &s_tweakerWindow);
 		ImGui::End();
 
 		if (s_entitySystemWindow)
@@ -85,6 +88,11 @@ namespace DebugMenu
 		if(s_gameStateWindow)
 		{
 			DoGameStateWindow();
+		}
+
+		if(s_tweakerWindow)
+		{
+			DoTweakerWindow();
 		}
 
 		//ImGui::ShowDemoWindow();

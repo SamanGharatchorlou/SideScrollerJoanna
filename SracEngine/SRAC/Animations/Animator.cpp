@@ -212,15 +212,18 @@ Texture* Animator::activeSpriteSheet() const
 	return mSpriteSheets[sprite_sheet_index].texture; 
 }
 
-
 const SpriteSheet& Animator::getSpritesheet(const Animation& animation) const
 {
 	return mSpriteSheets[animation.spriteSheetIndex]; 
 }
 
-
-const SpriteSheet& Animator::getActiveSpritesheet() const
+const SpriteSheet* Animator::getActiveSpritesheet() const
 {
-	int sprite_sheet_index = mAnimations[mAnimationIndex].spriteSheetIndex;
-	return mSpriteSheets[sprite_sheet_index]; 
+	if(mAnimationIndex >= 0 && mAnimationIndex < mAnimations.size())
+	{
+		int sprite_sheet_index = mAnimations[mAnimationIndex].spriteSheetIndex;
+		return &mSpriteSheets[sprite_sheet_index];
+	}
+
+	return nullptr;
 }

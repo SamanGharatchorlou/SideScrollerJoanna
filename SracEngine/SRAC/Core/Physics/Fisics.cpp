@@ -57,17 +57,17 @@ void Fisics::fastUpdate(float dt)
 
 void Fisics::move(VectorF velocity, float dt)
 {
-	mRect = mRect.Translate(velocity * dt);
+	mRect = mRect.MoveCopy(velocity * dt);
 }
 
 void Fisics::move(float dt)
 {
-	mRect = mRect.Translate(mVelocity * dt);
+	mRect = mRect.MoveCopy(mVelocity * dt);
 }
 
 void Fisics::move(VectorF movement)
 {
-	mRect = mRect.Translate(movement);
+	mRect = mRect.MoveCopy(movement);
 }
 
 

@@ -19,8 +19,10 @@ namespace ECS
 			IsEnemy = 1 << 3,
 
 			HitPlayerOnly = 1 << 4,
-			HitEnemyOnly = 1 << 5
+			HitEnemyOnly = 1 << 5,
 
+			IgnoreAll = 1 << 6,
+			IgnoreCollisions = 1 << 7
 		};
 
 		enum RuntimeFlags 
@@ -31,24 +33,35 @@ namespace ECS
 			RestrictDown	= 4 << 0
 		};
 		
-		virtual bool intersects(Collider& collider);
+		virtual bool intersects(const Collider& collider) const;
 		virtual bool intersects(const RectF& rect) const;
 		bool contains(VectorF position) const;
 	
 		static bool test1DOverlap(float minA, float maxA, float minB, float maxB);
 
-		void SetPosition(const RectF& rect, VectorF& target);
+		const RectF& GetRect() const;
+		void SetRect(const RectF& rect);
+
+		//void SetCenter(const VectorF& pos);
+
+		//void SetPosition(const RectF& rect, VectorF& target);
 		void RollBackPosition();
 		void RollForwardPosition();
 
 	#if TRACK_COLLISIONS
 		virtual void renderCollider();	
 	#endif
-
-		RectF mRect;
-		VectorF mForward;
-		VectorF mBack;;
-
+		
 		u32 mFlags = 0;
+		
+		VectorF allowedMovement;
+
+		VectorF mForward;
+		VectorF mBack;
+		VectorF posOffset;
+
+	private:
+		// always need to use the transform to set this position and offset by posOffset
+		RectF mRect;
 	};
 }

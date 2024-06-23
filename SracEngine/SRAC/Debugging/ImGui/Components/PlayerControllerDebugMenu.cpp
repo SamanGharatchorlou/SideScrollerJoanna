@@ -10,7 +10,7 @@ ECS::Component::Type DebugMenu::DoPlayerControllerDebugMenu(ECS::Entity& entity)
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Component::Type type = ECS::Component::PlayerController;
 
-	if (ecs->HasComponent(entity, type))
+	//if (ecs->HasComponent(entity, type))
 	{
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{

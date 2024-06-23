@@ -54,7 +54,7 @@ namespace ImGui
 		return did_press;
 	}
 
-	static void DisplayRect(RectF& rect)
+	static void DisplayRect(RectF rect)
 	{
 		ImGui::PushID((int)(rect.x1 + rect.x2 + rect.y1 + rect.y2));
 

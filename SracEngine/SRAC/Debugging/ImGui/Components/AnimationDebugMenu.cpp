@@ -7,6 +7,7 @@
 #include "ECS/EntityCoordinator.h"
 #include "Graphics/TextureManager.h"
 #include "Game/FrameRateController.h"
+#include "ECS/Components/ComponentCommon.h"
 
 //static std::vector<ActionState> s_animationPlaylist;
 static std::vector<Animation> s_animationPlaylist;
@@ -18,10 +19,23 @@ static bool s_playSingleAnimation = false;
 static bool s_displayRenderRect = false;
 static bool s_forceLooping = true;
 
+static bool s_flipOverride = false;
+static SDL_RendererFlip s_spriteFlip = SDL_FLIP_NONE;
+
 static ECS::Entity s_activeEnt;
 
 bool DebugMenu::UsingPlaylist(ECS::Entity& entity) { return s_usingPlaylist && s_activeEnt == entity; }
 bool DebugMenu::DisplayRenderRect(ECS::Entity& entity) { return s_displayRenderRect && s_activeEnt == entity; }
+bool DebugMenu::SpriteFlipOverride(ECS::Entity& entity, SDL_RendererFlip& sprite_flip) 
+{ 
+	if(s_flipOverride && s_activeEnt == entity)
+	{
+		sprite_flip = s_spriteFlip;
+		return true;
+	}
+
+	return false;
+}
 
 static Animation* SetAnimation(Animator& animator)
 {
@@ -64,7 +78,7 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 	}
 	s_activeEnt = entity;
 
-    if (ecs->HasComponent(entity, type))
+    //if (ecs->HasComponent(entity, type))
     {
 		ImGui::PushID(entity + (int)type);
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
@@ -240,8 +254,8 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 							ActionState action = animator.mAnimations[i].action;
 							//const bool is_selected = action == activeAnim->action;
 
-							char symbol = 0;
-							char dir = 0;
+							char symbol = ' ';
+							char dir = ' ';
 
 							VectorI direction = animator.mAnimations[i].direction;
 							bool flipable = animator.mAnimations[i].canFlip;
@@ -292,61 +306,64 @@ ECS::Component::Type DebugMenu::DoAnimationDebugMenu(ECS::Entity& entity)
 	return type;
 }
 
+
 ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Component::Type type = ECS::Component::Sprite;
 
-	if (ecs->HasComponent(entity, type))
+	if (!ecs->HasComponent(Transform, entity))
+		return type;
+
+	ImGui::PushID(entity + (int)type);
+	if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 	{
-		ImGui::PushID(entity + (int)type);
-		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
-		{
-			ECS::Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
-
-			RectF renderRect;
-			if (ecs->HasComponent(entity, ECS::Component::Transform))
-			{
-				ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
-				VectorF size = transform.rect.Size() * sprite.relativeRenderRect.Size();
-				VectorF pos = transform.rect.TopLeft() - sprite.relativeRenderRect.TopLeft() * size;
-				renderRect = RectF(pos, size);
-			}
+		const ECS::Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
+		const RectF render_rect = ECS::GetRenderRect(entity);
 			
-			if (ImGui::TreeNode("Component Data"))
+		if (ImGui::TreeNode("Component Data"))
+		{
+			//ImGui::DisplayRect(render_rect);
+			//ImGui::DisplayRect(sprite.subRect);
+
+			StringBuffer32 spriteName = TextureManager::Get()->getTextureName(sprite.texture);
+			ImGui::Text("SpriteSheet: %s", spriteName.c_str());
+
+			ImGui::Text(sprite.flip == SDL_FLIP_HORIZONTAL ? "No flip" : "Horizontal flip");
+
+			ImGui::Checkbox("Flip override", &s_flipOverride);
+
+			if(ImGui::Button("Flip Sprite"))
 			{
-				if (ecs->HasComponent(entity, ECS::Component::Transform))
-				{
-					ImGui::DisplayRect(renderRect);
-				}
+				s_flipOverride = true;
 
-				ImGui::DisplayRect(sprite.subRect);
-
-				StringBuffer32 spriteName = TextureManager::Get()->getTextureName(sprite.texture);
-				ImGui::Text("SpriteSheet: %s", spriteName.c_str());
-
-				ImGui::TreePop();
+				if(s_spriteFlip == SDL_FLIP_HORIZONTAL)
+					s_spriteFlip = SDL_FLIP_NONE;
+				else
+					s_spriteFlip = SDL_FLIP_HORIZONTAL;
 			}
 
-			if (ImGui::TreeNode("Display"))
-			{
-				if (ecs->HasComponent(entity, ECS::Component::Transform))
-				{
-					ImGui::Checkbox("Display Render Rect", &s_displayRenderRect);
-					if (s_displayRenderRect)
-					{
-						//DebugDraw::RectOutline(renderRect, Colour::Red);
-					}
-				}
-
-
-
-				ImGui::TreePop();
-			}
+			ImGui::TreePop();
 		}
 
-		ImGui::PopID();
+		if (ImGui::TreeNode("Display"))
+		{
+			DebugDraw::RectOutline(render_rect, Colour::Green);
+
+			RectF object_rect = ECS::GetObjectRect(entity);
+			DebugDraw::RectOutline(object_rect, Colour::Purple);
+
+			RectF collider_rect = ECS::GetColliderRect(entity);
+			DebugDraw::RectOutline(collider_rect, Colour::Blue);
+
+			VectorF flip_point = ECS::GetObjectRect(entity).Center();
+			DebugDraw::Point(flip_point, 5.0f, Colour::White);
+
+			ImGui::TreePop();
+		}
 	}
+
+	ImGui::PopID();
 
 	return type;
 }

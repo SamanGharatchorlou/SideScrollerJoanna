@@ -16,3 +16,4 @@ struct CharacterAction : public State
 };
 
 ECS::Entity CreateAttackCollider(ECS::Entity entity, const RectF& rect, float damage, const char* entity_name);
+bool HandleAttackAnimation(ECS::Entity entity, ECS::Entity attack_collider);

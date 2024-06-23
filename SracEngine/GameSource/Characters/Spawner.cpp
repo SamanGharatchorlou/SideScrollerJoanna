@@ -6,6 +6,7 @@
 #include "ECS/Components/Components.h"
 #include "ECS/Components/TileMap.h"
 #include "ECS/EntityCoordinator.h"
+#include "ECS/Components/Collider.h"
 
 
 #include "Game/SystemStateManager.h"
@@ -21,20 +22,27 @@ ECS::Entity PlayerSpawn::Spawn()
 		const VectorF spawn_pos = tile_map.tileMap.playerSpawnArea.Center();
 		return PlayerSpawn::Spawn(spawn_pos);
 	}
+
+	return ECS::EntityInvalid;
 }
 
 ECS::Entity PlayerSpawn::Spawn(VectorF spawn_pos)
 {
+	//return ECS::EntityInvalid;
 	ECS::Entity entity = Player::Create();
 
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
-	transform.targetCenterPosition = spawn_pos;
+	transform.rect.SetCenter(spawn_pos);
+	//transform.targetCenterPosition = spawn_pos;
+
+	//ECS::Collider& collider = ecs->GetComponentRef(Collider, entity);
+	//collider.SetPosition(transform.rect, transform.targetCenterPosition);
 
 	return entity;
 }
 
-ECS::Entity EnemySpawn::Spawn(ECS::TileMap& map)
+ECS::Entity EnemySpawn::Spawn(const ECS::TileMap& map)
 {
 	ECS::Entity entity = Enemy::Create();
 
@@ -42,7 +50,14 @@ ECS::Entity EnemySpawn::Spawn(ECS::TileMap& map)
 
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
-	transform.targetCenterPosition = spawn_pos;
+	transform.rect.SetCenter(spawn_pos);
+	//transform.targetCenterPosition = spawn_pos;
 
 	return entity;
+}
+
+
+void EnemySpawn::SpawnAll(const ECS::TileMap& map)
+{
+	Spawn(map);
 }

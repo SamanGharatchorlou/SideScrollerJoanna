@@ -10,11 +10,40 @@
 #include "Input/InputManager.h"
 #include "Game/FrameRateController.h"
 #include "ECS/Components/ComponentsSetup.h"
+#include "Game/SystemStateManager.h"
 
+#include "ECS/Components/AIController.h"
+#include "ECS/Components/Collider.h"
+#include "ECS/Components/Components.h"
+#include "ECS/Components/Physics.h"
+#include "ECS/Components/PlayerController.h"
+#include "ECS/Components/TileMap.h"
 #include "Debugging/ImGui/Components/ComponentDebugMenu.h"
+
+#include "Characters/Player/PlayerCharacter.h"
+#include "Characters/Spawner.h"
 
 ECS::Entity s_selectedEntity = 0;
 u32 DebugMenu::GetSelectedEntity() { return s_selectedEntity; }
+
+int id_numb = 0;
+
+#define DoRemoveButton(type) \
+    ImGui::PushID(id_numb++); do_dropdown = true; \
+    if(ImGui::Button("-")) {\
+        ecs->RemoveComponent(type, s_selectedEntity); do_dropdown = false; }\
+    if(ImGui::IsItemHovered()) \
+        ImGui::SetTooltip("%s", ECS::ComponentNames[(int)ECS::Component::type]); \
+    ImGui::SameLine(); ImGui::PopID(); \
+
+#define ComponentDropdown(menu) \
+    if(do_dropdown) \
+        SetFlag<u64>(type, ECS::archetypeBit(menu(s_selectedEntity)));
+
+#define DoComponentDropdown(component) \
+    if(ecs->HasComponent(component,s_selectedEntity)) {\
+    DoRemoveButton(component); \
+    ComponentDropdown(Do##component##DebugMenu); }
 
 // Entity Window
 void DebugMenu::DoEntitySystemWindow()
@@ -57,18 +86,21 @@ void DebugMenu::DoEntitySystemWindow()
                 return;
             }
 
+            id_numb = 0;
             ECS::Archetype type = 0;
-            SetFlag<u64>(type, ECS::archetypeBit(DoTransformDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoAnimationDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoTileMapDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoColliderDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoCharacterStateDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoPhysicsDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoPlayerControllerDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoSpriteDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoPathingDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoAIControllerDebugMenu(s_selectedEntity)));
-            SetFlag<u64>(type, ECS::archetypeBit(DoHealthDebugMenu(s_selectedEntity)));
+            bool do_dropdown = true;
+
+            DoComponentDropdown(Animation);
+            DoComponentDropdown(TileMap);
+            DoComponentDropdown(Collider);
+            DoComponentDropdown(CharacterState);
+            DoComponentDropdown(Physics);
+            DoComponentDropdown(Sprite);
+            DoComponentDropdown(Transform);
+            DoComponentDropdown(Pathing);
+            DoComponentDropdown(AIController);
+            DoComponentDropdown(PlayerController);
+            DoComponentDropdown(Health);
 
             ECS::Archetype entity_type = ecs->entities.GetAchetype(s_selectedEntity);
             for (u32 i = 0; i < ECS::Component::Count; i++) 
@@ -78,7 +110,9 @@ void DebugMenu::DoEntitySystemWindow()
                     if(type & ECS::archetypeBit((ECS::Component::Type)i))
                         continue;
 
-		            ImGui::CollapsingHeader(ECS::ComponentNames[i]);
+                    ImGui::Button("-");
+                    ImGui::SameLine();
+		            ImGui::Text(ECS::ComponentNames[i]);
                 }
             }
         }
@@ -196,18 +230,74 @@ void DebugMenu::DoColliderWindow()
         if(!s_displayDynamics && !is_static)
             continue;
 
-        DebugDraw::Shape(s_drawType, collider.mRect, Colour::Blue);
+        Colour colour = Colour::Blue;
+        if(is_static)
+        {
+            colour = Colour::Purple;
+        }
+
+       bool ignore_collisions = HasFlag(collider.mFlags, ECS::Collider::Flags::IgnoreCollisions);
+        if(ignore_collisions)
+        {
+            colour = Colour::Black;
+        }
+
+        bool ignore_all = HasFlag(collider.mFlags, ECS::Collider::Flags::IgnoreAll);
+        if(ignore_all)
+        {
+            colour = Colour::LightGrey;
+            colour.a = 100;
+        }
+
+        DebugDraw::Shape(s_drawType, collider.GetRect(), colour);
 	}
 }
 
-
-#include "Game/SystemStateManager.h"
-
 void DebugMenu::DoGameStateWindow() 
 {
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+
     if(ImGui::Button("Restart Game State"))
     {
-        
 	    GameData::Get().systemStateManager->replaceState(SystemStates::GameState);
     }
+
+    if(ImGui::Button("Respawn Player"))
+    {
+	    ECS::Entity entity = Player::Get();
+        ecs->entities.KillEntity(entity);
+		PlayerSpawn::Spawn();
+    }
+
+    if(ImGui::Button("Respawn Enemy"))
+    {
+        const ECS::TileMap* tm = ECS::TileMap::GetActive();
+
+        for( u32 i = 0; i < ecs->systems.entSystems.size(); i++ )
+        {
+            if ( (ecs->systems.entSystems[i]->signature & (u64)1 << ECS::AIController::type() ))
+            {
+                for( u32 e = 0; e < ecs->systems.entSystems[i]->entities.size(); e++ )
+                {
+                    ECS::Entity entity = ecs->systems.entSystems[i]->entities[e];
+                    ecs->entities.KillEntity(entity);
+                }
+            }
+        }
+
+		EnemySpawn::SpawnAll(*tm);
+    }
+}
+
+static bool s_playerInvulnerable = true;
+
+void DebugMenu::DoTweakerWindow() 
+{
+	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+	ECS::Entity entity = Player::Get();
+
+    ImGui::Checkbox("Player Invulnerable", &s_playerInvulnerable);
+
+    ECS::Health& health = ecs->GetComponentRef(Health, entity);
+    health.invulnerable = s_playerInvulnerable;
 }

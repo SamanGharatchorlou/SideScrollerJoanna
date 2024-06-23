@@ -16,6 +16,7 @@
 #include "ECS/EntSystems/PlayerControllerSystem.h"
 #include "ECS/EntSystems/RenderSystem.h"
 #include "ECS/EntSystems/TileMapSystem.h"
+#include "ECS/EntSystems/TransformSystem.h"
 #include "ECS/SystemManager.h"
 
 
@@ -41,6 +42,10 @@ void ECS::RegisterAllComponents()
 void ECS::RegisterAllSystems()
 {
 	EntityCoordinator* ecs = GameData::Get().ecs;
+
+	// Transform
+	Signature transformSignature = ArcheBit(Transform); // also want sprite here, but its the same as rendering
+	ecs->RegisterSystem<TransformSystem>(transformSignature);
 
 	// Rendering
 	Signature renderSignature = ArcheBit(Transform) | ArcheBit(Sprite);

@@ -49,10 +49,11 @@ namespace ECS
 		{
 			if(const T* comp_ptr = GetComponent<T>(entity, type))
 			{
+				//Archetype archetype = entities.GetAchetype(entity);
+
 				components.RemoveComponent<T>(entity, type);
 				entities.RemoveComponent(entity, type);
 
-				Archetype archetype = entities.GetAchetype(entity);
 				systems.EntityRemoveType(entity, type);
 			}
 		}
@@ -95,4 +96,5 @@ namespace ECS
 #define GetComponent(compType, entity) GetComponent<ECS::compType>(entity, ECS::compType::type())
 #define GetComponentRef(compType, entity) GetComponentRef<ECS::compType>(entity, ECS::compType::type())
 #define RemoveComponent(compType, entity) RemoveComponent<ECS::compType>(entity, ECS::compType::type())
+#define HasComponent(compType, entity) HasComponent(entity, ECS::compType::type())
 }

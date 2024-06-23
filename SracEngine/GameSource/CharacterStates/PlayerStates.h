@@ -31,6 +31,7 @@ namespace Player
 	{
 		void Init() override;
 		void Update(float dt) override;
+		void Exit() override;
 	};
 
 	struct BasicAttackState : public CharacterAction

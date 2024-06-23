@@ -15,7 +15,7 @@ namespace ECS
 					rect.BotPoint()   < mRect.TopPoint());
 	}
 
-	bool Collider::intersects(Collider& collider)
+	bool Collider::intersects(const Collider& collider) const
 	{
 		return intersects(collider.mRect);
 	}
@@ -34,11 +34,6 @@ namespace ECS
 					position.x < mRect.LeftPoint()  || 
 					position.y > mRect.BotPoint()   || 
 					position.y < mRect.TopPoint());
-
-		//bool xOverlaps = mRect.LeftPoint() < position.x && mRect.RightPoint() > position.x;
-		//bool yOverlaps = mRect.TopPoint() < position.y && mRect.BotPoint() > position.y;
-
-		//return xOverlaps && yOverlaps;
 	}
 
 	bool Collider::test1DOverlap(float minA, float maxA, float minB, float maxB)
@@ -46,12 +41,22 @@ namespace ECS
 		return maxA > minB && minA < maxB;
 	}
 
-	void Collider::SetPosition(const RectF& rect, VectorF& forward)
+	const RectF& Collider::GetRect() const
+	{
+		return mRect;
+	}
+
+	void Collider::SetRect(const RectF& rect)
 	{
 		mRect = rect;
-		mForward = forward;
-		mBack = rect.Center();
 	}
+
+	//void Collider::SetPosition(const RectF& rect, VectorF& forward)
+	//{
+	//	SetCenter(rect.Center());
+	//	mForward = forward;
+	//	mBack = rect.Center();
+	//}
 	void Collider::RollBackPosition()
 	{
 		mRect.SetCenter(mBack);
@@ -60,6 +65,11 @@ namespace ECS
 	{
 		mRect.SetCenter(mForward);
 	}
+		
+	//void Collider::SetCenter(const VectorF& pos)
+	//{
+	//	mRect.SetCenter(pos + posOffset);
+	//}
 
 	#if TRACK_COLLISIONS
 	void Collider::renderCollider()

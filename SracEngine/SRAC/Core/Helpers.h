@@ -13,6 +13,12 @@ static void SetFlag(T& flag, T marker)
 	flag |= marker;
 }
 
+template<class T>
+static void RemoveFlag(T& flag, T marker)
+{
+	flag &= ~marker;
+}
+
 template<typename T>
 void merge(std::vector<T>& vectorA, const std::vector<T>& vectorB)
 {
@@ -53,11 +59,18 @@ static Vector2D<int> toVectorI(const char* x, const char* y)
 
 //--------------------------------------------------------
 // Parser helpers
-static VectorF attributesToVectorF(XMLNode node, const char* x, const char* y)
+static VectorF attributesToVectorF(XMLNode node)
 {
-	float vec_x = toFloat(node.attribute(x)->value());
-	float vec_y = toFloat(node.attribute(y)->value());
-	return VectorF(vec_x, vec_y);
+	VectorF vector;
+	if(node)
+	{
+		if( XMLNode::Attribute attribute = node.attribute("x"))
+			vector.x = toFloat(attribute->value());
+		if( XMLNode::Attribute attribute = node.attribute("y"))
+			vector.y = toFloat(attribute->value());
+	}
+
+	return vector;
 }
 
 static VectorI attributesToVectorI(XMLNode node, const char* x, const char* y)

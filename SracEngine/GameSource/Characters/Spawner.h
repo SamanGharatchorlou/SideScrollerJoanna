@@ -13,5 +13,6 @@ namespace PlayerSpawn
 
 namespace EnemySpawn
 {
-	ECS::Entity Spawn(ECS::TileMap& map);
+	ECS::Entity Spawn(const ECS::TileMap& map);
+	void SpawnAll(const ECS::TileMap& map);
 }

@@ -21,7 +21,7 @@ namespace ECS
 				int a = 4;
 
 			CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-			Transform& transform = ecs->GetComponentRef(Transform, entity);
+			//Transform& transform = ecs->GetComponentRef(Transform, entity);
 			Animation& animation = ecs->GetComponentRef(Animation, entity);
 
 			bool using_playlist = DebugMenu::UsingPlaylist(entity);
@@ -32,6 +32,7 @@ namespace ECS
 				animator.RunActive(dt);
 			
 			Sprite& sprite = ecs->GetComponentRef(Sprite, entity);
+
 
 			VectorF pos = animator.getAnimationSubRect();
 			sprite.subRect = RectF(pos, animator.FrameSize());
@@ -47,32 +48,22 @@ namespace ECS
 			const ::Animation* anim = animator.getAnimation(action, state.facingDirection, is_flipped);
 			const ::Animation* active_anim = animator.activeAnimation();
 			
-			transform.flip = is_flipped ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+			sprite.flip = is_flipped ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+
+			DebugMenu::SpriteFlipOverride(entity, sprite.flip);
 
 			if ( anim && anim != active_anim )
 			{
 				animator.selectAnimation(*anim);
 
 				const SpriteSheet& ss = animator.getSpritesheet(*anim);
-				sprite.relativeRenderRect = ss.GetRelativeRenderRect();
+				sprite.renderSize = ss.renderSize;
 				sprite.texture = ss.texture;
 			}
-		}
-	}
 
-	RectF AnimationSystem::GetRenderRect(ECS::Entity entity)
-	{
-		EntityCoordinator* ecs = GameData::Get().ecs;
-		if(const ECS::Sprite* sprite = ecs->GetComponent(Sprite, entity))
-		{
-			if(const ECS::Transform* transform = ecs->GetComponent(Transform, entity))
-			{
-				VectorF size = transform->rect.Size() * sprite->relativeRenderRect.Size();
-				VectorF pos = transform->rect.TopLeft() - sprite->relativeRenderRect.TopLeft() * size;
-				return RectF(pos, size);
-			}
+			//
+			//// update transform size, is this the wrong place to do it?
+			//transform.rect.SetSize(sprite.renderSize);
 		}
-
-		return RectF();
 	}
 }

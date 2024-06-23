@@ -9,12 +9,23 @@ struct SpriteSheet
 	BasicString ID;
 	Texture* texture;
 	VectorF frameSize;
-	VectorF objectSize;
-	VectorF objectPos;
+
 	VectorI boundaries;
 
+	// outer boundary that we draw
+	VectorF renderSize;
+
+	// size of the object/character, the pos is relative to the render rect
+	VectorF objectPos;
+	VectorF objectSize;
+
+	// todo: move somewhere else?	
+	VectorF colliderSize;
+	VectorF colliderPos;
+
 	// derive the render rect from the object pos + size
-	RectF GetRelativeRenderRect() const;
+	//RectF GetRelativeRenderRect() const;
+	//RectF GetRelativeColliderRect() const;
 };
 
 struct Animation
@@ -28,6 +39,8 @@ struct Animation
 
 	int startIndex = 0;
 	int frameCount = 0;
+
+	int colliderFrame = 0;
 
 	int minLoops = 0;
 	bool looping = true;

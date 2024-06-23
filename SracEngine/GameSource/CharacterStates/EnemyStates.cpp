@@ -10,6 +10,7 @@
 #include "Debugging/ImGui/ImGuiMainWindows.h"
 #include "ECS/EntSystems/AnimationSystem.h"
 #include "ECS/Components/Collider.h"
+#include "ECS/Components/ComponentCommon.h"
 
 namespace Enemy
 {
@@ -146,8 +147,10 @@ namespace Enemy
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 		ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 		ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
-			
-		if(animation.animator.finished())
+		
+		const Animation* anim = animation.animator.activeAnimation();
+		
+		if(HandleAttackAnimation(entity, attackCollider))
 		{
 			ai.PopState();
 			ai.PushState(ActionState::Idle, 1.0f);
@@ -167,6 +170,11 @@ namespace Enemy
 		can_kill = false;
 
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+
+		if(ECS::Collider* collider = ecs->GetComponent(Collider, entity))
+		{
+			SetFlag(collider->mFlags, (u32)ECS::Collider::IgnoreAll);
+		}
 
 		if(ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 		{
@@ -194,7 +202,7 @@ namespace Enemy
 		const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 
 		const RectF& character_rect = transform.rect;
-		const RectF boundary_rect = ECS::AnimationSystem::GetRenderRect(entity);
+		const RectF boundary_rect = ECS::GetRenderRect(entity);
 
 		const VectorI direction = state.facingDirection;
 		if( direction.x == -1 || direction.x == 1 )

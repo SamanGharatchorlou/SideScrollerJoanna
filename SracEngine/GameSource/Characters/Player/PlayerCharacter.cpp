@@ -28,7 +28,6 @@ ECS::Entity Player::Create()
 
 	// Transform
 	ECS::Transform& transform = ecs->AddComponent(Transform, s_playerEntity);
-	transform.rect.SetSize(VectorF(64, 64));
 	
 	// MovementPhysics
 	ECS::Physics& physics = ecs->AddComponent(Physics, s_playerEntity);
@@ -47,7 +46,8 @@ ECS::Entity Player::Create()
 	
 	// Collider
 	ECS::Collider& collider = ecs->AddComponent(Collider, s_playerEntity);
-	collider.mRect = transform.rect;
+	SpriteSheet& ss = animation.animator.mSpriteSheets.front();
+	collider.SetRect(RectF(VectorF::zero(), ss.colliderSize));
 	
 	// PlayerController
 	ECS::PlayerController& player_controller = ecs->AddComponent(PlayerController, s_playerEntity);

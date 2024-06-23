@@ -26,7 +26,7 @@ namespace ECS
 			Physics& physics = ecs->GetComponentRef(Physics, entity);
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
-			transform.rect.SetCenter(transform.targetCenterPosition);
+			//transform.rect.SetCenter(transform.targetCenterPosition);
 			
 			if(aic.actions.HasAction())
 			{
@@ -59,14 +59,12 @@ namespace ECS
 				aic.PushState(ActionState::Idle);
 			}
 
-			aic.actions.ProcessStateChanges();
+			// update the state actions
 			state.action = aic.actions.Top().action;
 
 			if(Pathing* pathing = ecs->GetComponent(Pathing, entity))
 			{
 				pathing->target = Player::Get();
-
-				//pathing->target 
 				if(pathing->path.size() > 2)
 				{
 					VectorI current = pathing->path.back();
@@ -90,7 +88,7 @@ namespace ECS
 			}
 
 			// where we're trying to move to
-			transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
+			//transform.targetCenterPosition = transform.rect.Translate(physics.speed).Center();
 		}
 
 		for( u32 i = 0; i < dead_entities.size(); i++ )

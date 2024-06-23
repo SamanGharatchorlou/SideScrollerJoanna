@@ -1,12 +1,13 @@
 #pragma once
+
 #include "ECS/SystemManager.h"
 
 namespace ECS
 {
-	class AnimationSystem : public EntitySystem
+	class TransformSystem : public EntitySystem
 	{
 	public:
-		AnimationSystem(Archetype type) : EntitySystem(type) { }
+		TransformSystem(Archetype type) : EntitySystem(type) { }
 
 		void Update(float dt) override;
 	};

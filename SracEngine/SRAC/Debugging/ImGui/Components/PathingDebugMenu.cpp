@@ -22,7 +22,7 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 	ECS::Component::Type type = ECS::Component::Pathing;
 
-	if(ecs->HasComponent(entity, type)) 
+	//if(ecs->HasComponent(entity, type)) 
     {
 		if (ImGui::CollapsingHeader(ECS::ComponentNames[type]))
 		{

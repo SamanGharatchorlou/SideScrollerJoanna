@@ -7,6 +7,9 @@ namespace ECS
 {
 	void Health::ApplyDamage(const Damage& damage)
 	{
+		if(invulnerable)
+			return;
+
 		EntityCoordinator* ecs = GameData::Get().ecs;
 
 		for( u32 i = 0; i < ignoredDamaged.size(); i++ )

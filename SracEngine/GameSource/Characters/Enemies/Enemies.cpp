@@ -42,7 +42,7 @@ ECS::Entity Enemy::Create()
 	
 	// Collider
 	ECS::Collider& collider = ecs->AddComponent(Collider, entity);
-	collider.mRect = transform.rect;
+	collider.SetRect(transform.rect);
 	SetFlag<u32>(collider.mFlags, (u32)ECS::Collider::IsEnemy);
 	
 	// AI Controller

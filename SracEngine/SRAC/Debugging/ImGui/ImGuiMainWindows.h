@@ -6,6 +6,7 @@ namespace DebugMenu
 	void DoInputWindow();
 	void DoColliderWindow();
 	void DoGameStateWindow();
+	void DoTweakerWindow();
 
 	u32 GetSelectedEntity();
 }

@@ -6,14 +6,22 @@ class ActionStack
 public:
 	bool HasAction() const { return stack.size() > 0; }
 
-	void Push(T* item)
+	void Push(T* state)
 	{
-		stateToAdd = item;
+		stack.push_back(state);
+		stack.back()->Init();
 	}
 
 	void Pop()
 	{
-		pop = true;
+		if(stack.size() > 0)
+		{
+			stack.back()->Exit();
+			stack.pop_back();
+		}
+
+		if(stack.size() == 0)
+			int a = 4;
 	}
 
 	void Replace(T* item)
@@ -34,34 +42,5 @@ public:
 		return nullptr;
 	}
 
-	void ProcessStateChanges()
-	{
-		stateFrames++;
-
-		if(pop && stack.size() > 0)
-		{
-			stack.back()->Exit();
-			stack.pop_back();
-
-			stateFrames = 0;
-		}
-
-		if(stateToAdd)
-		{
-			stack.push_back(stateToAdd);
-			stack.back()->Init();
-
-			stateFrames = 0;
-			stateToAdd = nullptr;
-		}
-
-		pop = false;
-	}
-
 	std::vector<T*> stack;
-
-	T* stateToAdd = nullptr;
-
-	u32 stateFrames = 0;
-	bool pop = false;
 };

@@ -54,7 +54,7 @@ void Camera::fastUpdate(float dt)
 		mRect.RightPoint() + translation.x <= mBoundaries.x2)
 #endif
 	{
-		mRect = mRect.Translate(translation.x, 0.0f);
+		mRect.Translate( VectorF(translation.x, 0.0f) );
 	}
 
 
@@ -63,7 +63,7 @@ void Camera::fastUpdate(float dt)
 		mRect.BotPoint() + translation.y <= mBoundaries.y2)
 #endif
 	{
-		mRect = mRect.Translate(0.0f, translation.y);
+		mRect.Translate( VectorF(0.0f, translation.y) );
 	}
 
 

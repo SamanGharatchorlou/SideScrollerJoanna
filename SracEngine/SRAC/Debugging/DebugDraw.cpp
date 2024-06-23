@@ -58,7 +58,7 @@ namespace DebugDraw
 	}
 
 
-	void RectOutline(RectF rect, Colour colour)
+	void RectOutline(const RectF& rect, Colour colour)
 	{
 		DebugRenderPack pack;
 		pack.colour = colour;
@@ -68,7 +68,7 @@ namespace DebugDraw
 	}
 
 
-	void RectFill(RectF rect, Colour colour)
+	void RectFill(const RectF& rect, Colour colour)
 	{
 		DebugRenderPack pack;
 		pack.colour = colour;

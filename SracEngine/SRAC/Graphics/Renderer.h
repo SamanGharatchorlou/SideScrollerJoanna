@@ -1,6 +1,4 @@
 #pragma once
-
-
 #include <mutex>
 
 class Renderer
@@ -17,18 +15,14 @@ public:
 	void create(SDL_Renderer* renderer) { mRenderer = renderer; }
 
 	SDL_Renderer* sdlRenderer() const { return mRenderer; }
-	//SDL_Renderer* requestSDLRenderer();
 
 	void setScale(float scale);
 
 private:
-	Renderer();// { mLoadingSemaphor = SDL_CreateSemaphore(1); }
+	Renderer();
 	~Renderer() { }
 
 	SDL_Renderer* mRenderer;
-
-	// For loading only
-	//SDL_sem* mLoadingSemaphor;
 	SDL_SpinLock mLoadingLock;
 
 	std::mutex mMutex;

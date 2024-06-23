@@ -56,11 +56,12 @@ namespace ECS
 			}
 		}
 
-		void EntityRemoveType(Entity entity, Signature type)
+		void EntityRemoveType(Entity entity, Component::Type type)
 		{
 			for (u32 i = 0; i < entSystems.size(); i++)
 			{
-				if (!(entSystems[i]->signature & type))
+				//if (LockAndKey(entSystems[i]->signature, type)) // this is wrong!
+				if ( (entSystems[i]->signature & (u64)1 << type ))
 				{
 					const u32 ent_count = entSystems[i]->entities.size();
 					for (int ent = 0; ent < ent_count; ent++)
