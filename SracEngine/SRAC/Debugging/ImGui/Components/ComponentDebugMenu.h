@@ -8,6 +8,7 @@ namespace DebugMenu
 	bool UsingPlaylist(ECS::Entity& entity);
 	bool DisplayRenderRect(ECS::Entity& entity);
 	bool SpriteFlipOverride(ECS::Entity& entity, SDL_RendererFlip& sprite_flip);
+	bool RemovePath(ECS::Entity& entity);
 
 	ECS::Component::Type DoTransformDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoSpriteDebugMenu(ECS::Entity& entity);

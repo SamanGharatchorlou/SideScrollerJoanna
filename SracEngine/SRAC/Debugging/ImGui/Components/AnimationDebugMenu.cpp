@@ -19,6 +19,15 @@ static bool s_playSingleAnimation = false;
 static bool s_displayRenderRect = false;
 static bool s_forceLooping = true;
 
+struct RenderRects
+{
+	bool render = true;
+	bool object = true;
+	bool collider = true;
+};
+
+static RenderRects s_renderRects;
+
 static bool s_flipOverride = false;
 static SDL_RendererFlip s_spriteFlip = SDL_FLIP_NONE;
 
@@ -323,9 +332,6 @@ ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 			
 		if (ImGui::TreeNode("Component Data"))
 		{
-			//ImGui::DisplayRect(render_rect);
-			//ImGui::DisplayRect(sprite.subRect);
-
 			StringBuffer32 spriteName = TextureManager::Get()->getTextureName(sprite.texture);
 			ImGui::Text("SpriteSheet: %s", spriteName.c_str());
 
@@ -348,16 +354,28 @@ ECS::Component::Type DebugMenu::DoSpriteDebugMenu(ECS::Entity& entity)
 
 		if (ImGui::TreeNode("Display"))
 		{
-			DebugDraw::RectOutline(render_rect, Colour::Green);
+			ImGui::Checkbox("Render Rect", &s_renderRects.render);
+			if(s_renderRects.render)
+			{	
+				DebugDraw::RectOutline(render_rect, Colour::Green);
+			}
+			
+			ImGui::Checkbox("Object Rect", &s_renderRects.object);
+			if(s_renderRects.object)
+			{
+				RectF object_rect = ECS::GetObjectRect(entity);
+				DebugDraw::RectOutline(object_rect, Colour::Purple);
 
-			RectF object_rect = ECS::GetObjectRect(entity);
-			DebugDraw::RectOutline(object_rect, Colour::Purple);
+				VectorF flip_point = ECS::GetObjectRect(entity).Center();
+				DebugDraw::Point(flip_point, 5.0f, Colour::White);
+			}
 
-			RectF collider_rect = ECS::GetColliderRect(entity);
-			DebugDraw::RectOutline(collider_rect, Colour::Blue);
-
-			VectorF flip_point = ECS::GetObjectRect(entity).Center();
-			DebugDraw::Point(flip_point, 5.0f, Colour::White);
+			ImGui::Checkbox("Collider Rect", &s_renderRects.collider);
+			if(s_renderRects.collider)		
+			{
+				RectF collider_rect = ECS::GetColliderRect(entity);
+				DebugDraw::RectOutline(collider_rect, Colour::Blue);
+			}
 
 			ImGui::TreePop();
 		}

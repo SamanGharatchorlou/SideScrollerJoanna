@@ -77,6 +77,11 @@ namespace ECS
 						state.facingDirection = state.movementDirection;
 					}
 				}
+				else if(pathing->path.size() == 0)
+				{
+					state.movementDirection = VectorI::zero();
+					physics.speed = VectorF::zero();
+				}
 			}
 						
 			if(DebugMenu::GetSelectedEntity() == entity)

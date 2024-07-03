@@ -34,6 +34,66 @@ namespace Enemy
 		return state;
 	}
 
+	bool CanAttackTarget(ECS::Entity entity, VectorI& out_facing_direction)
+	{
+		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+		if( ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity) )
+		{
+			if(ecs->IsAlive(pathing->target))
+			{
+				const ECS::Transform& target_transform = ecs->GetComponentRef(Transform, pathing->target);
+				VectorF target_position = target_transform.rect.Center();
+				
+				const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
+
+				float distance_squard = (transform.rect.Center() - target_position).lengthSquared();
+				float attack_range = GetAttackRange(entity);
+
+				// out of attack range
+				if(distance_squard > (attack_range * attack_range))
+					return false;
+				
+				if(ECS::Collider* target_collider = ecs->GetComponent(Collider, pathing->target))
+				{
+					// todo: draw the attack collider here, if its going to hit then do it
+
+					ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+					const VectorI directions[4] = { VectorI(0,-1), VectorI( 1, 0), VectorI(0, 1), VectorI(-1, 0) };
+					for( u32 i = 0; i < 4; i++ )
+					{
+						VectorF looking_at = transform.rect.Center() + (directions[i].toFloat() * attack_range);
+						if(target_collider->contains(looking_at))
+						{
+							out_facing_direction = directions[i];
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	static bool TryAttackTarget(ECS::Entity entity)
+	{
+		VectorI direction;
+		if(CanAttackTarget(entity, direction))
+		{
+			ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+
+			ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
+			ai.PushState(ActionState::BasicAttack);
+			
+			ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+			state.facingDirection = direction;
+
+			return true;
+		}
+
+		return false;
+	}
+
 	// Idle
 	// ---------------------------------------------------------
 	void IdleState::Update(float dt)
@@ -41,6 +101,8 @@ namespace Enemy
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
 		ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
 		ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+		
+		TryAttackTarget(entity);
 
 		if(!state.movementDirection.isZero())
 		{
@@ -64,29 +126,7 @@ namespace Enemy
 			physics->ApplyDrag(state.movementDirection.toFloat(), 0.9f);
 		}
 
-		if( ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity) )
-		{
-			if(ecs->IsAlive(pathing->target))
-			{
-				const ECS::Transform& target_transform = ecs->GetComponentRef(Transform, pathing->target);
-				VectorF target_position = target_transform.rect.Center();
-				
-				const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
-
-				float distance_squard = (transform.rect.Center() - target_position).lengthSquared();
-				float attack_range = GetAttackRange(entity);
-
-				VectorF looking_at = transform.rect.Center() + (state.facingDirection.toFloat() * attack_range);
-				if(ECS::Collider* target_collider = ecs->GetComponent(Collider, pathing->target))
-				{
-					if(target_collider->contains(looking_at))
-					{
-						ai.PopState();
-						ai.PushState(ActionState::BasicAttack);
-					}
-				}
-			}
-		}
+		TryAttackTarget(entity);
 
 		if(state.movementDirection.isZero())
 		{
@@ -105,6 +145,9 @@ namespace Enemy
 
 		const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
 		const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+		
+		const RectF boundary_rect = ECS::GetRenderRect(entity);
+		const RectF character_rect = ECS::GetObjectRect(entity);
 
 		if(ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 		{
@@ -117,26 +160,29 @@ namespace Enemy
 		if( direction.x == -1 || direction.x == 1 )
 		{
 			const float range = GetAttackRange(entity);
-			const float height = transform.rect.Width() * 1.5f;
+			const float height = boundary_rect.Height() * 0.25f;
 			const VectorF size(range, height);
 			collider_rect.SetSize(size);
 
 			if( direction.x == 1 )
-				collider_rect.SetLeftCenter(transform.rect.BotCenter());
+				collider_rect.SetLeftCenter(character_rect.BotCenter());
 			else
-				collider_rect.SetRightCenter(transform.rect.BotCenter());
+				collider_rect.SetRightCenter(character_rect.BotCenter());
 		}
 		else if( direction.y == -1 || direction.y == 1 )
 		{
 			const float range = GetAttackRange(entity);
-			const float width = transform.rect.Width() * 1.5f;
+			const float width = boundary_rect.Width() * 0.6f;
 			const VectorF size(width, range);
 			collider_rect.SetSize(size);
 
 			if( direction.y == 1 )
-				collider_rect.SetTopCenter(transform.rect.Center());
+			{
+				const RectF character_collider_rect = ECS::GetColliderRect(entity);
+				collider_rect.SetTopCenter(character_collider_rect.BotCenter());
+			}
 			else
-				collider_rect.SetBotCenter(transform.rect.Center());
+				collider_rect.SetBotCenter(character_rect.Center());
 		}
 
 		attackCollider = CreateAttackCollider(entity, collider_rect, 60, "Enemy Attack Collider");
@@ -197,25 +243,18 @@ namespace Enemy
 	const float GetAttackRange(ECS::Entity entity)
 	{
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-
-		const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
+		
 		const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-
-		const RectF& character_rect = transform.rect;
 		const RectF boundary_rect = ECS::GetRenderRect(entity);
-
 		const VectorI direction = state.facingDirection;
+
 		if( direction.x == -1 || direction.x == 1 )
 		{
-			const float right = character_rect.Center().x;
-			const float left = boundary_rect.LeftCenter().x;
-			return right - left;
+			return boundary_rect.Width() * 0.5f;
 		}
 		else if( direction.y == -1 || direction.y == 1 )
 		{
-			const float top = character_rect.Center().y;
-			const float bottom = boundary_rect.BotCenter().y;
-			return bottom - top;
+			return boundary_rect.Height() * 0.3f;
 		}
 
 		return 0;

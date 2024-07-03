@@ -174,19 +174,16 @@ void DodgeState::Init()
 void DodgeState::Update(float dt)
 {
 	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
-	ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
-
-	ActionState action = animation.animator.activeAction();
-	ASSERT(action == ActionState::Dodge, "Not the Slash Attack State");
 
 	if (ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 	{
 		physics->ApplyDrag(VectorF::zero(), 0.08f);
 	}
-
+	
+	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 	if(animation.animator.finished())
 	{
+		ECS::PlayerController& pc = ecs->GetComponentRef(PlayerController, entity);
 		pc.PopState();
 	}
 }
@@ -211,7 +208,7 @@ void BasicAttackState::Init()
 	const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
 	const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 
-	const RectF& character_rect = transform.rect;
+	const RectF& character_rect = ECS::GetObjectRect(entity);
 	const RectF boundary_rect = ECS::GetRenderRect(entity);
 
 	RectF collider_rect;
@@ -221,10 +218,8 @@ void BasicAttackState::Init()
 	{
 		if( direction.x == -1 || direction.x == 1 )
 		{
-			const float right = boundary_rect.RightCenter().x;
-			const float left = character_rect.Center().x;
-			const float width = right - left;
-			const float height = transform.rect.Height() * 0.5f;
+			const float width = boundary_rect.Width() * 0.7f;
+			const float height = boundary_rect.Height() * 0.3f;
 			const VectorF size(width, height);
 			collider_rect.SetSize(size);
 
@@ -235,17 +230,15 @@ void BasicAttackState::Init()
 		}
 		else if( direction.y == -1 || direction.y == 1 )
 		{
-			const float top = character_rect.Center().y;
-			const float bottom = boundary_rect.BotCenter().y;
-			const float height = bottom - top;
-			const float width = transform.rect.Width() * 1.25f;
+			const float height = boundary_rect.Height() * 0.45f;
+			const float width = boundary_rect.Width() * 0.65f;
 			const VectorF size(width, height);
 			collider_rect.SetSize(size);
 
 			if( direction.y == 1 )
-				collider_rect.SetTopLeft(character_rect.LeftCenter());
+				collider_rect.SetTopCenter(character_rect.Center());
 			else
-				collider_rect.SetBotLeft(character_rect.LeftCenter());
+				collider_rect.SetBotCenter(character_rect.Center());
 		}
 	}
 
@@ -262,15 +255,12 @@ void BasicAttackState::Update(float dt)
 		physics->ApplyDrag(VectorF::zero(), 0.2f);
 	}
 	
-	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
-	ActionState action = animation.animator.activeAction();
-	ASSERT(action == ActionState::BasicAttack, "Not the BasicAttack State");
-
 	if(HandleAttackAnimation(entity, attackCollider))
 	{
 		pc.PopState();
 	}
-
+	
+	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
 	if(animation.animator.lastFrame())
 	{
 		// input buffer
@@ -280,7 +270,7 @@ void BasicAttackState::Update(float dt)
 			animation.animator.restart();
 
 			pc.PopState();
-			pc.PushState(action);
+			pc.PushState(ActionState::BasicAttack);
 		}
 	}
 }
@@ -305,9 +295,6 @@ void ChopAttackState::Update(float dt)
 	}
 	
 	ECS::Animation& animation = ecs->GetComponentRef(Animation, entity);
-	ActionState action = animation.animator.activeAction();
-	ASSERT(action == ActionState::ChopAttack, "Not the Slash Attack State");
-
 	if(animation.animator.finished())
 	{
 		pc.PopState();
@@ -322,7 +309,7 @@ void ChopAttackState::Update(float dt)
 			animation.animator.restart();			
 			
 			pc.PopState();
-			pc.PushState(action);;
+			pc.PushState(ActionState::ChopAttack);;
 		}
 	}
 }

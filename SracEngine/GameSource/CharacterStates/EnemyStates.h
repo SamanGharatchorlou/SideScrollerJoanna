@@ -40,4 +40,5 @@ namespace Enemy
 	};
 
 	const float GetAttackRange(ECS::Entity entity);
+	bool CanAttackTarget(ECS::Entity entity, VectorI& out_facing_direction);
 }

@@ -18,9 +18,16 @@ void PlayerController::PushState(ActionState action)
 
 void PlayerController::PopState()
 {
-	CharacterAction* state = &actions.Top();
-	actions.Pop();
-	statePool.returnObject(state, state->action);
+	if(actions.stack.size() > 1)
+	{
+		CharacterAction* state = &actions.Top();
+		actions.Pop();
+		statePool.returnObject(state, state->action);
 
-	DebugPrint(PriorityLevel::Debug, "Returning player action state: %s | %d states left", actionToString(state->action).c_str(), statePool.size(state->action));
+		DebugPrint(PriorityLevel::Debug, "Returning player action state: %s | %d states left", actionToString(state->action).c_str(), statePool.size(state->action));
+	}
+	else
+	{
+		DebugPrint(PriorityLevel::Debug, "Cant pop when only 1 player state left");
+	}
 }

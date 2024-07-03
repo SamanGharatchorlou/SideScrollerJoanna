@@ -5,6 +5,7 @@
 #include "ECS/Components/Components.h"
 #include "ECS/Components/Physics.h"
 #include "ECS/Components/TileMap.h"
+#include "SRAC/Debugging/ImGui/Components/ComponentDebugMenu.h"
 
 namespace ECS
 {
@@ -139,6 +140,13 @@ namespace ECS
  		for (Entity entity : entities)
 		{
 			Pathing& pathing = ecs->GetComponentRef(Pathing, entity);
+
+			if(DebugMenu::RemovePath(entity))
+			{
+				pathing.path.clear();
+				continue;
+			}
+
 			Transform& transform = ecs->GetComponentRef(Transform, entity);
 
 			VectorF start_position = transform.rect.Center();
