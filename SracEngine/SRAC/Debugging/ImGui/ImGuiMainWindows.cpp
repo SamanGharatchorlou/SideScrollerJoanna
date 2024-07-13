@@ -24,7 +24,9 @@
 #include "Characters/Spawner.h"
 
 ECS::Entity s_selectedEntity = 0;
+
 u32 DebugMenu::GetSelectedEntity() { return s_selectedEntity; }
+void DebugMenu::SelectEntity(ECS::Entity entity) { s_selectedEntity = entity; }
 
 int id_numb = 0;
 

@@ -5,7 +5,12 @@
 #include "ECS/Components/Components.h"
 #include "ECS/Components/Physics.h"
 #include "ECS/Components/TileMap.h"
+#include "ECS/Components/ComponentCommon.h"
+
 #include "SRAC/Debugging/ImGui/Components/ComponentDebugMenu.h"
+
+#include "Debugging/ImGui/ImGuiMainWindows.h"
+#include "CharacterStates/EnemyStates.h"
 
 namespace ECS
 {
@@ -129,6 +134,49 @@ namespace ECS
 		return std::vector<VectorI>();
 	}
 
+	static VectorF GetBestAttackPosition(const Pathing& pathing)
+	{
+		EntityCoordinator* ecs = GameData::Get().ecs;
+		
+		VectorF best_target_pos(-1, -1);
+		Direction best_direction = Direction::Count;
+
+		if(ecs->IsAlive(pathing.target))
+		{
+			const RectF target_rect = ECS::GetColliderRect(pathing.target);
+			const VectorF start_position = ECS::GetPosition(pathing.entity);
+
+			int min_path_length = INT_MAX;
+
+			// check which position is most desirable out of top, right, bottom, left depending on our position
+			for( u32 i = 0; i < Direction::Count; i++ )
+			{
+				const VectorI direction = s_directions[i];
+				const VectorI facing_direction = direction *-1;
+				
+				VectorF pos = target_rect.Center();
+				const VectorF area = Enemy::GetAttackRangeArea(pathing.entity, facing_direction);
+				pos += area * direction.toFloat();
+
+				if(DebugMenu::GetSelectedEntity() == pathing.entity)
+					DebugMenu::SetPathAttackPoint(pos, Colour::Purple, (Direction)i);
+
+				int path_length = PathingSystem::FindPath(start_position, pos).size();
+				if(path_length < min_path_length)
+				{
+					min_path_length = path_length;
+					best_target_pos = pos;
+					best_direction = (Direction)i;
+				}
+			}
+		}
+
+		if(DebugMenu::GetSelectedEntity() == pathing.entity && best_direction != Direction::Count)
+			DebugMenu::SetPathAttackPoint(best_target_pos, Colour::Green, best_direction);
+
+		return best_target_pos;
+	}
+
 	void PathingSystem::Update(float dt)
 	{
 		EntityCoordinator* ecs = GameData::Get().ecs;
@@ -147,15 +195,13 @@ namespace ECS
 				continue;
 			}
 
-			Transform& transform = ecs->GetComponentRef(Transform, entity);
-
-			VectorF start_position = transform.rect.Center();
-			VectorF end_position(-1,-1);
-			if(ecs->IsAlive(pathing.target))
-			{
-				const Transform& target_transform = ecs->GetComponentRef(Transform, pathing.target);
-				end_position = target_transform.rect.Center();
-			}
+			const VectorF start_position = ECS::GetPosition(entity);
+			const VectorF end_position = GetBestAttackPosition(pathing);
+			//if(ecs->IsAlive(pathing.target))
+			//{
+			//	const Transform& target_transform = ecs->GetComponentRef(Transform, pathing.target);
+			//	end_position = target_transform.rect.Center();
+			//}
 			
 			// only update if the target has moved
 			const VectorI end_index = (end_position / world_tile_size).toInt();

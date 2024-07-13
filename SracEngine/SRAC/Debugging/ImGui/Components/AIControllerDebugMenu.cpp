@@ -6,6 +6,7 @@
 #include "Debugging/ImGui/ImGuiHelpers.h"
 
 static bool s_enemyCanMove = true;
+static bool s_showAttackColliders = true;
 
 bool EnemyCanMove() 
 { 
@@ -34,11 +35,25 @@ ECS::Component::Type DebugMenu::DoAIControllerDebugMenu(ECS::Entity& entity)
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Restrict Enemy Movement"))
+		if (ImGui::TreeNode("Displaay"))
 		{
 			ImGui::Checkbox("Allow Enemy Movement", &s_enemyCanMove);
+
+			ImGui::Checkbox("Display Attack Colliders", &s_showAttackColliders);
+			if(s_showAttackColliders)
+			{
+				for( u32 i = 0; i < ECS::Direction::Count; i++ )
+				{
+					VectorI direction = ECS::s_directions[i];
+					RectF rect = Enemy::GetAttackRect(entity, direction);
+					DebugDraw::RectOutline(rect, Colour::Blue);
+				}
+			}
+
 			ImGui::TreePop();
 		}
+
+
 	}
 		
 	ImGui::PopID();

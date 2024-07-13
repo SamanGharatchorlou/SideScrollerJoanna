@@ -11,21 +11,17 @@
 
 namespace ECS
 {
-	//static void RollForwardCollider(EntityCoordinator* ecs, ECS::Entity entity)
-	//{
-	//	Collider& collider = ecs->GetComponentRef(Collider, entity);
+	static void RollForwardCollider(EntityCoordinator* ecs, ECS::Entity entity)
+	{
+		Collider& collider = ecs->GetComponentRef(Collider, entity);
 
-	//	// ignore static colliders, they dont move
-	//	u32 flags = Collider::Flags::Static;
-	//	if(HasFlag(collider.mFlags, flags))
-	//		return;
-	//		
-	//	Transform& transform = ecs->GetComponentRef(Transform, entity);
+		// ignore static colliders, they dont move
+		u32 flags = Collider::Flags::Static;
+		if(HasFlag(collider.mFlags, flags))
+			return;
 
-	//	// this doesnt seem to make a difference, seems like it should
-	//	collider.SetPosition(transform.rect, transform.targetCenterPosition);
-	//	collider.RollForwardPosition();
-	//}
+		collider.RollForwardPosition();
+	}
 
 	static bool CanCollide(EntityCoordinator* ecs, const Collider& A_collider, bool A_isDamage, bool A_isPhysical, const Collider& B_collider)
 	{
@@ -117,11 +113,19 @@ namespace ECS
 		std::vector<Collider>& collider_list = colliders.components;
 		const u32 count = collider_list.size();
 
-		//// first we need to update the collider position with where the entity wants to be
-		//for (Entity entity : entities)
-		//{
-		//	RollForwardCollider(ecs, entity);
-		//}
+		// first we need to update the collider position with where the entity wants to be
+		for (Entity entity : entities)
+		{
+			Collider& collider = ecs->GetComponentRef(Collider, entity);
+			collider.collisions.clear();
+
+			// ignore static colliders, they dont move
+			u32 flags = Collider::Flags::Static;
+			if(HasFlag(collider.mFlags, flags))
+				return;
+
+			collider.RollForwardPosition();
+		}
 
 		for (Entity entity : entities)
 		{
@@ -138,9 +142,7 @@ namespace ECS
 				continue;
 
 			const u32 index = colliders.GetComponentIndex(entity);
-			//Transform& transform = ecs->GetComponentRef(Transform, entity);
 			const Damage* A_damage = ecs->GetComponent(Damage, entity);
-
 			const bool A_is_damage = A_damage != nullptr;
 			const bool A_is_physical =  !A_is_damage;
 
@@ -161,19 +163,25 @@ namespace ECS
 
 				if(A_collider.intersects(B_collider)) 
 				{
+					ECS::Entity B_entity = B_collider.entity;
+					push_back_unique(A_collider.collisions, B_entity);
+					push_back_unique(B_collider.collisions, entity);
+
+					// ghost colliders just check for collisions and have no effect so dont compute anything below
+					u32 flags = Collider::Flags::GhostCollider;
+					if(HasFlag(A_collider.mFlags, flags))
+						continue;
+
 					// Damage
 					if( A_damage )
 					{
-						ECS::Entity B_entity = B_collider.entity;
 						Health* B_health = ecs->GetComponent(Health, B_entity);
 						B_health->ApplyDamage(*A_damage);
 					}
 					// Physical
 					else
 					{
-						//RectF rect = A_collider.GetRect();
-
-						VectorF velocity = A_collider.mForward - A_collider.mBack; //transform.rect.Center();
+						VectorF velocity = A_collider.mForward - A_collider.mBack;
 						if (velocity.isZero())
 							continue;
 
@@ -213,19 +221,11 @@ namespace ECS
 
 						B_collider.RollForwardPosition();
 
-
-						//transform.targetCenterPosition = transform.rect.Center() + allowed_velocity;
-						//A_collider.SetCenter(transform.targetCenterPosition);
 						if(allowed_velocity.x == 0)
 							A_collider.allowedMovement.x = 0.0f;
 
 						if(allowed_velocity.y == 0)
 							A_collider.allowedMovement.y = 0.0f;
-
-						//A_collider.allowedMovement.x = std::min(A_collider.allowedMovement.x, allowed_velocity.x);
-						//A_collider.allowedMovement.y = std::min(A_collider.allowedMovement.y, allowed_velocity.y);
-
-						//A_collider.mForward = A_collider.mBack + allowed_velocity;
 					}
 				}
             }

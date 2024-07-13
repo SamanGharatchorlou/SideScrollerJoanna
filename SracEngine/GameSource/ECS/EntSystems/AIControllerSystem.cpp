@@ -65,7 +65,9 @@ namespace ECS
 			if(Pathing* pathing = ecs->GetComponent(Pathing, entity))
 			{
 				pathing->target = Player::Get();
-				if(pathing->path.size() > 2)
+				//pathing->UpdateTargetPosition();
+
+				if(pathing->path.size() > 1)
 				{
 					VectorI current = pathing->path.back();
 					VectorI next = pathing->path[pathing->path.size() - 2];
@@ -77,10 +79,10 @@ namespace ECS
 						state.facingDirection = state.movementDirection;
 					}
 				}
-				else if(pathing->path.size() == 0)
+				else
 				{
 					state.movementDirection = VectorI::zero();
-					physics.speed = VectorF::zero();
+					//physics.speed = VectorF::zero();
 				}
 			}
 						

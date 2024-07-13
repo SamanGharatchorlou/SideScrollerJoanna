@@ -13,22 +13,24 @@ enum class ActionState;
 
 namespace ECS
 {
+	enum Direction { Up, Right, Down, Left, Count };
+
+	static const VectorI s_directions[Direction::Count] 
+	{ 
+		VectorI(0,-1), VectorI( 1, 0), VectorI(0, 1), VectorI(-1, 0) 
+	};
+
 	struct Transform
 	{
 		COMPONENT_TYPE(Transform)
 
 		// rect of the actual object
 		RectF rect;
-		//VectorF targetCenterPosition;
-
 	};
 
 	struct Sprite
 	{
 		COMPONENT_TYPE(Sprite)
-
-		// used to derive the render rect from the transform rect
-		//RectF relativeRenderRect;
 
 		VectorF renderSize;
 		RectF subRect;
@@ -41,8 +43,6 @@ namespace ECS
 	struct CharacterState
 	{
 		COMPONENT_TYPE(CharacterState)
-
-		enum Direction { Left, Right, Up, Down, Count };
 
 		VectorI movementDirection;
 		VectorI facingDirection;
@@ -70,6 +70,8 @@ namespace ECS
 		VectorI currentTarget;
 
 		std::vector<VectorI> path;
+
+		void UpdateTargetPosition();
 	};
 
 	struct Damage

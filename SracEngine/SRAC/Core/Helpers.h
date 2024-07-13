@@ -25,6 +25,27 @@ void merge(std::vector<T>& vectorA, const std::vector<T>& vectorB)
 	vectorA.insert(vectorA.end(), vectorB.begin(), vectorB.end());
 }
 
+template<typename T>
+bool Contains(std::vector<T>& vector, const T& item)
+{
+	for( u32 i = 0; i < vector.size(); i++ )
+	{
+		if(vector[i] == item)
+			return true;
+	}
+
+	return false;
+}
+
+template<typename T>
+void push_back_unique(std::vector<T>& vector, const T& item)
+{
+	if( !Contains(vector, item) )
+	{
+		vector.push_back(item);
+	}
+}
+
 
 //--------------------------------------------------------
 // String helpers

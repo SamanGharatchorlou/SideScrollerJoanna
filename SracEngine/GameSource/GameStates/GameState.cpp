@@ -15,6 +15,8 @@
 #include "Scene/SceneParsing/SceneBuilder.h"
 #include "Configs.h"
 
+#include "Debugging/ImGui/ImGuiMainWindows.h"
+
 void GameState::Init()
 {
 	ECS::RegisterAllComponents();
@@ -29,6 +31,9 @@ void GameState::Init()
 
 	ECS::Entity player = PlayerSpawn::Spawn(tile_map.tileMap.playerSpawnArea.Center());
 	ECS::Entity enemy = EnemySpawn::Spawn(tile_map);
+
+	// debugging
+	DebugMenu::SelectEntity(enemy);
 
 	if(ECS::Pathing* pathing = ecs->GetComponent(Pathing, enemy))
 		pathing->target = player;

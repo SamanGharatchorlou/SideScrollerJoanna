@@ -10,6 +10,8 @@ namespace DebugMenu
 	bool SpriteFlipOverride(ECS::Entity& entity, SDL_RendererFlip& sprite_flip);
 	bool RemovePath(ECS::Entity& entity);
 
+	void SetPathAttackPoint(VectorF point, Colour colour, ECS::Direction direction);
+
 	ECS::Component::Type DoTransformDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoSpriteDebugMenu(ECS::Entity& entity);
 	ECS::Component::Type DoCharacterStateDebugMenu(ECS::Entity& entity);

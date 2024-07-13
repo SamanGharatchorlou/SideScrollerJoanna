@@ -9,4 +9,5 @@ namespace DebugMenu
 	void DoTweakerWindow();
 
 	u32 GetSelectedEntity();
+	void SelectEntity(ECS::Entity entity);
 }

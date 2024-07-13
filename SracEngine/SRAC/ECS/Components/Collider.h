@@ -12,17 +12,21 @@ namespace ECS
 		{
 			// type
 			Static = 1 << 0,
-			//Damage = 1 << 1,
 
-			// damage layer
+			// id of the collider
 			IsPlayer = 1 << 2,
 			IsEnemy = 1 << 3,
 
+			// filtering
 			HitPlayerOnly = 1 << 4,
 			HitEnemyOnly = 1 << 5,
 
+			// use to enable/disable collisions
 			IgnoreAll = 1 << 6,
-			IgnoreCollisions = 1 << 7
+			IgnoreCollisions = 1 << 7,
+
+			// to check for collisions without any affect
+			GhostCollider = 1 << 8
 		};
 
 		enum RuntimeFlags 
@@ -42,9 +46,6 @@ namespace ECS
 		const RectF& GetRect() const;
 		void SetRect(const RectF& rect);
 
-		//void SetCenter(const VectorF& pos);
-
-		//void SetPosition(const RectF& rect, VectorF& target);
 		void RollBackPosition();
 		void RollForwardPosition();
 
@@ -59,6 +60,8 @@ namespace ECS
 		VectorF mForward;
 		VectorF mBack;
 		VectorF posOffset;
+
+		std::vector<ECS::Entity> collisions;
 
 	private:
 		// always need to use the transform to set this position and offset by posOffset

@@ -58,23 +58,23 @@ public:
 	// Set Dimentions
 	inline void SetSize(Vector2D<T> size) 
 	{
-		ASSERT(size.x >= 0 && size.y > 0, "Negative rect size, invalid");
+		ASSERT(size.x >= 0 && size.y >= 0, "Negative rect size, invalid");
 		x2 = x1 + size.x; y2 = y1 + size.y; 
 	}
 	inline void SetSize(T x, T y) 
 	{ 
-		ASSERT(x >= 0 && y > 0, "Negative rect size, invalid");
+		ASSERT(x >= 0 && y >= 0, "Negative rect size, invalid");
 		x2 = x1 + x; y2 = y1 + y; 
 	}
 
 	inline void SetWidth(T width) 
 	{ 
-		ASSERT(width > 0, "Negative rect width, invalid");
+		ASSERT(width >= 0, "Negative rect width, invalid");
 		x2 = x1 + width; 
 	}
 	inline void SetHeight(T height) 
 	{
-		ASSERT(height > 0, "Negative rect height, invalid");
+		ASSERT(height >= 0, "Negative rect height, invalid");
 		y2 = y1 + height; 
 	}
 

@@ -69,4 +69,11 @@ namespace ECS
 
 		return rect;
 	}
+
+	// collider is probably the most accurate thing to represent its position
+	VectorF GetPosition(Entity entity)
+	{
+		RectF collider_rect = GetColliderRect(entity);
+		return collider_rect.Center();
+	}
 }

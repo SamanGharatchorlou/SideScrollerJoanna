@@ -14,11 +14,20 @@
 
 #include "System/Window.h"
 
-bool s_displayPath = false;
-bool s_displayTarget = false;
+static bool s_displayPath = false;
+static bool s_displayTarget = false;
+static bool s_displayTargetPoints = false;
+
+static std::pair<VectorF, Colour> s_directions[ECS::Direction::Count];
+
 
 static ECS::Entity s_entWithNoPath;
 bool DebugMenu::RemovePath(ECS::Entity& entity) { return s_entWithNoPath == entity; }
+
+void DebugMenu::SetPathAttackPoint(VectorF point, Colour colour, ECS::Direction direction)
+{
+	s_directions[direction] = std::pair(point,colour);
+}
 
 ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 {
@@ -52,11 +61,10 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 		{
 			const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
 
-			const float attack_range = Enemy::GetAttackRange(entity);
-
 			const VectorI directions[4] = { VectorI(0,-1), VectorI( 1, 0), VectorI(0, 1), VectorI(-1, 0) };
 			for( u32 i = 0; i < 4; i++ )
 			{
+				const float attack_range = Enemy::GetAttackRange(entity, directions[i] );
 				VectorF looking_at = transform.rect.Center() + (directions[i].toFloat() * attack_range);
 					
 				Colour colour = Colour::Green;
@@ -82,6 +90,15 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 			else
 			{
 				s_entWithNoPath = ECS::EntityInvalid;
+			}
+		}
+
+		ImGui::Checkbox("Target Attack Position Points", &s_displayTargetPoints);
+		if(s_displayTargetPoints)
+		{
+			for( u32 i = 0; i < ECS::Direction::Count; i++ )
+			{
+				DebugDraw::Point(s_directions[i].first, 10, s_directions[i].second);
 			}
 		}
 	
