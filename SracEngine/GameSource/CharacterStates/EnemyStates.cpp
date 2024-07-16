@@ -111,9 +111,7 @@ namespace Enemy
 
 		if (ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 		{
-			// apply walk speed
-			//physics->maxSpeed = VectorF(3.0f, 3.0f);
-			//physics->ApplyMovement(state.movementDirection.toFloat(), dt);
+			physics->speed.set(0.0f, 0.0f);
 			physics->ApplyDrag(state.movementDirection.toFloat(), 0.9f);
 		}
 	}
@@ -156,6 +154,13 @@ namespace Enemy
 		if(ECS::Physics* physics = ecs->GetComponent(Physics, entity))
 		{
 			physics->speed.set(0.0f, 0.0f);
+		}
+
+		if (ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity))
+		{
+			// get the target
+			// vec me to target
+			// that becomes facing direction and attack direction boom
 		}
 		
 		const VectorI direction = state.facingDirection;

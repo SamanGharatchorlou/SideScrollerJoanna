@@ -7,7 +7,7 @@
 #include "Debugging/ImGui/ImGuiHelpers.h"
 
 bool s_displayRect = false;
-bool s_displaySizedRect = false;
+bool s_displayPosition = false;
 
 ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 {
@@ -37,6 +37,12 @@ ECS::Component::Type DebugMenu::DoTransformDebugMenu(ECS::Entity& entity)
 			if (s_displayRect)
 			{
 				DebugDraw::RectOutline(transform.rect, Colour::Green);
+			}
+
+			ImGui::Checkbox("Display Position", &s_displayPosition);
+			if (s_displayPosition)
+			{
+				DebugDraw::Point(transform.GetPos(), 4.0f, Colour::Green);
 			}
 
 			ImGui::TreePop();

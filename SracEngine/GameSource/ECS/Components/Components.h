@@ -26,6 +26,9 @@ namespace ECS
 
 		// rect of the actual object
 		RectF rect;
+		VectorF positionOffset;
+
+		VectorF GetPos() const { return rect.Center() + positionOffset; }
 	};
 
 	struct Sprite

@@ -70,10 +70,14 @@ namespace ECS
 		return rect;
 	}
 
+	// but this might be unreliable tbh
 	// collider is probably the most accurate thing to represent its position
 	VectorF GetPosition(Entity entity)
 	{
-		RectF collider_rect = GetColliderRect(entity);
-		return collider_rect.Center();
+		EntityCoordinator* ecs = GameData::Get().ecs;
+		if (const Transform* transform = ecs->GetComponent(Transform, entity))
+		{
+			return transform->GetPos();
+		}
 	}
 }

@@ -155,7 +155,7 @@ namespace ECS
 				const VectorI facing_direction = direction *-1;
 				
 				VectorF pos = target_rect.Center();
-				const VectorF area = Enemy::GetAttackRangeArea(pathing.entity, facing_direction);
+				const VectorF area = Enemy::GetAttackRangeArea(pathing.entity, facing_direction) * 0.6f;
 				pos += area * direction.toFloat();
 
 				if(DebugMenu::GetSelectedEntity() == pathing.entity)
@@ -195,13 +195,10 @@ namespace ECS
 				continue;
 			}
 
-			const VectorF start_position = ECS::GetPosition(entity);
+			const Transform& transform = ecs->GetComponentRef(Transform, entity);
+
+			const VectorF start_position = transform.GetPos();// ECS::GetPosition(entity);
 			const VectorF end_position = GetBestAttackPosition(pathing);
-			//if(ecs->IsAlive(pathing.target))
-			//{
-			//	const Transform& target_transform = ecs->GetComponentRef(Transform, pathing.target);
-			//	end_position = target_transform.rect.Center();
-			//}
 			
 			// only update if the target has moved
 			const VectorI end_index = (end_position / world_tile_size).toInt();

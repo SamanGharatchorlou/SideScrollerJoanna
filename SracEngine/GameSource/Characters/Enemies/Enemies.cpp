@@ -22,7 +22,8 @@ ECS::Entity Enemy::Create()
 
 	// Transform
 	ECS::Transform& transform = ecs->AddComponent(Transform, entity);
-	transform.rect.SetSize(VectorF(17, 34));
+	transform.rect.SetSize(VectorF(17.0f, 34.0f));
+	transform.positionOffset = VectorF(-8.0f, 26.0f);
 	
 	// MovementPhysics
 	ECS::Physics& physics = ecs->AddComponent(Physics, entity);

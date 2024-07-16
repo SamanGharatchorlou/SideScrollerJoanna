@@ -11,17 +11,17 @@
 
 namespace ECS
 {
-	static void RollForwardCollider(EntityCoordinator* ecs, ECS::Entity entity)
-	{
-		Collider& collider = ecs->GetComponentRef(Collider, entity);
+	//static void RollForwardCollider(EntityCoordinator* ecs, ECS::Entity entity)
+	//{
+	//	Collider& collider = ecs->GetComponentRef(Collider, entity);
 
-		// ignore static colliders, they dont move
-		u32 flags = Collider::Flags::Static;
-		if(HasFlag(collider.mFlags, flags))
-			return;
+	//	// ignore static colliders, they dont move
+	//	u32 flags = Collider::Flags::Static;
+	//	if(HasFlag(collider.mFlags, flags))
+	//		return;
 
-		collider.RollForwardPosition();
-	}
+	//	collider.RollForwardPosition();
+	//}
 
 	static bool CanCollide(EntityCoordinator* ecs, const Collider& A_collider, bool A_isDamage, bool A_isPhysical, const Collider& B_collider)
 	{
@@ -113,19 +113,19 @@ namespace ECS
 		std::vector<Collider>& collider_list = colliders.components;
 		const u32 count = collider_list.size();
 
-		// first we need to update the collider position with where the entity wants to be
-		for (Entity entity : entities)
-		{
-			Collider& collider = ecs->GetComponentRef(Collider, entity);
-			collider.collisions.clear();
+		//// first we need to update the collider position with where the entity wants to be
+		//for (Entity entity : entities)
+		//{
+		//	Collider& collider = ecs->GetComponentRef(Collider, entity);
+		//	collider.collisions.clear();
 
-			// ignore static colliders, they dont move
-			u32 flags = Collider::Flags::Static;
-			if(HasFlag(collider.mFlags, flags))
-				return;
+		//	// ignore static colliders, they dont move
+		//	u32 flags = Collider::Flags::Static;
+		//	if(HasFlag(collider.mFlags, flags))
+		//		return;
 
-			collider.RollForwardPosition();
-		}
+		//	collider.RollForwardPosition();
+		//}
 
 		for (Entity entity : entities)
 		{

@@ -25,32 +25,25 @@ namespace ECS
 			}
 
 			Collider* collider = ecs->GetComponent(Collider, entity);
+			if (!collider)
+				continue;
 			
 			// update the transform position once its passed all collision checks
-			if(collider)
-			{
-				//transform.rect.SetCenter(collider->mForward);
-
-				transform.rect.Translate(collider->allowedMovement);
-				collider->allowedMovement = VectorF::zero();
-			}
+			transform.rect.Translate(collider->allowedMovement);
+			collider->allowedMovement = VectorF::zero();
 			
 			// set the target position, the place we want to move to given collisions
 			if(Physics* physics = ecs->GetComponent(Physics, entity))
 			{
-				// where we're trying to move to
-				//transform.targetCenterPosition = transform.rect.Center() + physics->speed;
-
 				// update the collider position and roll it forwards to where we want to move
-				if(collider && !HasFlag(collider->mFlags, Collider::Flags::Static))
-				{
-					collider->SetRect( GetColliderRect(entity) );
-					collider->mBack = collider->GetRect().Center();
-					collider->mForward = collider->mBack + physics->speed;
+				if (HasFlag(collider->mFlags, Collider::Flags::Static))
+					continue;
+	
+				collider->SetRect( GetColliderRect(entity) );
+				collider->mBack = collider->GetRect().Center();
+				collider->mForward = collider->mBack + physics->speed;
 
-					//collider->SetPosition(transform.rect, transform.targetCenterPosition);
-					collider->RollForwardPosition();
-				}
+				collider->RollForwardPosition();
 			}
 		}
 	}
