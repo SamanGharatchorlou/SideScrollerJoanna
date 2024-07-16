@@ -79,5 +79,7 @@ namespace ECS
 		{
 			return transform->GetPos();
 		}
+
+		return VectorF::zero();
 	}
 }

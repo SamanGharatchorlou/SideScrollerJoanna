@@ -70,9 +70,15 @@ ECS::Component::Type DebugMenu::DoPathingDebugMenu(ECS::Entity& entity)
 				Colour colour = Colour::Green;
 
 				VectorI direction;
-				if(Enemy::CanAttackTarget(entity, direction))
+				if( ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity) )
 				{
-					colour = Colour::Red;
+					if(ecs->IsAlive(pathing->target))
+					{
+						if(Enemy::IsInAttackRange(entity, pathing->target, direction))
+						{
+							colour = Colour::Red;
+						}
+					}
 				}
 
 				DebugDraw::Point(looking_at, 10, colour);

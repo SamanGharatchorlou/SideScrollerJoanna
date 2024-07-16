@@ -39,14 +39,12 @@ namespace Enemy
 		bool can_kill = false;
 	};
 
-	bool CanAttackTarget(ECS::Entity entity, VectorI& out_facing_direction);
+	bool IsInAttackRange(ECS::Entity attacker, ECS::Entity target, VectorI& out_facing_direction);
 
 	float GetAttackRange(ECS::Entity entity, const VectorI facing_direction);
 	// same as attack range but same values in x and y for loops
 	VectorF GetAttackRangeArea(ECS::Entity entity, const VectorI facing_direction);
-
 	// this differs to attack range as it doesnt consider collider positioning, range is probably what you want not this one
 	VectorF GetAttackArea(ECS::Entity entity, const VectorI facing_direction);
-
 	RectF GetAttackRect(ECS::Entity entity, const VectorI facing_direction);
 }

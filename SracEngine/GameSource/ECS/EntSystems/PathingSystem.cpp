@@ -195,9 +195,7 @@ namespace ECS
 				continue;
 			}
 
-			const Transform& transform = ecs->GetComponentRef(Transform, entity);
-
-			const VectorF start_position = transform.GetPos();// ECS::GetPosition(entity);
+			const VectorF start_position = ECS::GetPosition(entity);
 			const VectorF end_position = GetBestAttackPosition(pathing);
 			
 			// only update if the target has moved

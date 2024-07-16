@@ -72,8 +72,5 @@ namespace ECS
 		statePool.returnObject(state, state->action);
 
 		DebugPrint(PriorityLevel::Debug, "Returning enemy action state: %s | %d states left", actionToString(state->action).c_str(), statePool.size(state->action));
-
-		if(actions.stack.size() == 0)
-			int a = 4;
 	}
 }

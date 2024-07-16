@@ -34,63 +34,48 @@ namespace Enemy
 		return state;
 	}
 
-	bool CanAttackTarget(ECS::Entity entity, VectorI& out_facing_direction)
+	bool IsInAttackRange(ECS::Entity attacker, ECS::Entity target, VectorI& out_facing_direction)
 	{
 		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-		//if( ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity) )
-		//{
-		//	if(ecs->IsAlive(pathing->target))
-		//	{
-		//		const ECS::Transform& target_transform = ecs->GetComponentRef(Transform, pathing->target);
-		//		VectorF target_position = target_transform.rect.Center();
-		//		
-		//		const ECS::Transform& transform = ecs->GetComponentRef(Transform, entity);
 
-		//		float distance_squard = (transform.rect.Center() - target_position).lengthSquared();
-		//		float attack_range = GetAttackRange(entity);
+		VectorF position = ECS::GetPosition(attacker);
+		VectorF target_position = ECS::GetPosition(target);
 
-		//		// out of attack range
-		//		if(distance_squard > (attack_range * attack_range))
-		//			return false;
-		//		
-		//		if(ECS::Collider* target_collider = ecs->GetComponent(Collider, pathing->target))
-		//		{
-		//			// todo: draw the attack collider here, if its going to hit then do it
+		VectorF target_facing = target_position - position;
 
-		//			ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-		//			const VectorI directions[4] = { VectorI(0,-1), VectorI( 1, 0), VectorI(0, 1), VectorI(-1, 0) };
-		//			for( u32 i = 0; i < 4; i++ )
-		//			{
-		//				VectorF looking_at = transform.rect.Center() + (directions[i].toFloat() * attack_range);
-		//				if(target_collider->contains(looking_at))
-		//				{
-		//					out_facing_direction = directions[i];
-		//					return true;
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
+		const ECS::Collider& target_collider = ecs->GetComponentRef(Collider, target);
+
+		for( u32 i = 0; i < ECS::Direction::Count; i++ )
+		{
+			const VectorI direction = ECS::s_directions[i];
+			const VectorI facing_direction = direction *-1;
+
+			const RectF area = Enemy::GetAttackRect(attacker, facing_direction);
+			if(target_collider.intersects(area))
+			{
+				out_facing_direction = facing_direction;
+				return true;
+			}
+			
+		}
 
 		return false;
 	}
 
-	static bool TryAttackTarget(ECS::Entity entity)
+	static bool CanAttackTarget(ECS::Entity entity, VectorI& out_facing_direction )
 	{
-		VectorI direction;
-		if(CanAttackTarget(entity, direction))
+		ECS::EntityCoordinator* ecs = GameData::Get().ecs;
+		if( ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity) )
 		{
-			ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-
-			ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
-			ai.PushState(ActionState::BasicAttack);
-			
-			ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-			state.facingDirection = direction;
-
-			return true;
+			if(ecs->IsAlive(pathing->target))
+			{
+				if(IsInAttackRange(entity, pathing->target, out_facing_direction))
+				{
+					return true;
+				}
+			}
 		}
-
+		
 		return false;
 	}
 
@@ -102,7 +87,15 @@ namespace Enemy
 		ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
 		ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
 		
-		TryAttackTarget(entity);
+		VectorI facing_direction;
+		if(CanAttackTarget(entity, facing_direction))
+		{
+			ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
+			state.facingDirection = facing_direction;
+
+			ECS::AIController& ai = ecs->GetComponentRef(AIController, entity);
+			ai.PushState(ActionState::BasicAttack);
+		}
 
 		if(!state.movementDirection.isZero())
 		{
@@ -132,8 +125,6 @@ namespace Enemy
 			physics->ApplyDrag(state.movementDirection.toFloat(), 0.9f);
 		}
 
-		TryAttackTarget(entity);
-
 		if(state.movementDirection.isZero())
 		{
 			ai.PopState();
@@ -155,52 +146,9 @@ namespace Enemy
 		{
 			physics->speed.set(0.0f, 0.0f);
 		}
-
-		if (ECS::Pathing* pathing = ecs->GetComponent(Pathing, entity))
-		{
-			// get the target
-			// vec me to target
-			// that becomes facing direction and attack direction boom
-		}
 		
 		const VectorI direction = state.facingDirection;
-		//const VectorF size = GetAttackArea(entity, direction);
-
 		const RectF collider_rect = GetAttackRect(entity, direction);
-
-		//collider_rect.SetSize(size);
-		//
-		//if( direction.x == -1 || direction.x == 1 )
-		//{
-		//	//const float range = GetAttackRange(entity);
-		//	//const float height = boundary_rect.Height() * 0.25f;
-		//	//const VectorF size(range, height);
-		//	//const VectorF size = GetAttackArea(entity, direction);
-		//	//collider_rect.SetSize(size);
-
-		//	if( direction.x == 1 )
-		//		collider_rect.SetLeftCenter(character_rect.BotCenter());
-		//	else
-		//		collider_rect.SetRightCenter(character_rect.BotCenter());
-		//}
-		//else if( direction.y == -1 || direction.y == 1 )
-		//{
-		//	//const float range = GetAttackRange(entity);
-		//	//const float width = boundary_rect.Width() * 0.6f;
-		//	//const VectorF size(width, range);
-		//	//
-		//	//const VectorF size = GetAttackArea(entity, direction);
-		//	//collider_rect.SetSize(size);
-
-		//	if( direction.y == 1 )
-		//	{
-		//		const RectF character_collider_rect = ECS::GetColliderRect(entity);
-		//		collider_rect.SetTopCenter(character_collider_rect.BotCenter());
-		//	}
-		//	else
-		//		collider_rect.SetBotCenter(character_rect.Center());
-		//}
-
 		attackCollider = CreateAttackCollider(entity, collider_rect, 60, "Enemy Attack Collider");
 	}
 
@@ -254,27 +202,6 @@ namespace Enemy
 			can_kill = true;
 		}
 	}
-
-	//// helpers
-	//const float GetAttackRange(ECS::Entity entity)
-	//{
-	//	ECS::EntityCoordinator* ecs = GameData::Get().ecs;
-	//	
-	//	const ECS::CharacterState& state = ecs->GetComponentRef(CharacterState, entity);
-	//	const RectF boundary_rect = ECS::GetRenderRect(entity);
-	//	const VectorI direction = state.facingDirection;
-
-	//	if( direction.x == -1 || direction.x == 1 )
-	//	{
-	//		return boundary_rect.Width() * 0.5f;
-	//	}
-	//	else if( direction.y == -1 || direction.y == 1 )
-	//	{
-	//		return boundary_rect.Height() * 0.3f;
-	//	}
-
-	//	return 0;
-	//}
 
 	RectF GetAttackRect(ECS::Entity entity, const VectorI facing_direction)
 	{
